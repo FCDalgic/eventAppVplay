@@ -1,0 +1,8 @@
+{
+    "title": "EventApp",
+    "identifier": "tr.com.tusco.mobile.EventApp",
+    "orientation": "auto",
+    "versioncode": 1,
+    "versionname": "1.0",
+    "stage": "test"
+}
