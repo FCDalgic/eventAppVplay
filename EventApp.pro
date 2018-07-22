@@ -30,7 +30,16 @@ RESOURCES += #    resources.qrc # uncomment for publishing
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    source/maincontroller.cpp
+    source/maincontroller.cpp \
+    source/data/eventcontainer.cpp \
+    source/data/placecontainer.cpp \
+    source/communication/requestmanager.cpp \
+    source/communication/restmanager.cpp \
+    source/communication/networkmessageparser.cpp \
+    source/modelcontrollers/abstracteventcontroller.cpp \
+    source/modelcontrollers/abstractplacescontroller.cpp \
+    source/modelcontrollers/completeplacescontroller.cpp \
+    source/modelcontrollers/categoryeventcontroller.cpp
 
 android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
@@ -52,4 +61,13 @@ macx {
 }
 
 HEADERS += \
-    source/maincontroller.h
+    source/maincontroller.h \
+    source/data/eventcontainer.h \
+    source/data/placecontainer.h \
+    source/communication/requestmanager.h \
+    source/communication/restmanager.h \
+    source/communication/networkmessageparser.h \
+    source/modelcontrollers/abstracteventcontroller.h \
+    source/modelcontrollers/abstractplacescontroller.h \
+    source/modelcontrollers/completeplacescontroller.h \
+    source/modelcontrollers/categoryeventcontroller.h
