@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <qqmllist.h>
-#include <data/eventcontainer.h>
+
+#include <source/data/eventcontainer.h>
 
 class AbstractEventController : public QObject
 {

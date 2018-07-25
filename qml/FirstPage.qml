@@ -1,11 +1,11 @@
 import VPlayApps 1.0
 import QtQuick 2.0
 
+import "pages/main"
 Page {
 
-    AppText {
-        anchors.centerIn: parent
-        text: qsTr("First Page")
+    Homepage{
+       anchors.fill: parent;
+       width: parent.width
     }
-
 }

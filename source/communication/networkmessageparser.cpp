@@ -21,6 +21,7 @@ void NetworkMessageParser::parseNetworkMessage(QString pMessage)
 
     QJsonArray  jsonArray;
 
+    qDebug() << "Network Reply . " << pMessage;
 
     try
     {

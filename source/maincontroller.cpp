@@ -3,13 +3,17 @@
 
 MainController::MainController(QQmlContext *pRoot, QObject *parent)
     : QObject(parent)
-    , mCategoryEvents(NULL)
-    , mEventManager(NULL)
     , mRoot(pRoot)
+    , mCategoryEvents(NULL)
+    , mRequestManager(NULL)
+    , mHomepageRecents(NULL)
 {
 
     qmlRegisterType<EventContainer>();
     qmlRegisterType<PlaceContainer>();
+
+
+    initialize();
 
 }
 
@@ -26,28 +30,31 @@ void MainController::initialize()
 
 void MainController::initObject()
 {
-    mEventManager   = new RequestManager();
-    mCategoryEvents = new CategoryEventController();
+    mRequestManager   = new RequestManager();
+    mCategoryEvents   = new CategoryEventController();
     mPlacesController = new CompletePlacesController();
+    mHomepageRecents  = new TopRecentEventsController();
 
 }
 
 void MainController::register2Meta()
 {
-    mRoot->setContextProperty("RequestManager"  , mEventManager );
+    mRoot->setContextProperty("RequestManager"  , mRequestManager );
     mRoot->setContextProperty("CategoryResults" , mCategoryEvents);
     mRoot->setContextProperty("PlacesResults"   , mPlacesController);
-
+    mRoot->setContextProperty("HomeRecentEvents", mHomepageRecents);
 }
 
 
 void MainController::initializeConnections()
 {
-    connect(mEventManager , SIGNAL(categoryEventsReceived(QList<EventContainer*>))  , mCategoryEvents   , SLOT(addEventData(QList<EventContainer*>)));
-    connect(mEventManager , SIGNAL(placesListReceived(QList<PlaceContainer*>))      , mWholePlaces      , SLOT(addPlaces(QList<PlaceContainer*>)));
+    connect(mRequestManager , SIGNAL(categoryEventsReceived(QList<EventContainer*>))  , mCategoryEvents   , SLOT(addEventData(QList<EventContainer*>)));
+    connect(mRequestManager , SIGNAL(placesListReceived(QList<PlaceContainer*>))      , mPlacesController , SLOT(addPlaces(QList<PlaceContainer*>)));
+    connect(mRequestManager , SIGNAL(homepageRecentEventsRecevied(QList<EventContainer*>))  , mHomepageRecents       , SLOT(addEventData(QList<EventContainer*>)));
+
 }
 
 void MainController::initHomepage()
 {
-    mEventManager->getEventsByType("homepage_recent" , 10);
+    mRequestManager->getEventsByType("homepage_recent" , 10);
 }

@@ -21,7 +21,7 @@ RESOURCES += #    resources.qrc # uncomment for publishing
 # NOTE: for PUBLISHING, perform the following steps:
 # 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
 # 2. uncomment the resources.qrc file inclusion and add any qml subfolders to the .qrc file; this compiles your qml files and js files to the app binary and protects your source code
-# 3. change the setMainQmlFile() call in main.cpp to the one starting with "qrc:/" - this loads the qml files from the resources
+# 3. change the setMainQmlFile() call in main.cpp to the one starting with "../../assets/" - this loads the qml files from the resources
 # for more details see the "Deployment Guides" in the V-Play Documentation
 
 # during development, use the qmlFolder deployment because you then get shorter compilation times (the qml files do not need to be compiled to the binary but are just copied)
@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     source/modelcontrollers/abstracteventcontroller.cpp \
     source/modelcontrollers/abstractplacescontroller.cpp \
     source/modelcontrollers/completeplacescontroller.cpp \
-    source/modelcontrollers/categoryeventcontroller.cpp
+    source/modelcontrollers/categoryeventcontroller.cpp \
+    source/modelcontrollers/toprecenteventscontroller.cpp
 
 android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
@@ -70,4 +71,14 @@ HEADERS += \
     source/modelcontrollers/abstracteventcontroller.h \
     source/modelcontrollers/abstractplacescontroller.h \
     source/modelcontrollers/completeplacescontroller.h \
-    source/modelcontrollers/categoryeventcontroller.h
+    source/modelcontrollers/categoryeventcontroller.h \
+    source/modelcontrollers/toprecenteventscontroller.h
+
+DISTFILES += \
+    qml/items/testitem.qml \
+    qml/MobileApp.qml \
+    assets/images/design/logo/Logo Yeni_copy.png \
+    qml/IAppProperties.qml \
+    qml/items/delegates/EventListItemDelegate.qml \
+    qml/items/decoration/icons/LıstItemIcon.qml \
+    qml/pages/main/MainViewStackedPages.qml

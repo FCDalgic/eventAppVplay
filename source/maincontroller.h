@@ -8,6 +8,7 @@
 
 #include <source/modelcontrollers/categoryeventcontroller.h>
 #include <source/modelcontrollers/completeplacescontroller.h>
+#include <source/modelcontrollers/toprecenteventscontroller.h>
 
 class MainController : public QObject
 {
@@ -23,9 +24,10 @@ public slots:
 private:
     // To register cpp objects to meta system.
     QQmlContext* mRoot;
-    RequestManager *mEventManager;
+    RequestManager *mRequestManager;
     CategoryEventController *mCategoryEvents; // Which contains, education, entertainment, outdoor, others, popular, recent.
     CompletePlacesController *mPlacesController;
+    TopRecentEventsController *mHomepageRecents;
 
     void initialize();
     void initObject();

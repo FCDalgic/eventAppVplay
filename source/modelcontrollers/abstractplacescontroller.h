@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <qqmllist.h>
-#include <data/placecontainer.h>
+
+#include <source/data/placecontainer.h>
 
 class AbstractPlacesController : public QObject
 {
