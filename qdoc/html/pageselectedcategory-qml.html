@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>PageSelectedCategory.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >PageSelectedCategory.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PageSelectedCategory.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$PageSelectedCategory.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import QtQuick 2.9
+  import QtQuick.Layouts 1.3
+  import QtQuick.Controls 2.2
+  import QtQuick.Controls.Material 2.2
+  import QtQml 2.0;
+  import QtQml.Models 2.2
+  import QtGraphicalEffects 1.0
+
+  import &quot;../../items/delegates&quot;
+  import &quot;../../items/listview&quot;
+  import &quot;../../items&quot;
+
+  import VPlayApps 1.0
+
+  <span class="type">ListPage</span>
+  {
+      <span class="name">id</span>: <span class="name">listviewSelectedCategory</span>;
+      <span class="name">title</span>: <span class="name">selectedCategoryTitle</span>;
+      <span class="name">model</span>: <span class="name">CategoryResults</span>.<span class="name">eventList</span>;
+      <span class="name">backNavigationEnabled</span>: <span class="number">true</span>;
+      <span class="name">focus</span>: <span class="number">true</span>
+      <span class="name">clip</span>: <span class="number">true</span>
+
+      <span class="name">backgroundColor</span>: <span class="string">&quot;blue&quot;</span>;
+      <span class="type">listView</span>
+      {
+          <span class="comment">// width: parent.width - dp(20);</span>
+          <span class="name">backgroundColor</span>: <span class="name">colorMain</span>;
+          <span class="name">spacing</span>: <span class="number">4</span>;
+          <span class="name">emptyText</span>.text : <span class="string">&quot;No items available&quot;</span>;
+
+      }
+
+      property <span class="type">real</span> <span class="name">previousContentY</span>: <span class="number">0</span>;
+      property <span class="type">string</span> <span class="name">sectionFilter</span>: <span class="string">&quot;EventDate&quot;</span>;
+      property <span class="type">real</span> <span class="name">status</span>: <span class="number">0</span>;
+
+      <span class="name">rightBarItem</span>:<span class="name">NavigationBarItem</span> {
+
+          <span class="comment">// we specify the width of the item with the contentWidth property</span>
+          <span class="comment">// the item width then includes the contentWidth and a default padding</span>
+          <span class="name">contentWidth</span>: <span class="name">contentRect</span>.<span class="name">width</span>
+
+          <span class="comment">// the navigation bar item shows a colored rectangle</span>
+          <span class="type">Rectangle</span> {
+            <span class="name">id</span>: <span class="name">contentRect</span>
+            <span class="name">width</span>: <span class="name">dp</span>(<span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">defaultIconSize</span>)
+            <span class="name">height</span>: <span class="name">width</span>
+            <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+            <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+            <span class="type">Icon</span> {
+              <span class="name">anchors</span>.fill: <span class="name">parent</span>
+              <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">navicon</span>
+              <span class="name">color</span>: <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">itemColor</span>
+
+              <span class="type">MouseArea</span>
+              {
+                  <span class="name">onClicked</span>: <span class="name">appWindow</span>.<span class="name">openNavDrawer</span>();
+                  <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+              }
+            }
+          }
+        } <span class="comment">// NavigationBarItem</span>
+
+      <span class="name">delegate</span>: <span class="name">EventListItemDelegate</span>
+      {
+          <span class="name">eventModel</span>: <span class="name">modelData</span>
+          <span class="name">anchors</span>.horizontalCenter : <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+          <span class="name">small</span>: <span class="number">true</span>
+          <span class="name">onClicked</span>:
+          {
+              <span class="name">appWindow</span>.<span class="name">eventSelected</span>(<span class="name">model</span>);
+          }
+
+      }
+
+      <span class="comment">// Section</span>
+      <span class="type">Component</span> {
+          <span class="name">id</span>: <span class="name">sectionHeading</span>
+          <span class="type">SimpleSection</span>
+          {
+              <span class="name">style</span>.compactStyle: <span class="number">true</span>;
+              <span class="name">style</span>.backgroundColor: <span class="string">&quot;white&quot;</span>;
+              <span class="name">style</span>.textColor: <span class="name">colorMain</span>;
+              <span class="name">width</span>: <span class="name">listviewSelectedCategory</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">dp</span>(<span class="number">20</span>);
+              <span class="name">anchors</span>.horizontalCenter:  <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+
+              <span class="name">title</span>: <span class="name">section</span> <span class="comment">// E.g. &quot;Category: Fruits&quot;</span>
+              <span class="name">textItem</span>.horizontalAlignment: <span class="name">Text</span>.<span class="name">AlignHCenter</span> <span class="comment">// center text horizontally</span>
+              <span class="name">enabled</span>: <span class="number">true</span> <span class="comment">// make section clickable</span>
+          }
+      }
+      <span class="name">section</span>.property: <span class="name">sectionFilter</span>;
+      <span class="name">section</span>.criteria: <span class="name">ViewSection</span>.<span class="name">FullString</span>
+      <span class="name">section</span>.delegate: <span class="name">sectionHeading</span>
+      <span class="comment">// Section ends.</span>
+
+      <span class="keyword">function</span> <span class="name">setCategoryName</span>(<span class="name">pName</span>)
+      {
+          <span class="name">eventType</span> <span class="operator">=</span> <span class="name">pName</span>;
+      }
+
+  }
+
+</pre>
+</div>
+<!-- @@@PageSelectedCategory.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

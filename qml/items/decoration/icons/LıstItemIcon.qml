@@ -25,7 +25,7 @@ Rectangle {
     id: defaultImg
     anchors.fill: webImg
     radius: webImg.radius
-    img.defaultSource: Qt.resolvedUrl("../../assets/icon_engineer.png")
+    img.defaultSource: Qt.resolvedUrl("../../../../assets/images/fa/unlem-x256.png")
     visible: !webImg.visible
   }
 

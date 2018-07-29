@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>RequestManager.h | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >RequestManager.h</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">RequestManager.h</h1>
+<span class="subtitle"></span>
+<!-- $$$requestmanager.h.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#ifndef REQUESTMANAGER_H</span>
+  <span class="preprocessor">#define REQUESTMANAGER_H</span>
+
+  <span class="preprocessor">#include &quot;networkmessageparser.h&quot;</span>
+  <span class="preprocessor">#include &quot;restmanager.h&quot;</span>
+
+  <span class="preprocessor">#include &lt;QObject&gt;</span>
+
+  <span class="keyword">class</span> RequestManager : <span class="keyword">public</span> <span class="type">QObject</span>
+  {
+      Q_OBJECT
+  <span class="keyword">public</span>:
+      <span class="keyword">explicit</span> RequestManager(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+  <span class="keyword">signals</span>:
+
+      <span class="comment">// Category signals</span>
+      <span class="type">void</span> recentEventsRecevied(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> pEvents);
+      <span class="type">void</span> categoryEventsReceived(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> pEvents);
+
+      <span class="comment">// Homepage signals</span>
+      <span class="type">void</span> homepageRecentEventsRecevied(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> pEvents);
+
+      <span class="comment">// Place signals</span>
+      <span class="type">void</span> placesListReceived(<span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span> pPlaces);
+  <span class="keyword">public</span> <span class="keyword">slots</span>:
+      <span class="type">void</span> onEventMessageParsed(<span class="type">QString</span> pType<span class="operator">,</span> <span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> pEvents);
+      <span class="type">void</span> onpPlacesMessageParsed(<span class="type">QString</span> pType<span class="operator">,</span> <span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span> pPlaces);
+      <span class="type">void</span> getEventsByType(<span class="type">QString</span> pType<span class="operator">,</span> <span class="type">int</span> pCount<span class="operator">,</span> <span class="type">QString</span> pFilterType <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="operator">,</span> <span class="type">QString</span> pOrderType <span class="operator">=</span> <span class="string">&quot;&quot;</span>);
+      <span class="type">void</span> getPlaces();
+
+  <span class="keyword">private</span>:
+      NetworkMessageParser <span class="operator">*</span>mParser;
+      RESTManager <span class="operator">*</span>mRESTManager;
+      <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">QString</span><span class="operator">&gt;</span> mLastReqMap;
+
+      <span class="type">void</span> initializeConnections();
+      <span class="type">void</span> prepareAndSend(<span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">QString</span><span class="operator">&gt;</span> pParams);
+  };
+
+  <span class="preprocessor">#endif // REQUESTMANAGER_H</span>
+
+</pre>
+</div>
+<!-- @@@requestmanager.h.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

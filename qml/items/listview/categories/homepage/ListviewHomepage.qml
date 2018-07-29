@@ -29,33 +29,10 @@ AppListView {
 
 
 
-    spacing: 18;  // Google Materia refence.
+
+    spacing: 4;  // Google Materia refence.
 
     currentIndex: 0
-    // ############# OLD Version ################################################################################
-    //
-    // delegate: DelegateEventListViewVertical{
-    //     id: evetListDelegate;
-    //     width: parent.width - 30;
-    //     radius: 15;
-    //     anchors.horizontalCenter: parent.horizontalCenter;
-    //
-    //     Component.onCompleted:
-    //     {
-    //
-    //         var tHeight = 0;
-    //         for(var child in listviewHomepage.contentItem.children) {
-    //             tHeight += listviewHomepage.contentItem.children[child].height;
-    //         }
-    //
-    //         listviewHomepage.height =  tHeight + (listviewHomepage.count * listviewHomepage.spacing);
-    //
-    //     }
-    // }
-    //    model: categoryResults.eventList
-    // ############# OLD Version ################################################################################
-
-
     delegate: EventListItemDelegate
     {
         eventModel: modelData
@@ -141,7 +118,7 @@ AppListView {
         id: sectionHeading
         ListviewSectionCriteriaHomepage
         {
-            width: listviewHomepage.width - 30;
+            width: listviewHomepage.width;
         }
 
     }
@@ -163,7 +140,7 @@ AppListView {
         else
         {
             // 1. Internet bağlantısını kontrol et.
-            if (!SehirUtils.checkInternetConnection())
+            if (!isOnline)
             {
                 homepageMessageHeader.status = 1;
                 homepageMessageHeader.visible = true;
@@ -196,7 +173,7 @@ AppListView {
         else
         {
             // 1. Internet bağlantısını kontrol et.
-            if (!SehirUtils.checkInternetConnection())
+            if (!isOnline)
             {
                 homepageMessageHeader.status = 1;
             }

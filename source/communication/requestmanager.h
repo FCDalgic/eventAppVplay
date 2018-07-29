@@ -7,11 +7,7 @@
 #include <QObject>
 
 
-/**
- * @brief The RequestManager class
- * Handles whole data requests.
- * Registered to Meta System in order to be used by QML elements
- */
+
 class RequestManager : public QObject
 {
     Q_OBJECT
@@ -21,23 +17,11 @@ public:
 signals:
 
     // Category signals
-    void artEventsRecevied(QList<EventContainer*> pEvents);
-    void concertEventsRecevied(QList<EventContainer*> pEvents);
-    void foodEventsReceived(QList<EventContainer*> pEvents);
-    void eatEventsRecevied(QList<EventContainer*> pEvents);
-    void academicEventsRecevied(QList<EventContainer*> pEvents);
-    void outdoorEventsRecevied(QList<EventContainer*> pEvents);
     void recentEventsRecevied(QList<EventContainer*> pEvents);
-    void popularEventsRecevied(QList<EventContainer*> pEvents);
-    void favouriteEventsRecevied(QList<EventContainer*> pEvents);
-    void otherEventsRecevied(QList<EventContainer*> pEvents);
     void categoryEventsReceived(QList<EventContainer*> pEvents);
 
     // Homepage signals
-    void searchResultsReceived(QList<EventContainer*> pEvents);
     void homepageRecentEventsRecevied(QList<EventContainer*> pEvents);
-    void homepagePopularEventsReceived(QList<EventContainer*> pEvents);
-    void missedEventsReceived(QList<EventContainer*> pEvents);
 
     // Place signals
     void placesListReceived(QList<PlaceContainer*> pPlaces);

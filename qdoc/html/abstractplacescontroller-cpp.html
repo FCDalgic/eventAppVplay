@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>AbstractPlacesController.cpp | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >AbstractPlacesController.cpp</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">AbstractPlacesController.cpp</h1>
+<span class="subtitle"></span>
+<!-- $$$abstractplacescontroller.cpp.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#include &quot;abstractplacescontroller.h&quot;</span>
+  <span class="preprocessor">#include &lt;QDebug&gt;</span>
+
+  AbstractPlacesController<span class="operator">::</span>AbstractPlacesController(<span class="type">QObject</span> <span class="operator">*</span>parent) : <span class="type">QObject</span>(parent)
+  {
+
+  }
+
+  <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">&gt;</span> AbstractPlacesController<span class="operator">::</span>getPlaces()
+  {
+      <span class="keyword">return</span> <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">&gt;</span>(<span class="keyword">this</span><span class="operator">,</span> mEventList);
+  }
+
+  <span class="type">void</span> AbstractPlacesController<span class="operator">::</span>addPlaces(<span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer <span class="operator">*</span><span class="operator">&gt;</span> pEvents)
+  {
+      mEventList<span class="operator">.</span>clear();
+      mEventList<span class="operator">.</span>append(pEvents);
+
+      qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;abstractplacescontroller list changed&quot;</span>;
+      <span class="keyword">emit</span> placesListChanged();
+  }
+
+  <span class="type">void</span> AbstractPlacesController<span class="operator">::</span>addPlace(PlaceContainer <span class="operator">*</span>pEvent)
+  {
+      mEventList<span class="operator">.</span>append(pEvent);
+
+      <span class="keyword">emit</span> placesListChanged();
+  }
+
+  <span class="type">void</span> AbstractPlacesController<span class="operator">::</span>cleanData()
+  {
+      mEventList<span class="operator">.</span>clear();
+      <span class="keyword">emit</span> placesListChanged();
+  }
+
+  <span class="type">int</span> AbstractPlacesController<span class="operator">::</span>getSectionCount(<span class="type">QString</span> pSectionName <span class="operator">,</span> <span class="type">QString</span> pSectionCriteria)
+  {
+      <span class="type">int</span> counter <span class="operator">=</span> <span class="number">0</span>;
+
+      <span class="keyword">return</span> counter;
+  }
+
+  <span class="type">void</span> AbstractPlacesController<span class="operator">::</span>clear()
+  {
+      mEventList<span class="operator">.</span>clear();
+      <span class="keyword">emit</span> placesListChanged();
+  }
+
+</pre>
+</div>
+<!-- @@@abstractplacescontroller.cpp.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

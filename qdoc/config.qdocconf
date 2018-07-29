@@ -1,0 +1,32 @@
+project                 = EventApp
+description             = VPlay Assignment Project
+version                 = 0.1
+
+headerdirs               =  ..
+sourcedirs               =  ..
+exampledirs              =  ..
+
+# where you store images that are used in your qdoc comments
+imagedirs = ..
+
+examples.fileextensions = "*.cpp *.h *.js *.svg *.xml *.ui *.qml"
+examples.imageextensions = "*.png *.jpeg *.jpg *.gif *.mng"
+headers.fileextensions = "*.h *.ch *.h++ *.hh *.hpp *.hxx"
+sources.fileextensions = "*.cpp *.qdoc *.mm *.qml"
+
+# where to put the result
+outputdir = html
+# what format to use for generating documentation
+outputformats = HTML
+outputencoding = UTF-8
+
+HTML.nobreadcrumbs = "true"
+
+HTML.templatedir = .
+HTML.stylesheets = style.css
+
+include($QT_INSTALL_DOCS/global/macros.qdocconf)
+include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
+include($QT_INSTALL_DOCS/global/compat.qdocconf)
+include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
+include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)

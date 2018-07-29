@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>GoogleStaticMapItem.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >GoogleStaticMapItem.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">GoogleStaticMapItem.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$GoogleStaticMapItem.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import QtQuick 2.7
+  import QtQuick.Layouts 1.3
+  import QtQuick.Controls 2.1
+  import QtGraphicalEffects 1.0
+
+  <span class="comment">/*!
+      \qmltype GoogleStaticMapItem
+      \since 0.1
+      \brief A component that creates static map image with using Google's Static Map API.
+  */</span>
+  <span class="type">Rectangle</span>
+  {
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::staticApiKey
+         The API Key generated from Developer Google Console.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+      */</span>
+      property <span class="type">string</span> <span class="name">staticApiKey</span>: <span class="string">&quot;&quot;</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::latitude
+         Latitude of desired coordinate.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+         \sa longitude
+      */</span>
+      property <span class="type">real</span> <span class="name">latitude</span>: <span class="number">0</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::longitude
+         Latitude of desired coordinate.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+         \sa latitude
+      */</span>
+      property <span class="type">real</span> <span class="name">longitude</span>: <span class="number">0</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::pictureWidth
+         Output image width taken from server.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+         \sa pictureHeight
+      */</span>
+      property <span class="type">real</span> <span class="name">pictureWidth</span>: <span class="number">800</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::pictureHeight
+         Output image height taken from server.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+         \sa pictureWidth
+      */</span>
+      property <span class="type">real</span> <span class="name">pictureHeight</span>: <span class="number">500</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::zoom
+         Output image zoom ratio taken from server.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+         \sa scale
+      */</span>
+      property <span class="type">real</span> <span class="name">zoom</span>: <span class="number">16</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::scale
+         Output image scale taken from server.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+         \sa zoom
+      */</span>
+      property <span class="type">real</span> <span class="name">scale</span>: <span class="number">2</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::title
+         The text will be overlayed on output image which is taken from server.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+
+      */</span>
+      property <span class="type">string</span> <span class="name">title</span>: <span class="string">&quot;&quot;</span>;
+      <span class="comment">/*!
+         \qmlproperty string GoogleStaticMapItem::enableGetDirection
+         Enables or disables ability to open Direction API of GoogleMaps when user click on the image.
+         \omit
+             The &quot;\qmlproperty &lt;type&gt; &lt;property name&gt;&quot; is needed because
+             property alias need to have their types manually entered.
+
+             QDoc will not publish the documentation within omit and endomit.
+         \endomit
+      */</span>
+      property <span class="type">bool</span> <span class="name">enableGetDirection</span>: <span class="number">false</span>;
+
+      <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+      <span class="type">Image</span> {
+          <span class="name">id</span>: <span class="name">googleMapStaticImage</span>;
+          property <span class="type">string</span> <span class="name">constant</span>: <span class="string">&quot;https://maps.googleapis.com/maps/api/staticmap?key=&quot;</span>;
+          property <span class="type">string</span> <span class="name">url</span>:        <span class="name">constant</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">staticApiKey</span>
+                                    <span class="operator">+</span> <span class="string">&quot;&amp;center=&quot;</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">latitude</span> <span class="operator">+</span> <span class="string">&quot;, &quot;</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">longitude</span>
+                                    <span class="operator">+</span> <span class="string">&quot;&amp;zoom=&quot;</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">zoom</span>
+                                    <span class="operator">+</span> <span class="string">&quot;&amp;size=&quot;</span> <span class="operator">+</span> <span class="name">Math</span>.<span class="name">ceil</span>(<span class="name">parent</span>.<span class="name">pictureWidth</span>) <span class="operator">+</span> <span class="string">&quot;x&quot;</span>  <span class="operator">+</span> <span class="name">Math</span>.<span class="name">ceil</span>(<span class="name">parent</span>.<span class="name">pictureHeight</span>)
+                                    <span class="operator">+</span> <span class="string">&quot;&amp;markers=color:red|label:A|&quot;</span>
+                                    <span class="operator">+</span> <span class="string">&quot;scale:2|&quot;</span>
+                                    <span class="operator">+</span> <span class="string">&quot;title:&quot;</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">title</span>;
+          property <span class="type">variant</span> <span class="name">temp</span>;
+          property <span class="type">string</span> <span class="name">latitude</span>: <span class="string">&quot;-34.397&quot;</span>;
+          property <span class="type">string</span> <span class="name">longitude</span>: <span class="string">&quot;150.644&quot;</span>;
+
+          <span class="name">source</span>: <span class="name">url</span>;
+          <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+          <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>;
+          <span class="name">sourceSize</span>: <span class="name">Qt</span>.<span class="name">size</span>(<span class="name">width</span> ,  <span class="name">height</span>);
+
+      }
+
+      <span class="type">MouseArea</span>
+      {
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+          <span class="name">onClicked</span>:
+          {
+              <span class="keyword">if</span> (<span class="name">parent</span>.<span class="name">enableGetDirection</span>)
+              {
+                  var <span class="name">directionURL</span> =  <span class="string">&quot;https://www.google.com/maps?saddr=My+Location&amp;daddr=&quot;</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">latitude</span> <span class="operator">+</span> <span class="string">&quot;,&quot;</span> <span class="operator">+</span> <span class="name">parent</span>.<span class="name">longitude</span>;
+                  <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="name">directionURL</span>);
+              }
+          }
+      }
+  }
+
+</pre>
+</div>
+<!-- @@@GoogleStaticMapItem.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -75,10 +75,22 @@ HEADERS += \
     source/modelcontrollers/toprecenteventscontroller.h
 
 DISTFILES += \
-    qml/items/testitem.qml \
     qml/MobileApp.qml \
     assets/images/design/logo/Logo Yeni_copy.png \
     qml/IAppProperties.qml \
     qml/items/delegates/EventListItemDelegate.qml \
     qml/items/decoration/icons/LıstItemIcon.qml \
-    qml/pages/main/MainViewStackedPages.qml
+    qml/pages/common/CustomAppPage.qml \
+    qml/pages/common/CustomListPage.qml \
+    qml/items/delegates/PlaceListItemDelegate.qml \
+    qml/items/decoration/spaces/SpaceSelectedEventPageContents.qml \
+    qml/items/map/GoogleStaticMapItem.qml
+
+build_online_docs: {
+    QMAKE_DOCS_TARGETDIR = qtota
+    QMAKE_DOCS = $$PWD/config/qtota-online.qdocconf
+} else {
+    QMAKE_DOCS = $$PWD/config/qtota.qdocconf
+}
+
+QMAKE_DOCS_OUTPUTDIR = $$OUT_PWD/qtota

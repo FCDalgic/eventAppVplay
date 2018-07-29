@@ -1,16 +1,40 @@
 #include "networkmessageparser.h"
 
+/*!
+    \class NetworkMessageParser
+    \brief The NetworkMessageParser class parses the received network reply from server.
+
+    \ingroup communication
+    \inmodule EventApp
+    The PreviewWindow class inherits QObject. The class receives raw server response and then
+    tries to parse it. If input can be parsed succesfully, related signal will be emited according to desired data type.
+    ...
+
+*/
+
+/*!
+    \fn void NetworkMessageParser::requestMessageParsed(QString pType, QList<EventContainer*> pEvents);
+    This signal is emited when input message is succesfully parsed and its type is \e{events}
+    \a pEvents; is the obtained event list which are ready to visualize in QML.
+    \a pType; is the type of event observed from input.
+*/
+
+/*!
+    \fn void NetworkMessageParser::placesMessageParsed(QString pType, QList<PlaceContainer*> pPlaces);
+    This signal is emited when input message is succesfully parsed and its type is \e{places_view}.
+    \a pPlaces; is the obtained place list which are ready to visualize in QML.
+    \a pType; is the type of event observed from input.
+*/
 NetworkMessageParser::NetworkMessageParser(QObject *parent) : QObject(parent)
 {
 
 }
 
-/**
- * @brief NetworkMessageParser::parseNetworkMessage
- * Parses the given network reply according to their type
- * @param pMessage
- * Server reply.
- */
+/*!
+    \fn void NetworkMessageParser::parseNetworkMessage(QString pMessage)
+    Tries to parse given input message.
+    \a pMessage is the input message observed from QNetworkReply
+*/
 void NetworkMessageParser::parseNetworkMessage(QString pMessage)
 {
     mUnicodeDecoder.setHtml(pMessage);
@@ -21,7 +45,6 @@ void NetworkMessageParser::parseNetworkMessage(QString pMessage)
 
     QJsonArray  jsonArray;
 
-    qDebug() << "Network Reply . " << pMessage;
 
     try
     {
@@ -75,13 +98,13 @@ void NetworkMessageParser::parseNetworkMessage(QString pMessage)
 
                     tContainer->setID               (obj["id"].toString());
                     tContainer->setName             (obj["name"].toString());
-                    // Etkinlik Tarihinin alıştığımız formatta gösterilmesi için.
+                    // Rearranging date format to desired one.
                     QString tDate = obj["eventDate"].toString().replace(" ", "");
                     QStringList dates= tDate.split("-");
                     tDate = dates[2] + "." +  dates[1] + "." + dates[0];
                     tContainer->setEventDate(tDate);
 
-                    // Tarihe göre sıralamada daha hızlı gruplama sağlayabilemek adına.
+                    // To able to create faster sectioning in QML ListViews, Date information is manipulated
                     int tSiralamaDegeri = QString(dates.at(2)).toInt()
                                         + QString(dates.at(1)).toInt() * 20
                                         + QString(dates.at(0)).toInt() * 10;

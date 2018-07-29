@@ -5,7 +5,19 @@
 #include <QObject>
 #include <QUrlQuery>
 #include <QNetworkReply>
+/*!
+    \class RESTManager
+    \brief The RESTManager class is a class that handles RESTFUL communication between mobile devices and server.
+    \since 0.1
 
+
+
+    \ingroup sourcers
+    \ingroup communication
+
+
+    RESTManager handles GET and POST requests by given parameters as a QMap.
+*/
 /**
  * @brief The RESTManager class
  * Handles REST request including POST and GET types.
@@ -23,8 +35,9 @@ public:
 
     bool mIsAborted;
 
-    void GET(const QString hostName , QMap<QString, QString> data);
-    void POST(const QString hostName, QMap<QString, QString> data);
+    void GET(QString hostName , QMap<QString, QString> data);
+    void POST(QString hostName, QMap<QString, QString> data);
+    void testFN();
 
 protected:
 

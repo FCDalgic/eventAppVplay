@@ -5,7 +5,7 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter;
     height: hebele.height + spaceSection.height;
     color: "transparent";
-    radius: 15;
+    radius: height/5;
 
     Rectangle
     {
@@ -43,7 +43,7 @@ Rectangle {
         id: spaceSection;
         radius: 15;
         color:  "transparent";
-        height: 15;
+        height: dp(10);
         width: parent.width;
     }
 

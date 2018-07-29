@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>MainController.cpp | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >MainController.cpp</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">MainController.cpp</h1>
+<span class="subtitle"></span>
+<!-- $$$maincontroller.cpp.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#include &quot;maincontroller.h&quot;</span>
+  <span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span>
+
+  <span class="comment">/*!
+     \brief Controls bindings between Cpp and QML
+
+     This control class handles binding betweeen C++ and QML
+
+     \section1 Setting default text and capitalization
+
+     To set the default text, auto-capitalized input and password mode - use the properties:
+  */</span>
+
+  MainController<span class="operator">::</span>MainController(<span class="type">QQmlContext</span> <span class="operator">*</span>pRoot<span class="operator">,</span> <span class="type">QObject</span> <span class="operator">*</span>parent)
+      : <span class="type">QObject</span>(parent)
+      <span class="operator">,</span> mRoot(pRoot)
+      <span class="operator">,</span> mCategoryEvents(NULL)
+      <span class="operator">,</span> mRequestManager(NULL)
+      <span class="operator">,</span> mHomepageRecents(NULL)
+  {
+
+      qmlRegisterType<span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span>();
+      qmlRegisterType<span class="operator">&lt;</span>PlaceContainer<span class="operator">&gt;</span>();
+
+      initialize();
+
+  }
+
+  <span class="type">void</span> MainController<span class="operator">::</span>initialize()
+  {
+      initObject();
+
+      initializeConnections();
+
+      register2Meta();
+
+      initHomepage();
+  }
+
+  <span class="type">void</span> MainController<span class="operator">::</span>initObject()
+  {
+      mRequestManager   <span class="operator">=</span> <span class="keyword">new</span> RequestManager();
+      mCategoryEvents   <span class="operator">=</span> <span class="keyword">new</span> CategoryEventController();
+      mPlacesController <span class="operator">=</span> <span class="keyword">new</span> CompletePlacesController();
+      mHomepageRecents  <span class="operator">=</span> <span class="keyword">new</span> TopRecentEventsController();
+
+  }
+
+  <span class="type">void</span> MainController<span class="operator">::</span>register2Meta()
+  {
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;RequestManager&quot;</span>  <span class="operator">,</span> mRequestManager );
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;CategoryResults&quot;</span> <span class="operator">,</span> mCategoryEvents);
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;PlacesResults&quot;</span>   <span class="operator">,</span> mPlacesController);
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;HomeRecentEvents&quot;</span><span class="operator">,</span> mHomepageRecents);
+  }
+
+  <span class="type">void</span> MainController<span class="operator">::</span>initializeConnections()
+  {
+      connect(mRequestManager <span class="operator">,</span> SIGNAL(categoryEventsReceived(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>))  <span class="operator">,</span> mCategoryEvents   <span class="operator">,</span> SLOT(addEventData(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+      connect(mRequestManager <span class="operator">,</span> SIGNAL(placesListReceived(<span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span>))      <span class="operator">,</span> mPlacesController <span class="operator">,</span> SLOT(addPlaces(<span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+      connect(mRequestManager <span class="operator">,</span> SIGNAL(homepageRecentEventsRecevied(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>))  <span class="operator">,</span> mHomepageRecents       <span class="operator">,</span> SLOT(addEventData(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+
+  }
+
+  <span class="type">void</span> MainController<span class="operator">::</span>initHomepage()
+  {
+      mRequestManager<span class="operator">-</span><span class="operator">&gt;</span>getEventsByType(<span class="string">&quot;homepage_recent&quot;</span> <span class="operator">,</span> <span class="number">10</span>);
+  }
+
+</pre>
+</div>
+<!-- @@@maincontroller.cpp.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

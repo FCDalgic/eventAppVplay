@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>EventContainer.h | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >EventContainer.h</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">EventContainer.h</h1>
+<span class="subtitle"></span>
+<!-- $$$eventcontainer.h.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#ifndef EVENTCONTAINER_H</span>
+  <span class="preprocessor">#define EVENTCONTAINER_H</span>
+
+  <span class="preprocessor">#include &lt;QObject&gt;</span>
+  <span class="preprocessor">#include &lt;QDebug&gt;</span>
+
+  <span class="keyword">class</span> EventContainer : <span class="keyword">public</span> <span class="type">QObject</span>
+  {
+      Q_OBJECT
+      Q_PROPERTY(<span class="type">QString</span> EventDate    READ getEventDate WRITE setEventDate NOTIFY eventDateChanged)
+      Q_PROPERTY(<span class="type">QString</span> EventTime READ getEventTime WRITE setEventTime NOTIFY evetTimeChanged)
+      Q_PROPERTY(<span class="type">QString</span> ID READ getID WRITE setID NOTIFY idChanged)
+      Q_PROPERTY(<span class="type">QString</span> Name READ getName WRITE setName NOTIFY nameChanged)
+      Q_PROPERTY(<span class="type">QString</span> Category1 READ getCategory1 WRITE setCategory1 NOTIFY category1Changed)
+      Q_PROPERTY(<span class="type">QString</span> Category2 READ getCategory2 WRITE setCategory2 NOTIFY category2Changed)
+      Q_PROPERTY(<span class="type">QString</span> Yer READ getYer WRITE setYer NOTIFY yerChanged)
+      Q_PROPERTY(<span class="type">QString</span> Address    READ getAddress WRITE setAddress NOTIFY addressChanged)
+      Q_PROPERTY(<span class="type">QString</span> Coordinate READ getCoordinate WRITE setCoordinate NOTIFY coordinateChanged)
+      Q_PROPERTY(<span class="type">QString</span> Telephone READ getTelephone WRITE setTelephone NOTIFY telephoneChanged)
+      Q_PROPERTY(<span class="type">QString</span> Link  READ getLink WRITE setLink NOTIFY linkChanged)
+      Q_PROPERTY(<span class="type">QString</span> Rezervasyon READ getRezervasyon WRITE setRezervasyon NOTIFY rezervasyonChanged)
+      Q_PROPERTY(<span class="type">QString</span> Description  READ getDescription WRITE setDescription NOTIFY descriptionChanged)
+      Q_PROPERTY(<span class="type">QString</span> Tag1  READ getTag1 WRITE setTag1 NOTIFY tag1Changed)
+      Q_PROPERTY(<span class="type">QString</span> Tag2  READ getTag2 WRITE setTag2 NOTIFY tag2Changed)
+      Q_PROPERTY(<span class="type">QString</span> Tag3  READ getTag3 WRITE setTag3 NOTIFY tag3Changed)
+      Q_PROPERTY(<span class="type">QString</span> ImageURL  READ getImageURL WRITE setImageURL NOTIFY imageURLChanged)
+      Q_PROPERTY(<span class="type">QString</span> ModifiedDate READ getModifiedDate WRITE setModifiedDate NOTIFY modifiedDateChanged)
+      Q_PROPERTY(<span class="type">int</span> SiralamaOlcutu READ getSiralamaOlcutu WRITE setSiralamaOlcutu NOTIFY siralamaOlcutuChanged)
+
+  <span class="keyword">public</span>:
+      <span class="keyword">explicit</span> EventContainer(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+      <span class="keyword">explicit</span> EventContainer(<span class="type">QString</span> pID
+                            <span class="operator">,</span> <span class="type">QString</span> pEventDate
+                            <span class="operator">,</span> <span class="type">QString</span> pEventTime
+                            <span class="operator">,</span> <span class="type">QString</span> pName
+                            <span class="operator">,</span> <span class="type">QString</span> pCategory1
+                            <span class="operator">,</span> <span class="type">QString</span> pCategory2
+                            <span class="operator">,</span> <span class="type">QString</span> pYer
+                            <span class="operator">,</span> <span class="type">QString</span> pAddress
+                            <span class="operator">,</span> <span class="type">QString</span> pCoordinate
+                            <span class="operator">,</span> <span class="type">QString</span> pTelephone
+                            <span class="operator">,</span> <span class="type">QString</span> pLink
+                            <span class="operator">,</span> <span class="type">QString</span> pRezervasyon
+                            <span class="operator">,</span> <span class="type">QString</span> pDescription
+                            <span class="operator">,</span> <span class="type">QString</span> pTag1
+                            <span class="operator">,</span> <span class="type">QString</span> pTag2
+                            <span class="operator">,</span> <span class="type">QString</span> pTag3
+                            <span class="operator">,</span> <span class="type">QString</span> pImageURL
+                            <span class="operator">,</span> <span class="type">QString</span> pModifiedDate
+                            <span class="operator">,</span> <span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> NULL);
+
+      <span class="type">QString</span> getEventDate()          { <span class="keyword">return</span> EventDate;}
+      <span class="type">QString</span> getEventTime()          { <span class="keyword">return</span> EventTime;}
+      <span class="type">QString</span> getID()                 { <span class="keyword">return</span> ID;}
+      <span class="type">QString</span> getName()               { <span class="keyword">return</span> Name;}
+      <span class="type">QString</span> getCategory1()          { <span class="keyword">return</span> Category1;}
+      <span class="type">QString</span> getCategory2()          { <span class="keyword">return</span> Category2;}
+      <span class="type">QString</span> getYer()                { <span class="keyword">return</span> Yer;}
+      <span class="type">QString</span> getAddress()            { <span class="keyword">return</span> Address;}
+      <span class="type">QString</span> getCoordinate()         { <span class="keyword">return</span> Coordinate;}
+      <span class="type">QString</span> getTelephone()           { <span class="keyword">return</span> Telephone;}
+      <span class="type">QString</span> getLink()               { <span class="keyword">return</span> Link;}
+      <span class="type">QString</span> getRezervasyon()        { <span class="keyword">return</span> Rezervasyon;}
+      <span class="type">QString</span> getDescription()        { <span class="keyword">return</span> Description;}
+      <span class="type">QString</span> getTag1()               { <span class="keyword">return</span> Tag1;}
+      <span class="type">QString</span> getTag2()               { <span class="keyword">return</span> Tag2;}
+      <span class="type">QString</span> getTag3()               { <span class="keyword">return</span> Tag3;}
+      <span class="type">QString</span> getImageURL()           { <span class="keyword">return</span> ImageURL;}
+      <span class="type">QString</span> getModifiedDate()       { <span class="keyword">return</span> ModifiedDate;}
+      <span class="type">int</span> getSiralamaOlcutu()     { <span class="keyword">return</span> SiralamaOlcutu;}
+
+      <span class="type">void</span> setEventDate(<span class="type">QString</span> pValue)   { EventDate    <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setEventTime(<span class="type">QString</span> pValue)   { EventTime    <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setID(<span class="type">QString</span> pValue)          { ID           <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setName(<span class="type">QString</span> pValue)        { Name         <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setCategory1(<span class="type">QString</span> pValue)   { Category1    <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setCategory2(<span class="type">QString</span> pValue)   { Category2    <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setYer(<span class="type">QString</span> pValue)         { Yer          <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setAddress(<span class="type">QString</span> pValue)     { Address      <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setCoordinate(<span class="type">QString</span> pValue)  { Coordinate   <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setTelephone(<span class="type">QString</span> pValue)   { Telephone    <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setLink(<span class="type">QString</span> pValue)        { Link         <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setRezervasyon(<span class="type">QString</span> pValue) { Rezervasyon  <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setDescription(<span class="type">QString</span> pValue) { Description  <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setTag1(<span class="type">QString</span> pValue)        { Tag1         <span class="operator">=</span> pValue   ; <span class="comment">/*qDebug() &lt;&lt; &quot;Ãœcret bilgisi : &quot; &lt;&lt; Tag1; */</span>}
+      <span class="type">void</span> setTag2(<span class="type">QString</span> pValue)        { Tag2         <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setTag3(<span class="type">QString</span> pValue)        { Tag3         <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setImageURL(<span class="type">QString</span> pValue)    { ImageURL     <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setModifiedDate(<span class="type">QString</span> pValue){ ModifiedDate <span class="operator">=</span> pValue   ;}
+      <span class="type">void</span> setSiralamaOlcutu(<span class="type">int</span> pValue)  {SiralamaOlcutu<span class="operator">=</span> pValue   ;}
+  <span class="keyword">signals</span>:
+      <span class="type">void</span> eventDateChanged();
+      <span class="type">void</span> evetTimeChanged();
+      <span class="type">void</span> idChanged();
+      <span class="type">void</span> nameChanged();
+      <span class="type">void</span> category1Changed();
+      <span class="type">void</span> category2Changed();
+      <span class="type">void</span> yerChanged();
+      <span class="type">void</span> addressChanged();
+      <span class="type">void</span> coordinateChanged();
+      <span class="type">void</span> telephoneChanged();
+      <span class="type">void</span> linkChanged();
+      <span class="type">void</span> rezervasyonChanged();
+      <span class="type">void</span> descriptionChanged();
+      <span class="type">void</span> tag1Changed();
+      <span class="type">void</span> tag2Changed();
+      <span class="type">void</span> tag3Changed();
+      <span class="type">void</span> imageURLChanged();
+      <span class="type">void</span> modifiedDateChanged();
+      <span class="type">void</span> siralamaOlcutuChanged();
+
+  <span class="keyword">private</span>:
+      <span class="type">QString</span> EventDate<span class="operator">,</span>EventTime<span class="operator">,</span>ID<span class="operator">,</span>Name<span class="operator">,</span>Category1<span class="operator">,</span>Category2<span class="operator">,</span>Yer<span class="operator">,</span>Address<span class="operator">,</span>Coordinate<span class="operator">,</span>Telephone<span class="operator">,</span>Link<span class="operator">,</span> Rezervasyon <span class="operator">,</span>Description<span class="operator">,</span>Tag1<span class="operator">,</span> Tag2 <span class="operator">,</span> Tag3<span class="operator">,</span> ImageURL<span class="operator">,</span> ModifiedDate;
+      <span class="type">int</span> SiralamaOlcutu;
+  <span class="keyword">public</span> <span class="keyword">slots</span>:
+  };
+
+  <span class="preprocessor">#endif // EVENTCONTAINER_H</span>
+
+</pre>
+</div>
+<!-- @@@eventcontainer.h.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -3,8 +3,10 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
 import QtQuick.Controls.Material 2.1
 
+import VPlayApps 1.0
 
 import "../items"
+import "../items/decoration/spaces"
 
 Drawer {
     id: myBar
@@ -32,7 +34,6 @@ Drawer {
             return;
 
         textUsername.text = textUsername.getUsername();
-        textAccoutControl.manageDisplay();
     }
 
 
@@ -70,6 +71,23 @@ Drawer {
                     iconPath: "../../assets/images/fa/user-x64.png"; //  "../../assets/images/fa/user-x64.png";
                     color: "transparent";
                     overlayColor: "white";
+
+                    MouseArea
+                    {
+                        anchors.fill: parent;
+                        onClicked:
+                        {
+                            nativeUtils.displayCameraPicker("Profile Image");
+
+                        }
+                    }
+
+                    Connections {
+                        target: nativeUtils
+                        onCameraPickerFinished: {
+                            if(accepted) userPhotoDrawer.iconPath = path
+                        }
+                    }
                 }
 
                 Rectangle
@@ -114,9 +132,9 @@ Drawer {
 
             NavigationButton{
                 iconPath: "../../assets/images/fa/home-x64.png";
-                text: qsTr("Anasayfa");
+                text: qsTr("Homepage");
                 width: parent.width;
-                height: flickableDrawer.height / 15;
+                height: flickableDrawer.height / 20;
                 color: flickableDrawer.index == 0 ? "lightgray" : "transparent";
 
                 MouseArea
@@ -135,14 +153,14 @@ Drawer {
             }
 
             // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
+            SpaceSelectedEventPageContents{}
 
             NavigationButton{
                 iconPath: "../../assets/images/fa/description-x64.png";
-                text: qsTr("Hakkımızda");
+                text: qsTr("About");
                 width: parent.width;
                 color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
+                height: flickableDrawer.height / 20;
 
                 MouseArea
                 {
@@ -157,167 +175,68 @@ Drawer {
             }
 
             // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
-
-            NavigationButton{
-                iconPath: "../../assets/images/v3/Logo_.png";
-                text: qsTr("Şehir Etkinlikleri Hakkında");
-                width: parent.width;
-                color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
-
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
-                    {
-                        appWindow.categorySelected("about_se");
-                        myBar.close();
-                    }
-
-                }
-            }
-
-            // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
-
-            NavigationButton{
-                iconPath: "../../assets/images/v3/Logo_.png";
-                text: qsTr("Neler Yaptık?");
-                width: parent.width;
-                color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
-
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
-                    {
-                        appWindow.categorySelected("about_contributions");
-                        myBar.close();
-                    }
-
-                }
-            }
-
-            // space between content - see google material guide
-//            Item { Layout.fillWidth:  true; height: 8; }
-            Rectangle { color: "transparent";  width: parent.width;  height: 8;
-                Rectangle
-                {
-                    width: parent.width * .95;
-                    height: parent.height/2;
-                    anchors.centerIn: parent;
-                    color: appWindow.colorMain;
-
-                    gradient: Gradient {
-                        GradientStop {
-                            position: 0.00;
-                            color: "#fdfdfd";
-                        }
-                        GradientStop {
-                            position: 0.50;
-                            color: "#661349";
-                        }
-                        GradientStop {
-                            position: 1.00;
-                            color: "#ffffff";
-                        }
-                    }
-                }
-
-            }
-
-            // Section Space
-//            Rectangle
-//            {
-//                width: parent.width;
-//                height: (flickableDrawer.height / 30) + 8
-//                color : "transparent";
-//            }
-
-            NavigationButton{
-                iconPath: "../../assets/images/fa/location-x64.png";
-                text: qsTr("Yeni bir etkinlik mi buldunuz?");
-                width: parent.width;
-                color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
-
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
-                    {
-                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Sizde olmayan ve çok süper bir etkinlik buldum&body=");
-                    }
-
-                }
-            }
-
-            // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
-
+            SpaceSelectedEventPageContents{}
             NavigationButton{
                 iconPath: "../../assets/images/fa/bug-x256.png";
-                text: qsTr("Bir hata mı buldunuz?");
+                text: qsTr("Found an Error");
                 width: parent.width;
                 color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
+                height: flickableDrawer.height / 20;
 
                 MouseArea
                 {
                     anchors.fill: parent;
                     onClicked:
                     {
-                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Bir hata buldum&body=");
+                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Found a  bug&body=");
                     }
 
                 }
             }
 
             // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
+            SpaceSelectedEventPageContents{}
 
             NavigationButton{
                 iconPath: "../../assets/images/fa/lightbulb-x256.png";
-                text: qsTr("Bir fikriniz mi var?");
+                text: qsTr("Got an idea!");
                 width: parent.width;
                 color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
+                height: flickableDrawer.height / 20;
 
                 MouseArea
                 {
                     anchors.fill: parent;
                     onClicked:
                     {
-                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Bir fikrim var&body=");
+                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Have an idea&body=");
                     }
 
                 }
             }
             // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
+            SpaceSelectedEventPageContents{}
 
             NavigationButton{
                 iconPath: "../../assets/images/fa/mail-x256.png";
-                text: qsTr("Bize Ulaşın");
+                text: qsTr("Contact Us");
                 width: parent.width;
                 color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
+                height: flickableDrawer.height / 20;
 
                 MouseArea
                 {
                     anchors.fill: parent;
                     onClicked:
                     {
-                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Bize Ulaşın&body=");
+                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Contact Us&body=");
                     }
 
                 }
             }
 
             // space between content - see google material guide
-//            Item { Layout.fillWidth:  true; height: 8; }
+            //            Item { Layout.fillWidth:  true; height: 8; }
             Rectangle { color: "transparent";  width: parent.width;  height: 8;
                 Rectangle
                 {
@@ -342,323 +261,60 @@ Drawer {
                 }
 
             }
-            // Section Space
-//            Rectangle
-//            {
-//                width: parent.width;
-//                height: (flickableDrawer.height / 30) + 8
-//                color : "transparent";
-//            }
-
-            NavigationButton{
-                iconPath: "../../assets/images/fa/document-x256.png";
-                text: qsTr("Kullanım Koşulları");
-                width: parent.width;
-                color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
-
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
-                    {
-                        appWindow.categorySelected("terms");
-                        myBar.close();
-                    }
-
-                }
-            }
 
             // space between content - see google material guide
-            Item { Layout.fillWidth:  true; height: 8; }
+            SpaceSelectedEventPageContents{}
 
             NavigationButton{
                 iconPath: "../../assets/images/fa/like-x256.png";
-                text: qsTr("Tavsiye Edin!");
+                text: qsTr("Share Us");
                 width: parent.width;
                 color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
+                height: flickableDrawer.height / 20;
 
                 MouseArea
                 {
                     anchors.fill: parent;
                     onClicked:
                     {
-                        SehirUtils.prepareContentAndShare("-1");
+                        nativeUtils.share("Let's go to this event!" ,"http://sehir-etkinlikleri.com/android/share.php" + "?SEID=-1")
                     }
 
                 }
             }
 
             // space between content - see google material guide
-//            Item { Layout.fillWidth:  true; height: 8; }
-            Rectangle { color: "transparent";  width: parent.width;  height: 8;
-                Rectangle
-                {
-                    width: parent.width * .95;
-                    height: parent.height/2;
-                    anchors.centerIn: parent;color: appWindow.colorMain;
-                    gradient: Gradient {
-                        GradientStop {
-                            position: 0.00;
-                            color: "#fdfdfd";
-                        }
-                        GradientStop {
-                            position: 0.50;
-                            color: "#661349";
-                        }
-                        GradientStop {
-                            position: 1.00;
-                            color: "#ffffff";
-                        }
-                    }
-                }
-
-            }
-            // Section Space
-//            Rectangle
-//            {
-//                width: parent.width;
-//                height: (flickableDrawer.height / 30) + 8
-//                color : "transparent";
-//            }
-
-
-            NavigationButton{
-                iconPath: "../../assets/images/fa/enter-x256.png";
-                text: getDisplayText();
-                width: parent.width;
-                color: flickableDrawer.index == 8 ? "lightgray" : "transparent";
-                height: flickableDrawer.height / 15;
-
-//                MouseArea
-//                {
-//                    anchors.fill: parent;
-//                    onClicked:
-//                    {
-//                        Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Bir fikrim var!&body=");
-//                    }
-
-//                }
-                function getDisplayText()
-                {
-                    if(appWindow.loggedIn)
-                        return "Çıkış Yap";
-                    else
-                        return "Giriş Yap";
-                }
-                function manageDisplay()
-                {
-                    textAccoutControl.text  = getDisplayText();
-                    parent.color = appWindow.loggedIn ? appWindow.colorMain : "#41cd52";
-                }
-
-
-
-
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
-                    {
-                        if (appWindow.loggedIn)
-                        {
-                            appWindow.loggedIn = false;
-                            ProfileManager.logOut();
-                        }
-                        else
-                            appWindow.categorySelected("page_authantication");
-
-                        myBar.close();
-                    }
-                }
-            }
-
-
-
-
-            //            NavigationButton{
-            //                iconPath: "../../assets/images/v3/Tümü.png";
-            //                text: qsTr("Tüm Etkinlikler");
-            //                width: parent.width;
-            //                color: flickableDrawer.index == 7 ? "lightgray" : "transparent";
-            //                height: flickableDrawer.height / 15;
-
-
-            //                MouseArea
-            //                {
-            //                    anchors.fill: parent;
-            //                    onClicked:
-            //                    {
-            //                        appWindow.categorySelected("all");
-            //                        myBar.close();
-            //                    }
-
-            //                }
-
-            //            }
-
-            //            // space between content - see google material guide
             //            Item { Layout.fillWidth:  true; height: 8; }
-
-            //            NavigationButton{
-            //                iconPath: "../../assets/images/fa/concert.png";
-            //                text: qsTr("Sanat Eğlence");
-            //                width: parent.width;
-            //                color: flickableDrawer.index == 7 ? "lightgray" : "transparent";
-            //                height: flickableDrawer.height / 15;
-
-
-            //                MouseArea
-            //                {
-            //                    anchors.fill: parent;
-            //                    onClicked:
-            //                    {
-            //                        appWindow.categorySelected("concert");
-            //                        myBar.close();
-            //                    }
-
-            //                }
-
-            //            }
-
-            //            // space between content - see google material guide
-            //            Item { Layout.fillWidth:  true; height: 8; }
-
-            //            NavigationButton{
-            //                iconPath: "../../assets/images/v3/Eğitim.png";
-            //                text: qsTr("Eğitim");
-            //                width: parent.width;
-            //                color: flickableDrawer.index == 7 ? "lightgray" : "transparent";
-            //                height: flickableDrawer.height / 15;
+            // Rectangle { color: "transparent";  width: parent.width;  height: 8;
+            //     Rectangle
+            //     {
+            //         width: parent.width * .95;
+            //         height: parent.height/2;
+            //         anchors.centerIn: parent;color: appWindow.colorMain;
+            //         gradient: Gradient {
+            //             GradientStop {
+            //                 position: 0.00;
+            //                 color: "#fdfdfd";
+            //             }
+            //             GradientStop {
+            //                 position: 0.50;
+            //                 color: "#661349";
+            //             }
+            //             GradientStop {
+            //                 position: 1.00;
+            //                 color: "#ffffff";
+            //             }
+            //         }
+            //     }
+            //
+            // }
 
 
-            //                MouseArea
-            //                {
-            //                    anchors.fill: parent;
-            //                    onClicked:
-            //                    {
-            //                        appWindow.categorySelected("academic");
-            //                        myBar.close();
-            //                    }
-
-            //                }
-
-            //            }
-
-            //            // space between content - see google material guide
-            //            Item { Layout.fillWidth:  true; height: 8; }
-
-            //            NavigationButton{
-            //                iconPath: "../../assets/images/v2/child-x64.png";
-            //                text: qsTr("Çocuk");
-            //                width: parent.width;
-            //                color: flickableDrawer.index == 7 ? "lightgray" : "transparent";
-            //                height: flickableDrawer.height / 15;
-
-
-            //                MouseArea
-            //                {
-            //                    anchors.fill: parent;
-            //                    onClicked:
-            //                    {
-            //                        appWindow.categorySelected("kids");
-            //                        myBar.close();
-            //                    }
-
-            //                }
-
-            //            }
-
-            //            // space between content - see google material guide
-            //            Item { Layout.fillWidth:  true; height: 8; }
-
-            //            NavigationButton{
-            //                iconPath: "../../assets/images/fa/kaçırdıklarınız ikon@3x.png";
-            //                text: qsTr("Kaçırdıklarınız");
-            //                width: parent.width;
-            //                color: flickableDrawer.index == 3 ? "lightgray" : "transparent";
-            //                height: flickableDrawer.height / 15;
-            //                MouseArea
-            //                {
-            //                    anchors.fill: parent;
-            //                    onClicked:
-            //                    {
-            //                        //                        if (navPane.depth != 1)
-            //                        //                            navPane.goToPage(1);
-            //                        appWindow.goHomepage();
-            //                        appWindow.setSwipeIndexManually(3);
-            //                        myBar.close();
-            //                    }
-
-            //                }
-
-            //            }
-
-            //            // space between content - see google material guide
-            //            Item { Layout.fillWidth:  true; height: 8; }
 
         } // ColumnLayout myButtons
-        ScrollIndicator.vertical: ScrollIndicator { }
+        // ScrollIndicator.vertical: ScrollIndicator { }
 
 
     } // Flickable
-
-    Rectangle
-    {
-        width: parent.width * 0.5;
-        height: parent.height * .06;
-        anchors.horizontalCenter: parent.horizontalCenter;
-        color: appWindow.loggedIn ? "#a62727" : "#41cd52";
-        radius: 15;
-        anchors.bottom: parent.bottom;
-        anchors.bottomMargin: height / 3;
-        visible: false;
-
-        Text {
-            id: textAccoutControl;
-            width: parent.width;
-            height: parent.height;
-            text: getDisplayText();
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap;
-            verticalAlignment: Text.AlignVCenter
-            color: "white"
-
-            function getDisplayText()
-            {
-                if(appWindow.loggedIn)
-                    return "Çıkış Yap";
-                else
-                    return "Giriş Yap";
-            }
-            function manageDisplay()
-            {
-                textAccoutControl.text  = getDisplayText();
-                parent.color = appWindow.loggedIn ? appWindow.colorMain : "#41cd52";
-            }
-
-
-        }
-
-        MouseArea
-        {
-            anchors.fill: parent;
-            onClicked:
-            {
-                if (appWindow.loggedIn)
-                {
-                    appWindow.loggedIn = false;
-                    ProfileManager.logOut();
-                }
-                else
-                    appWindow.categorySelected("page_authantication");
-
-                myBar.close();
-            }
-        }
-
-
-    }
 
 } // drawer

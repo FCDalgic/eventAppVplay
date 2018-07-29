@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>PageAbout.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >PageAbout.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PageAbout.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$PageAbout.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import QtQuick 2.7
+  import QtQuick.Layouts 1.3
+  import QtQuick.Controls 2.1
+
+  import &quot;../../items&quot;
+  import &quot;../../items/delegates&quot;
+
+  import VPlayApps 1.0
+
+  <span class="type">Page</span>
+  {
+      <span class="name">id</span>: <span class="name">homePage</span>;
+      <span class="name">width</span>: <span class="name">appWindow</span>.<span class="name">width</span>;
+      <span class="name">height</span> : <span class="name">appWindow</span>.<span class="name">height</span>;
+
+      <span class="name">backgroundColor</span>: <span class="string">&quot;white&quot;</span>;
+      <span class="name">title</span>: <span class="string">&quot;About Us&quot;</span>;
+      <span class="name">rightBarItem</span>:<span class="name">NavigationBarItem</span> {
+
+          <span class="comment">// we specify the width of the item with the contentWidth property</span>
+          <span class="comment">// the item width then includes the contentWidth and a default padding</span>
+          <span class="name">contentWidth</span>: <span class="name">contentRect</span>.<span class="name">width</span>
+
+          <span class="comment">// the navigation bar item shows a colored rectangle</span>
+          <span class="type">Rectangle</span> {
+            <span class="name">id</span>: <span class="name">contentRect</span>
+            <span class="name">width</span>: <span class="name">dp</span>(<span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">defaultIconSize</span>)
+            <span class="name">height</span>: <span class="name">width</span>
+            <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+            <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+            <span class="type">Icon</span> {
+              <span class="name">anchors</span>.fill: <span class="name">parent</span>
+              <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">navicon</span>
+              <span class="name">color</span>: <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">itemColor</span>
+
+              <span class="type">MouseArea</span>
+              {
+                  <span class="name">onClicked</span>: <span class="name">appWindow</span>.<span class="name">openNavDrawer</span>();
+                  <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+              }
+            }
+          }
+        } <span class="comment">// NavigationBarItem</span>
+      <span class="comment">// Sayfa YukarÄ± KaydÄ±rÄ±labilir mi?</span>
+      <span class="keyword">function</span> <span class="name">canGoTop</span>()
+      {
+          <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Can go Top Called About&quot;</span>);
+          <span class="keyword">return</span> <span class="number">false</span>;
+      }
+      <span class="keyword">function</span> <span class="name">scrollTop</span>()
+      {
+          <span class="name">scrollTopAnimator</span>.<span class="name">start</span>();
+      }
+
+      <span class="type">NumberAnimation</span> {
+          <span class="name">id</span>: <span class="name">scrollTopAnimator</span>;
+          <span class="name">target</span>: <span class="name">flickablePageAbout</span>
+          <span class="name">property</span>: <span class="string">&quot;contentY&quot;</span>
+          <span class="name">duration</span>: <span class="number">1000</span>;
+          <span class="name">from</span>: <span class="name">flickablePageAbout</span>.<span class="name">contentY</span>;
+          <span class="name">to</span>: <span class="number">0</span>;
+          <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span>
+      }
+
+      <span class="type">AppFlickable</span> {
+          <span class="name">id</span>: <span class="name">flickablePageAbout</span>;
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+          <span class="comment">//    anchors.fill: parent</span>
+          <span class="name">clip</span>: <span class="number">true</span>
+          <span class="name">contentHeight</span>: <span class="name">myButtons</span>.<span class="name">height</span> <span class="operator">+</span> <span class="number">200</span>;
+          <span class="name">flickableDirection</span>: <span class="name">Flickable</span>.<span class="name">VerticalFlick</span>
+          <span class="name">boundsBehavior</span>: <span class="name">Flickable</span>.<span class="name">StopAtBounds</span>
+
+          <span class="name">maximumFlickVelocity</span>: <span class="name">appWindow</span>.<span class="name">height</span>  <span class="operator">*</span> <span class="number">10</span>;
+
+          property <span class="type">var</span> <span class="name">locale</span>: <span class="name">Qt</span>.<span class="name">locale</span>()    <span class="comment">// Get the local language</span>
+
+          <span class="type">Column</span> {
+              <span class="name">id</span>: <span class="name">myButtons</span>
+              <span class="name">focus</span>: <span class="number">false</span>
+              <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+              <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+              <span class="name">anchors</span>.top:<span class="name">parent</span>.<span class="name">top</span>;
+              <span class="name">spacing</span>: <span class="number">5</span>;
+              property <span class="type">bool</span> <span class="name">isSearchEnabled</span>: <span class="number">false</span>;
+
+              <span class="comment">// BoÅŸluk</span>
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">14</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+              <span class="comment">// GiriÅŸ metninin yer alacaÄŸÄ±m kÄ±sÄ±m.</span>
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>: <span class="name">girisMetni</span>;
+                  <span class="name">height</span>: <span class="name">girisMetniIcerik</span>.<span class="name">contentHeight</span>;
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+
+                  <span class="type">Text</span> {
+                      <span class="name">id</span>: <span class="name">girisMetniIcerik</span>;
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignJustify</span>;
+                      <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                      <span class="name">text</span>:
+                          <span class="string">&quot;   Åehir Etkinlikleri, aims to provide information about  from concerts to theaters, exhibitions to galeries, trainings to seminars; in short whatever is organized in Ankara. Up to now, we shared&quot;</span>;
+                  }
+
+                  <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+              }
+
+              <span class="comment">// BoÅŸluk</span>
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">14</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+
+              <span class="comment">// Toplamda kaÃ§ farklÄ± mekanda.</span>
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span> : <span class="name">numberOfPlaceIcon</span>;
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="name">height</span>:  <span class="name">appWindow</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">10</span>;
+
+                  <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+                  <span class="type">Rectangle</span>
+                  {
+                      <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>;
+                      <span class="name">width</span>: <span class="name">height</span>;
+                      <span class="name">radius</span>: <span class="name">width</span><span class="operator">/</span><span class="number">2</span>;
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                      <span class="name">color</span>: <span class="name">appWindow</span>.<span class="name">colorMain</span>;
+                      property <span class="type">real</span> <span class="name">value</span>: <span class="number">0</span>;
+                      property <span class="type">int</span> <span class="name">intValue</span>: <span class="name">value</span>
+                      NumberAnimation on <span class="name">value</span> { <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">Linear</span>; <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">176</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                      <span class="type">Text</span> {
+                          <span class="name">id</span>: <span class="name">name</span>
+                          <span class="name">text</span>: <span class="name">parent</span>.<span class="name">intValue</span>.<span class="name">toString</span>();
+                          <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                          <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>;
+                          <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>;
+                          <span class="name">color</span>: <span class="string">&quot;white&quot;</span>;
+                          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                          <span class="name">anchors</span>.margins: <span class="number">5</span>;
+                      }
+                  }
+              }
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>: <span class="name">numberOfPlace</span>;
+                  <span class="name">height</span>: <span class="name">numberOfPlaceContent</span>.<span class="name">implicitHeight</span>;
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+
+                  <span class="type">Text</span> {
+                      <span class="name">id</span>: <span class="name">numberOfPlaceContent</span>;
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>;
+                      <span class="name">text</span>:<span class="string">&quot;in different places,&quot;</span>;
+  <span class="comment">//                    color: &quot;#297fb8&quot;;</span>
+                  }
+
+                  <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+              }
+
+              <span class="comment">// BoÅŸluk</span>
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">14</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+
+              <span class="comment">// Toplamda kaÃ§ farklÄ± etkinlik</span>
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span> : <span class="name">numberOfEventIcon</span>;
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="name">height</span>:  <span class="name">appWindow</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">10</span>;
+
+                  <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+                  <span class="type">Rectangle</span>
+                  {
+                      <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>;
+                      <span class="name">width</span>: <span class="name">height</span>;
+                      <span class="name">radius</span>: <span class="name">width</span><span class="operator">/</span><span class="number">2</span>;
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                      <span class="name">color</span>: <span class="name">appWindow</span>.<span class="name">colorMain</span>;
+                      property <span class="type">real</span> <span class="name">value</span>: <span class="number">0</span>;
+                      property <span class="type">int</span> <span class="name">intValue</span>: <span class="name">value</span>
+                      NumberAnimation on <span class="name">value</span> { <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">Linear</span>; <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">712</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                      <span class="type">Text</span> {
+                          <span class="name">text</span>: <span class="name">parent</span>.<span class="name">intValue</span>.<span class="name">toString</span>();
+                          <span class="name">color</span>: <span class="string">&quot;white&quot;</span>;
+                          <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>;
+                          <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+                          <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                          <span class="name">anchors</span>.margins: <span class="number">5</span>;
+
+                      }
+                  }
+              }
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>: <span class="name">numberOfEvent</span>;
+                  <span class="name">height</span>: <span class="name">numberOfPlaceContent</span>.<span class="name">implicitHeight</span>;
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="type">Text</span> {
+                      <span class="name">id</span>: <span class="name">numberOfEventContent</span>;
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>;
+  <span class="comment">//                    color: &quot;#297fb8&quot;;</span>
+                      <span class="name">text</span>:<span class="string">&quot;different events&quot;</span>;
+                  }
+
+                  <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+              }
+
+              <span class="comment">// BoÅŸluk</span>
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">14</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+
+              <span class="comment">// Bilgilendirme metninin yer alacaÄŸÄ±m kÄ±sÄ±m.</span>
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>:  <span class="name">bilgilendirmeMetni</span>
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="name">height</span>: <span class="name">bilgilendirmeMetniIcerik</span>.<span class="name">contentHeight</span>;
+                  <span class="type">Text</span> {
+                      <span class="name">id</span>: <span class="name">bilgilendirmeMetniIcerik</span>;
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignJustify</span>;
+                      <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                      <span class="name">text</span>:
+                          <span class="string">&quot; None of the events are organized by us.&quot;</span> <span class="operator">+</span>
+                          <span class="string">&quot; Therefore, before attending any we suggest you to check date and time information of event.&quot;</span>;
+                  }
+              }
+              <span class="type">Item</span>
+              {
+                  <span class="name">Layout</span>.fillWidth: <span class="number">true</span>;
+                  <span class="name">height</span>: <span class="number">18</span>;
+              }
+
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">14</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+
+              <span class="comment">// Ä°letiÅŸim bilgilerinin yer alacaÄŸÄ± kÄ±sÄ±m</span>
+              <span class="comment">// Bilgilendirme metninin yer alacaÄŸÄ±m kÄ±sÄ±m.</span>
+
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>:  <span class="name">iletisimMetni</span>
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="name">height</span>: <span class="name">iletisimMetniIcerik</span>.<span class="name">contentHeight</span>;
+                  <span class="type">Text</span> {
+                      <span class="name">id</span>: <span class="name">iletisimMetniIcerik</span>;
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignJustify</span>;
+                      <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                      <span class="name">text</span>:
+                          <span class="string">&quot;   Your opinions are valuable for us!  For all your opinion, suggestions and idea you can reach us via email. We will respond you ASAP. Contanct us:&quot;</span>
+                      <span class="name">onLinkActivated</span>: <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="name">link</span>);
+                  }
+              }
+
+              <span class="comment">// BoÅŸluk</span>
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">10</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>:  <span class="name">iletisimMetni2</span>
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="name">height</span>: <span class="name">iletisimMetni2Icerik</span>.<span class="name">contentHeight</span>;
+                  <span class="type">Text</span> {
+                      <span class="name">id</span> : <span class="name">iletisimMetni2Icerik</span>;
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>;
+                      <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                      <span class="name">linkColor</span>: <span class="string">&quot;#297fb8&quot;</span>;
+                      <span class="name">text</span>:
+                          <span class="string">&quot;&lt;a href='iletisim@sehir-etkinlikleri.com'&gt;iletisim@sehir-etkinlikleri.com&lt;/a&gt;&quot;</span>;
+                      <span class="type">MouseArea</span>
+                      {
+                          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+
+                          <span class="name">onClicked</span>:  <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="string">&quot;mailto:?to=iletisim@sehir-etkinlikleri.com&amp;subject=Bilgi&amp;body=&quot;</span>);
+                      }
+                  }
+              }
+
+              <span class="type">Rectangle</span> { <span class="name">Layout</span>.fillWidth: <span class="number">true</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">10</span>; <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;}
+
+              <span class="comment">// SloganÄ±n yer alacaÄŸÄ± kÄ±sÄ±m</span>
+              <span class="comment">// Bilgilendirme metninin yer alacaÄŸÄ±m kÄ±sÄ±m.</span>
+
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>:  <span class="name">slogan</span>
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.9</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                  <span class="name">height</span>: <span class="name">sloganIcerik</span>.<span class="name">contentHeight</span>;
+
+                  <span class="type">Text</span> {
+                      <span class="name">id</span>: <span class="name">sloganIcerik</span>;
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>;
+                      <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                      <span class="name">text</span>:
+                          <span class="string">&quot;Let's enjoy the city together!&quot;</span>
+                      <span class="name">font</span>.bold: <span class="number">true</span>;
+                      <span class="name">onLinkActivated</span>: <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="name">link</span>);
+                      <span class="name">color</span>: <span class="name">appWindow</span>.<span class="name">colorMain</span>;
+                  }
+              }
+
+          } <span class="comment">// ColumnLayout myButtons</span>
+
+        <span class="comment">//   ScrollIndicator.vertical: ScrollIndicator { }</span>
+
+      }
+
+      <span class="keyword">function</span> <span class="name">closeSearchPanel</span>()
+      {
+          <span class="name">searchPopup</span>.<span class="name">close</span>();
+      }
+
+      property <span class="type">string</span> <span class="name">lastHeader</span>: <span class="string">&quot;&quot;</span>;
+      <span class="name">Component</span>.onCompleted:
+      {
+          <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Page about completed&quot;</span>);
+          <span class="name">lastHeader</span> <span class="operator">=</span> <span class="name">appWindow</span>.<span class="name">selectedCategoryTitle</span>;
+  <span class="comment">//        appWindow.selectedCategoryTitle = qsTr(&quot;HakkÄ±mÄ±zda&quot;);</span>
+  <span class="comment">//        appWindow.setHeaderByID(4);</span>
+      }
+
+      <span class="keyword">function</span> <span class="name">whatWasMyTitle</span>()
+      {
+          <span class="keyword">return</span> <span class="name">lastHeader</span>;
+      }
+
+      <span class="keyword">function</span> <span class="name">whoAmI</span>()
+      {
+          <span class="keyword">return</span> <span class="string">&quot;about&quot;</span>;
+      }
+  }
+
+</pre>
+</div>
+<!-- @@@PageAbout.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

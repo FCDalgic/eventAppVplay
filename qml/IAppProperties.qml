@@ -4,10 +4,7 @@ import QtQuick 2.4
 import "items"
 import "navigation"
 import "pages"
-import "items/popups"
-import "items/headers"
-import "items/footers"
-import "items/main"
+
 App {
     visible: true;
     id: mobileWindow;
@@ -21,15 +18,38 @@ App {
     onInitTheme:
     {
         Theme.colors.backgroundColor = colorMain;
-        Theme.navigationAppDrawer.backgroundColor =colorMain;
-        Theme.navigationAppDrawer.itemBackgroundColor = colorMain;
+        // Theme.navigationAppDrawer.backgroundColor =colorMain;
+        // Theme.navigationAppDrawer.itemBackgroundColor = colorMain;
+         Theme.navigationBar.itemColor = "white"
+         Theme.navigationBar.backgroundColor =colorMain;
+
+        Theme.navigationBar.dividerColor = colorMain;
+        Theme.navigationBar.titleColor = "white";
+        Theme.tabBar.backgroundColor = "white";
+        Theme.colors.tintColor = colorMain;
+        Theme.tabBar.markerColor = colorMain;
+        Theme.listSection.backgroundColor = colorMain;
+        Theme.listSection.textColor = "white";
+
         Theme.update();
+
     }
 
     property string iconFolder: "fa"
     property string selectedEventTitle: "";
     property string selectedCategoryTitle: "";
     property string lastSelectedCategoryTitle: "";
+
+    property string currentAppTitle: "";
+    function setAppTitle(pValue)
+    {
+        currentAppTitle =  pValue;
+    }
+    function getAppTitle()
+    {
+        return currentAppTitle;
+    }
+
     property real lastSwipeViewIndex: 0;
     property var selectedEventModelData;
     property var selectedPlaceModelData;
@@ -60,74 +80,4 @@ App {
     signal goHomepage();
     // Kullanıcı login olduğunda direkt olarak sinyalin algılanması için
 
-
-
-    /// Note :it is not supported in VPlay thereore theme properties are used instead
-    /// background: Rectangle
-    /// {
-    ///     width: mobileWindow.width;
-    ///     height: mobileWindow.height;
-    ///
-    ///     color: "transparent";
-    ///
-    ///     Image {
-    ///         source: "../../assets/images/v3/arkaplan.jpg" // "qrc:/images/v3/arkaplan.jpg"
-    ///         width: parent.width;
-    ///         height: parent.height;
-    ///         fillMode: Image.PreserveAspectCrop
-    ///     }
-    /// }
-
-
-    function openPopupSignUp() { popupSignup.open(); }
-    function openPopupFavError(pCase) { popupFavourites.open()}
-    function openPopupUserNotRegistered(pStatus) {popupResetPassMail.showCase(pStatus); }
-    function openPopupUpdatePassword(pStatus) {popupUpdatePassword.showCase(pStatus); }
-    function openPopupInternetConnection() { popupInternetConnection.open()}
-    function openPopupLoginSucess() { popupLoginSuccess.open() }
-    function checkInternetConnection()
-    {
-        if (!SehirUtils.checkInternetConnection())
-        {
-            openPopupInternetConnection();
-            return false;
-        }
-        return true;
-    }
-
-    // Checked
-    PopupSignupSuccess
-    {
-        id: popupSignup;
-        visible: false;
-    }
-
-
-    PopupAddFavourite
-    {
-        id: popupFavourites;
-        visible: false;
-    }
-
-    PopupResetPasswordMail
-    {
-        id: popupResetPassMail;
-        visible: false;
-    }
-    PopupUpdatePassword
-    {
-        id : popupUpdatePassword;
-        visible: false;
-    }
-    PopupInternetConnection
-    {
-        id: popupInternetConnection;
-        visible: false;
-    }
-
-    PopupLoginSuccess
-    {
-        id: popupLoginSuccess;
-        visible: false;
-    }
 }

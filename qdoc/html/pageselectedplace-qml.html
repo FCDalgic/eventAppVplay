@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>PageSelectedPlace.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >PageSelectedPlace.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">PageSelectedPlace.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$PageSelectedPlace.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import QtQuick 2.7
+  import QtQuick.Layouts 1.3
+  import QtQuick.Controls 2.1
+  import QtGraphicalEffects 1.0
+
+  import &quot;../../items&quot;
+  import &quot;../../items/delegates&quot;
+  import &quot;../../items/delegates&quot;
+  import &quot;../../items/decoration/icons&quot;
+  import &quot;../../items/decoration/spaces&quot;
+  import &quot;../../items/map&quot;
+  import VPlayApps 1.0
+
+  Page
+  {
+      id: selectedPlacePage
+      width: appWindow.width;
+      height : appWindow.height;
+
+      title: selectedEventTitle;
+      backNavigationEnabled: true;
+      property var model;
+      rightBarItem:NavigationBarItem {
+
+          // we specify the width of the item with the contentWidth property
+          // the item width then includes the contentWidth and a default padding
+          contentWidth: contentRect.width
+
+          // the navigation bar item shows a colored rectangle
+          Rectangle {
+            id: contentRect
+            width: dp(Theme.navigationBar.defaultIconSize)
+            height: width
+            anchors.centerIn: parent
+            color: &quot;transparent&quot;;
+
+            Icon {
+              anchors.fill: parent
+              icon: IconType.navicon
+              color: Theme.navigationBar.itemColor
+
+              MouseArea
+              {
+                  onClicked: appWindow.openNavDrawer();
+                  anchors.fill: parent;
+              }
+            }
+          }
+        } // NavigationBarItem
+
+      Flickable {
+          id: selectedPlacePageFlickable;
+          anchors.fill: parent;
+
+          contentHeight: Math.max(root.implicitHeight, parent.height);
+          //    anchors.fill: parent
+          clip: true
+          flickableDirection: Flickable.VerticalFlick
+
+          NumberAnimation {
+              id: scrollTopAnimator;
+              target: selectedPlacePageFlickable
+              property: &quot;contentY&quot;
+              duration: appWindow.scrollTopInterval;
+              from: selectedPlacePageFlickable.contentY;
+              to: 0;
+              easing.type: Easing.InOutQuad
+          }
+          function scrollTop()
+          {
+              scrollTopAnimator.start();
+          }
+          MouseArea
+          {
+              anchors.fill: parent;
+              onClicked: searchAreaContaier.focus = false;
+          }
+          Pane {
+              id: root
+              anchors.fill: parent
+
+              Column {
+                  id: myButtons
+                  focus: false
+                  width: parent.width;
+                  anchors.right: parent.right
+                  anchors.left: parent.left
+                  spacing: 5;
+
+                  // Etkinlik resminin bulunduÄŸu en Ã¼stteki kÄ±sÄ±m. AyrÄ±ca etkinliÄŸi ismini de gÃ¶sterecektir.
+                  Rectangle
+                  {
+                      id: resimRow;
+                      Layout.fillWidth: true;
+                      width: parent.width;
+                      height: appWindow.height*0.36;
+
+                      Item {
+                          id: eventPhotoHolder
+                          width: parent.width;
+                          anchors.top: parent.top;
+                          height: appWindow.height*0.33;
+                          Rectangle
+                          {
+                              anchors.fill: parent
+
+                              Image {
+                                  id : resimIcon
+                                  anchors.fill: parent
+                                  width: parent.width;
+                                  height: parent.height;
+                                  source: parent.getSource();
+                                  sourceSize: Qt.size(parent.width, parent.height)
+
+                              }
+
+                              ColorOverlay{
+                                  visible: parent.getSource().length &gt; 5 ? false : true;
+                                  anchors.fill: resimIcon;
+                                  source: resimIcon;
+                                  color: &quot;white&quot;; // appWindow.colorMain // make image like it lays under red glass
+                              }
+
+                              function getSource()
+                              {
+
+                                 var link = selectedPlacePage.model.modelData.Image ? selectedPlacePage.model.modelData.Image : &quot;../../assets/images/v3/building-x512.png&quot;;
+                                 link = link.length &gt; 5 ? link : &quot;../../assets/images/v3/building-x512.png&quot;
+
+                                  console.log(&quot;checking link : &quot; + link);
+                                  return link;
+                              }
+
+                          }
+
+                          Rectangle {
+                              anchors.bottom: parent.bottom
+                              anchors.left: parent.left
+                              anchors.right: parent.right
+                              height: parent.height / 4;
+                              color: &quot;#34495e&quot;
+                              opacity: 0.7;
+                              radius: 10;
+                              Text {
+                                  id: name
+                                  anchors.bottom: parent.bottom
+                                  text: selectedPlacePage.model.modelData.Name;
+                                  font.pixelSize: parent.height * .4;
+                                  wrapMode: Text.WordWrap;
+                                  width: parent.width;
+                                  opacity: 1;
+                                  color: &quot;white&quot;
+                              }
+                          }
+                      }
+                  }
+
+                  // BoÅŸluk
+                  SpaceSelectedEventPageContents {}
+
+                  // Website
+                  TextFieldWithIconAndHeader
+                  {
+                      id: site;
+                      property string webSitesi: selectedPlacePage.model.modelData.Link;
+                      iconHeight:appWindow.height / 20;
+                      Layout.fillWidth: true;
+                      width: parent.width;
+
+                      visible: webSitesi.length &gt; 1 ? true : false;
+                      iconSrc: &quot;../../assets/images/selectedEventPage/link.png&quot;;
+                      headerText: &quot;Website&quot;;
+                      isLink: true;
+                      detailText: &quot;&quot;; //webSitesi != &quot;&quot; ? webSitesi : &quot;Bilinmiyor&quot;
+                  }
+                  TextFieldWithIconAndHeader
+                  {
+                      id: siteMetin;
+                      property string webSitesi: selectedPlacePage.model.modelData.Link;
+                      iconHeight:appWindow.height / 20;
+                      Layout.fillWidth: true;
+                      width: parent.width;
+                      iconWRatio: 0;
+                      headerWRatio: 0;
+                      visible: webSitesi.length &gt; 1 ? true : false;
+                      iconSrc: &quot;../../assets/images/selectedEventPage/link.png&quot;;
+                      headerText: &quot;&quot;;
+                      isLink: true;
+                      linkFontColor: &quot;#3683a9&quot;
+                      detailText: webSitesi != &quot;&quot; ? webSitesi : &quot;Bilinmiyor&quot;
+
+                      function getHRef()
+                      {
+                          return &quot;&lt;a href=&quot; + webSitesi + &quot;&gt;&quot; + webSitesi + &quot;&lt;/a&gt;&quot;;
+                      }
+                  }
+                  // BoÅŸluk
+                  Rectangle { visible: site.visible;Layout.fillWidth: true; width: parent.width; height: 14; color: &quot;transparent&quot;;}
+
+                  // Telefon
+                  TextFieldWithIconAndHeader
+                  {
+                      id: telefon;
+                      iconHeight:appWindow.height / 20;
+                      Layout.fillWidth: true;
+                      width: parent.width;
+
+                      iconSrc: &quot;../../assets/images/selectedEventPage/telephone.png&quot;;
+                      headerText: &quot;Phone&quot;;
+                      detailText: selectedPlacePage.model.modelData.Telephone != &quot;&quot; ? selectedPlacePage.model.modelData.Telephone : &quot;Bilinmiyor&quot;;
+
+                      MouseArea
+                      {
+                          property string callNumber: selectedPlacePage.model.modelData.Telephone
+                          anchors.fill: parent;
+                          onClicked:
+                          {
+                              if (callNumber.length &gt; 3 &amp;&amp; callNumber != &quot;Bilinmiyor&quot; &amp;&amp; callNumber != &quot;Telefon numarasÄ± belirtilmemiÅŸ.&quot;)
+                              {
+                                  Qt.openUrlExternally(&quot;tel:+&quot; + callNumber);
+                                  //                            NativeController.directCall(callNumber);
+                              }
+                          }
+                      }
+                  }
+                  // BoÅŸluk
+                  SpaceSelectedEventPageContents {visible: telefon.visible}
+
+                  // Address
+                  TextFieldWithIconAndHeader
+                  {
+                      id: adres;
+                      iconHeight:appWindow.height / 20;
+                      Layout.fillWidth: true;
+                      width: parent.width;
+
+                      iconSrc: &quot;../../assets/images/selectedEventPage/pin.png&quot;;
+                      headerText: &quot;Address&quot;;
+                      detailText: &quot;&quot;; // selectedPlacePage.model.modelData.Address;
+                  }
+                  TextFieldWithIconAndHeader
+                  {
+                      id: adresÄ°cerik;
+                      iconHeight:appWindow.height / 20;
+                      Layout.fillWidth: true;
+                      width: parent.width;
+                      iconWRatio: 0;
+                      headerWRatio: 0;
+                      iconSrc: &quot;../../assets/images/selectedEventPage/pin.png&quot;;
+                      headerText: &quot;&quot;;
+                      detailText:  selectedPlacePage.model.modelData.Address;
+                  }
+                  Rectangle
+                  {
+                      color:&quot;transparent&quot;;
+                      width: parent.width;
+
+                  }
+
+                  // BoÅŸluk
+                  SpaceSelectedEventPageContents {visible: adres.visible}
+
+                  GoogleStaticMapItem
+                  {
+                      visible: true;
+                      width: parent.width;
+                      height: dp(200);
+                      Layout.fillWidth: true;
+                      color: &quot;transparent&quot;;
+
+                      staticApiKey: &quot;AIzaSyD3crnSmwEYtw31-5FKBKr5H-xAEpNgzvU&quot;;
+                      latitude: getLatitudeFromInput(selectedPlacePage.model.modelData.Coordinate);
+                      longitude: getLongitudeFromInput(selectedPlacePage.model.modelData.Coordinate);
+                      title:selectedPlacePage.model.modelData.Name;
+
+                      enableGetDirection: true;
+                      function getLatitudeFromInput(pInput)
+                      {
+                          var temp = pInput.split(&quot;,&quot;);
+                          return temp[0];
+                      }
+                      function getLongitudeFromInput(pInput)
+                      {
+                          var temp = pInput.split(&quot;,&quot;);
+                          return temp[1];
+                      }
+                  }
+                  SpaceSelectedEventPageContents {visible: aciklama.visible}
+
+                  Rectangle
+                  {
+                      visible: true;
+                      width: parent.width;
+                      height: appWindow.height / 15;
+                      Layout.fillWidth: true;
+                      color: &quot;transparent&quot;;
+
+                      Rectangle
+                      {
+                          width: parent.width * .98;
+                          anchors.horizontalCenter: parent.horizontalCenter;
+                          height: parent.height;
+                          radius: height * .2
+                          color: appWindow.colorMain;
+
+                          MouseArea
+                          {
+                              anchors.fill: parent;
+                              property string coordinates :selectedPlacePage.model.modelData.Coordinate;
+                              property string constant: &quot;https://www.google.com/maps?saddr=My+Location&amp;daddr=&quot;;
+                              property string directionURL: &quot;&quot;;
+
+                              onClicked:
+                              {
+                                  directionURL =  constant + coordinates;
+                                  Qt.openUrlExternally(directionURL);
+                              }
+                          }
+
+                          Rectangle
+                          {
+                              width: directionsIcon.width +directionsContent.width + 10;
+                              height: parent.height;
+                              color: &quot;transparent&quot;;
+                              anchors.centerIn: parent;
+
+                              ColorableIcon
+                              {
+                                  id: directionsIcon;
+                                  width: height;
+                                  height: parent.height;
+                                  color: &quot;transparent&quot;;
+                                  iconPath:&quot;../../assets/images/fa/location-x64.png&quot;
+                                  anchors.left: parent.left;
+                                  overlayColor: &quot;white&quot;
+                              }
+
+                              Text
+                              {
+                                  id: directionsContent;
+                                  height: parent.height;
+                                  anchors.right: parent.right;
+                                  text: &quot;Get Directions&quot;
+                                  horizontalAlignment: Text.AlignHCenter
+                                  verticalAlignment: Text.AlignVCenter
+                                  color: &quot;white&quot;
+                              }
+                          }
+                      }
+
+                  }
+
+              } // ColumnLayout myButtons
+
+          }
+
+      }
+  }
+
+</pre>
+</div>
+<!-- @@@PageSelectedPlace.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,6 +1,17 @@
 #include "maincontroller.h"
 #include <QQmlApplicationEngine>
 
+/*!
+   \brief Controls bindings between Cpp and QML
+
+   This control class handles binding betweeen C++ and QML
+
+
+   \section1 Setting default text and capitalization
+
+   To set the default text, auto-capitalized input and password mode - use the properties:
+*/
+
 MainController::MainController(QQmlContext *pRoot, QObject *parent)
     : QObject(parent)
     , mRoot(pRoot)

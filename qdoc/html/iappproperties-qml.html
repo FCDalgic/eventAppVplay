@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>IAppProperties.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >IAppProperties.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">IAppProperties.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$IAppProperties.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import VPlayApps 1.0
+  import QtQuick 2.4
+
+  import &quot;items&quot;
+  import &quot;navigation&quot;
+  import &quot;pages&quot;
+
+  <span class="type">App</span> {
+      <span class="name">visible</span>: <span class="number">true</span>;
+      <span class="name">id</span>: <span class="name">mobileWindow</span>;
+
+      property <span class="type">real</span> <span class="name">scrollTopInterval</span>: <span class="number">500</span>;
+      property <span class="type">string</span> <span class="name">colorMain</span> : <span class="string">&quot;#661349&quot;</span> <span class="comment">// &quot;#de2875&quot; //&quot;#e84c3d&quot;;</span>
+      property <span class="type">string</span> <span class="name">colorDrawer</span> : <span class="string">&quot;white&quot;</span> <span class="comment">//&quot;#e84c3d&quot;;   //32292F</span>
+      property <span class="type">string</span> <span class="name">colorDrawerIcon</span> : <span class="string">&quot;#29698c&quot;</span>;
+
+      <span class="name">onInitTheme</span>:
+      {
+          <span class="name">Theme</span>.<span class="name">colors</span>.<span class="name">backgroundColor</span> <span class="operator">=</span> <span class="name">colorMain</span>;
+          <span class="comment">// Theme.navigationAppDrawer.backgroundColor =colorMain;</span>
+          <span class="comment">// Theme.navigationAppDrawer.itemBackgroundColor = colorMain;</span>
+           <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">itemColor</span> <span class="operator">=</span> <span class="string">&quot;white&quot;</span>
+           <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">backgroundColor</span> <span class="operator">=</span><span class="name">colorMain</span>;
+
+          <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">dividerColor</span> <span class="operator">=</span> <span class="name">colorMain</span>;
+          <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">titleColor</span> <span class="operator">=</span> <span class="string">&quot;white&quot;</span>;
+          <span class="name">Theme</span>.<span class="name">tabBar</span>.<span class="name">backgroundColor</span> <span class="operator">=</span> <span class="string">&quot;white&quot;</span>;
+          <span class="name">Theme</span>.<span class="name">colors</span>.<span class="name">tintColor</span> <span class="operator">=</span> <span class="name">colorMain</span>;
+          <span class="name">Theme</span>.<span class="name">tabBar</span>.<span class="name">markerColor</span> <span class="operator">=</span> <span class="name">colorMain</span>;
+          <span class="name">Theme</span>.<span class="name">listSection</span>.<span class="name">backgroundColor</span> <span class="operator">=</span> <span class="name">colorMain</span>;
+          <span class="name">Theme</span>.<span class="name">listSection</span>.<span class="name">textColor</span> <span class="operator">=</span> <span class="string">&quot;white&quot;</span>;
+
+          <span class="name">Theme</span>.<span class="name">update</span>();
+
+      }
+
+      property <span class="type">string</span> <span class="name">iconFolder</span>: <span class="string">&quot;fa&quot;</span>
+      property <span class="type">string</span> <span class="name">selectedEventTitle</span>: <span class="string">&quot;&quot;</span>;
+      property <span class="type">string</span> <span class="name">selectedCategoryTitle</span>: <span class="string">&quot;&quot;</span>;
+      property <span class="type">string</span> <span class="name">lastSelectedCategoryTitle</span>: <span class="string">&quot;&quot;</span>;
+
+      property <span class="type">string</span> <span class="name">currentAppTitle</span>: <span class="string">&quot;&quot;</span>;
+      <span class="keyword">function</span> <span class="name">setAppTitle</span>(<span class="name">pValue</span>)
+      {
+          <span class="name">currentAppTitle</span> <span class="operator">=</span>  <span class="name">pValue</span>;
+      }
+      <span class="keyword">function</span> <span class="name">getAppTitle</span>()
+      {
+          <span class="keyword">return</span> <span class="name">currentAppTitle</span>;
+      }
+
+      property <span class="type">real</span> <span class="name">lastSwipeViewIndex</span>: <span class="number">0</span>;
+      property <span class="type">var</span> <span class="name">selectedEventModelData</span>;
+      property <span class="type">var</span> <span class="name">selectedPlaceModelData</span>;
+      property <span class="type">real</span> <span class="name">globalSwipeIndex</span> : <span class="number">0</span>;
+      signal <span class="type">closeSearchPanelReceived</span>();
+      signal <span class="type">footerBack</span>();
+      signal <span class="type">headerBack</span>();
+      signal <span class="type">stackBack</span>();
+      <span class="comment">// UygulamanÄ±n herhangi bir yerinde geri tuÅŸuna basÄ±ldÄ±ÄŸÄ± algÄ±landÄ±ÄŸÄ±nda bu event tetiklenecektir.</span>
+      signal <span class="type">globalBackPressed</span>();
+      <span class="comment">// Tabbarda ikona basÄ±ldÄ±ÄŸÄ± zaman deÄŸiÅŸen indeksin swipview tarafÄ±ndan algÄ±lanmasÄ±nÄ± saÄŸlayacak olan sinyal</span>
+      signal <span class="type">swipeViewFooterTabbarIndexChanged</span>(var pIndex);
+      <span class="comment">// SwipeView'da ekranlar arasÄ± geÃ§iÅŸ saÄŸlandÄ±ÄŸÄ± zaman bu indeksin Tabbar tarafÄ±ndan algÄ±lanmasÄ±nÄ± saÄŸlayacak olan sinyaldir.</span>
+      signal <span class="type">swipeViewIndexChanged</span>(var pIndex);
+      <span class="comment">// AÃ§Ä±klamasÄ± yukarÄ±da vardÄ±r.</span>
+      signal <span class="type">setSwiperViewBack</span>();
+      <span class="comment">// Yandan aÃ§Ä±lan menÃ¼de ilgili sayfaya tÄ±klandÄ±ÄŸÄ±nda, eÄŸer sayfa swipeview iÃ§erisindeki bir element ise</span>
+      <span class="comment">// aÅŸaÄŸÄ±daki event aracÄ±lÄ±ÄŸÄ± ile komut swipeview'a iletilir. Aradaki kÃ¶prÃ¼yÃ¼ saÄŸlar.</span>
+      signal <span class="type">setSwipeIndexManually</span>(var pIndex);
+      signal <span class="type">decreaseSwipeIndex</span>();
+      <span class="comment">// Herhangi bir sayfada geriye basÄ±ldÄ±ÄŸÄ±nda, eÄŸer sayfa yukarÄ± kaydÄ±rÄ±lmaya mÃ¼sait ise veya footerda zaten seÃ§ili olan</span>
+      <span class="comment">// ikon seÃ§ilmiÅŸ ise o sayfada yukarÄ± Ã§Ä±kmak iÃ§in gerekli olan fonksiyonun Ã§aÄŸÄ±rÄ±lmasÄ±nÄ± saÄŸlar.</span>
+      signal <span class="type">scrollTop</span>();
+
+      <span class="comment">// KullanÄ±cÄ±nÄ±n Login olup olmadÄ±ÄŸÄ± bilgisini tutar.</span>
+      property <span class="type">bool</span> <span class="name">loggedIn</span>: <span class="number">false</span>;
+      <span class="comment">// KullanÄ±cÄ±nÄ±n Anasayfaya DÃ¶nmesi Ä°Ã§in</span>
+      signal <span class="type">goHomepage</span>();
+      <span class="comment">// KullanÄ±cÄ± login olduÄŸunda direkt olarak sinyalin algÄ±lanmasÄ± iÃ§in</span>
+
+  }
+
+</pre>
+</div>
+<!-- @@@IAppProperties.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

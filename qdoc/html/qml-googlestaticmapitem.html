@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- GoogleStaticMapItem.qml -->
+  <title>GoogleStaticMapItem QML Type | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">GoogleStaticMapItem QML Type</h1>
+<span class="subtitle"></span>
+<!-- $$$GoogleStaticMapItem-brief -->
+<p>A component that creates static map image with using Google's Static Map API. <a href="#details">More...</a></p>
+<!-- @@@GoogleStaticMapItem -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import  </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign">  Qt 0.1</td></tr></table></div><ul>
+<li><a href="qml-googlestaticmapitem-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#enableGetDirection-prop">enableGetDirection</a></b></b> : bool</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#latitude-prop">latitude</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#longitude-prop">longitude</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#pictureHeight-prop">pictureHeight</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#pictureWidth-prop">pictureWidth</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#scale-prop">scale</a></b></b> : real</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#staticApiKey-prop">staticApiKey</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#title-prop">title</a></b></b> : string</li>
+<li class="fn"><b><b><a href="qml-googlestaticmapitem.html#zoom-prop">zoom</a></b></b> : real</li>
+</ul>
+<!-- $$$GoogleStaticMapItem-description -->
+<a name="details"></a>
+<h2 id="details">Detailed Description</h2>
+</p>
+<!-- @@@GoogleStaticMapItem -->
+<h2>Property Documentation</h2>
+<!-- $$$enableGetDirection -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="enableGetDirection-prop">
+<td class="tblQmlPropNode"><p>
+<a name="enableGetDirection-prop"></a><span class="name">enableGetDirection</span> : <span class="type">bool</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Enables or disables ability to open Direction API of GoogleMaps when user click on the image.</p>
+</div></div><!-- @@@enableGetDirection -->
+<br/>
+<!-- $$$latitude -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="latitude-prop">
+<td class="tblQmlPropNode"><p>
+<a name="latitude-prop"></a><span class="name">latitude</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Latitude of desired coordinate.</p>
+<p><b>See also </b><a href="qml-googlestaticmapitem.html#longitude-prop">longitude</a>.</p>
+</div></div><!-- @@@latitude -->
+<br/>
+<!-- $$$longitude -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="longitude-prop">
+<td class="tblQmlPropNode"><p>
+<a name="longitude-prop"></a><span class="name">longitude</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Latitude of desired coordinate.</p>
+<p><b>See also </b><a href="qml-googlestaticmapitem.html#latitude-prop">latitude</a>.</p>
+</div></div><!-- @@@longitude -->
+<br/>
+<!-- $$$pictureHeight -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="pictureHeight-prop">
+<td class="tblQmlPropNode"><p>
+<a name="pictureHeight-prop"></a><span class="name">pictureHeight</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Output image height taken from server.</p>
+<p><b>See also </b><a href="qml-googlestaticmapitem.html#pictureWidth-prop">pictureWidth</a>.</p>
+</div></div><!-- @@@pictureHeight -->
+<br/>
+<!-- $$$pictureWidth -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="pictureWidth-prop">
+<td class="tblQmlPropNode"><p>
+<a name="pictureWidth-prop"></a><span class="name">pictureWidth</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Output image width taken from server.</p>
+<p><b>See also </b><a href="qml-googlestaticmapitem.html#pictureHeight-prop">pictureHeight</a>.</p>
+</div></div><!-- @@@pictureWidth -->
+<br/>
+<!-- $$$scale -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="scale-prop">
+<td class="tblQmlPropNode"><p>
+<a name="scale-prop"></a><span class="name">scale</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Output image scale taken from server.</p>
+<p><b>See also </b><a href="qml-googlestaticmapitem.html#zoom-prop">zoom</a>.</p>
+</div></div><!-- @@@scale -->
+<br/>
+<!-- $$$staticApiKey -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="staticApiKey-prop">
+<td class="tblQmlPropNode"><p>
+<a name="staticApiKey-prop"></a><span class="name">staticApiKey</span> : <span class="type">string</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>The API Key generated from Developer Google Console.</p>
+</div></div><!-- @@@staticApiKey -->
+<br/>
+<!-- $$$title -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="title-prop">
+<td class="tblQmlPropNode"><p>
+<a name="title-prop"></a><span class="name">title</span> : <span class="type">string</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>The text will be overlayed on output image which is taken from server.</p>
+</div></div><!-- @@@title -->
+<br/>
+<!-- $$$zoom -->
+<div class="qmlitem"><div class="qmlproto">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="zoom-prop">
+<td class="tblQmlPropNode"><p>
+<a name="zoom-prop"></a><span class="name">zoom</span> : <span class="type">real</span></p></td></tr>
+</table></div>
+</div><div class="qmldoc"><p>Output image zoom ratio taken from server.</p>
+<p><b>See also </b><a href="qml-googlestaticmapitem.html#scale-prop">scale</a>.</p>
+</div></div><!-- @@@zoom -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

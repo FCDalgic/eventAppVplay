@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>RequestManager.cpp | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >RequestManager.cpp</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">RequestManager.cpp</h1>
+<span class="subtitle"></span>
+<!-- $$$requestmanager.cpp.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#include &quot;requestmanager.h&quot;</span>
+
+  <span class="comment">/*!
+      \class RequestManager
+      \brief The RequestManager class
+          * Handles whole data requests.
+          * Registered to Meta System in order to be used by QML elements
+      \ingroup communication
+      \inmodule EventApp
+      The PreviewWindow class inherits QObject. The class receives raw server response and then
+      tries to parse it. If input can be parsed succesfully, related signal will be emited according to desired data type.
+      ...
+
+  */</span>
+
+  <span class="comment">/*!
+      \fn void RequestManager::recentEventsRecevied(QList&lt;EventContainer*&gt; pEvents)
+      This signal is emited when we get recent type new event list from NetworkMessageParser.
+      \a pEvents; event list
+  */</span>
+  <span class="comment">/*!
+      \fn void RequestManager::categoryEventsReceived(QList&lt;EventContainer*&gt; pEvents)
+      This signal is emited when we get new category type event list from NetworkMessageParser.
+      \a pEvents; event list
+  */</span>
+  <span class="comment">/*!
+      \fn void RequestManager::homepageRecentEventsRecevied(QList&lt;EventContainer*&gt; pEvents)
+      This signal is emited when we get homepage recent type event list from NetworkMessageParser.
+      \a pEvents; event list
+  */</span>
+  <span class="comment">/*!
+      \fn void RequestManager::placesListReceived(QList&lt;PlaceContainer*&gt; pPlaces)
+      This signal is emited when we get new place list from NetworkMessageParser.
+      \a pPlaces; place list
+  */</span>
+  RequestManager<span class="operator">::</span>RequestManager(<span class="type">QObject</span> <span class="operator">*</span>parent) : <span class="type">QObject</span>(parent)
+  {
+      mRESTManager <span class="operator">=</span> <span class="keyword">new</span> RESTManager();
+      mParser <span class="operator">=</span> <span class="keyword">new</span> NetworkMessageParser();
+
+      initializeConnections();
+  }
+
+  <span class="comment">/*!
+      \fn void RequestManager::initializeConnections()
+      * Initialize signal slot connections.
+  */</span>
+
+  <span class="comment">//1</span>
+  <span class="type">void</span> RequestManager<span class="operator">::</span>initializeConnections()
+  {
+      connect(mRESTManager <span class="operator">,</span> SIGNAL(messageReady2Parse(<span class="type">QString</span>))<span class="operator">,</span> mParser<span class="operator">,</span> SLOT(parseNetworkMessage(<span class="type">QString</span>)));
+
+      connect(mParser <span class="operator">,</span> SIGNAL(requestMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>))<span class="operator">,</span> <span class="keyword">this</span> <span class="operator">,</span> SLOT(onEventMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+      connect(mParser <span class="operator">,</span> SIGNAL(placesMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span>)) <span class="operator">,</span> <span class="keyword">this</span> <span class="operator">,</span> SLOT(onpPlacesMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+  }
+
+  <span class="comment">/*!
+      \fn void RequestManager::onEventMessageParsed(QString pType, QList&lt;EventContainer *&gt; pEvents)
+     Triggers when we get event request response from server. Then emits the appropriate signal which is related with transmitted event type to server.
+     Each emitable signal are corresponding to related container which are used in QML elements
+     \a pEvents; List of events received from server reply.
+     \a pType; Received request type
+  */</span>
+  <span class="type">void</span> RequestManager<span class="operator">::</span>onEventMessageParsed(<span class="type">QString</span> pType<span class="operator">,</span> <span class="type">QList</span><span class="operator">&lt;</span>EventContainer <span class="operator">*</span><span class="operator">&gt;</span> pEvents)
+  {
+      <span class="keyword">if</span> (pType <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;homepage_recent&quot;</span>)
+          <span class="keyword">emit</span> homepageRecentEventsRecevied(pEvents);
+      <span class="keyword">else</span>
+          <span class="keyword">emit</span> categoryEventsReceived(pEvents);
+  }
+
+  <span class="comment">/*!
+      \fn void RequestManager::onpPlacesMessageParsed(QString pType, QList&lt;PlaceContainer *&gt; pPlaces)
+     Triggers when we get place_view request response from server. Then emits the appropriate signal which is related with transmitted  type to server.
+     Each emitable signal are corresponding to related container which are used in QML elements
+     \a pPlaces; List of places received from server reply.
+     \a pType; Received request type
+  */</span>
+  <span class="type">void</span> RequestManager<span class="operator">::</span>onpPlacesMessageParsed(<span class="type">QString</span> pType<span class="operator">,</span> <span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer <span class="operator">*</span><span class="operator">&gt;</span> pPlaces)
+  {
+      <span class="keyword">if</span> (pType <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;places_view&quot;</span>)
+          placesListReceived(pPlaces);
+  }
+  <span class="comment">/*!
+      \fn void RequestManager::getEventsByType(QString pType, int pCount, QString pFilterType, QString pOrderType)
+      Send GET Request to server in order to get \e{events} from database according to given type, count, filterType and/or order type.
+      \a pOrderType; Ordering info for SQL search
+      \a pFilterType; Filter type for SQL search
+      \a pCount; #events we want to get.
+      \a pType; Desired type of event.
+  */</span>
+  <span class="type">void</span> RequestManager<span class="operator">::</span>getEventsByType(<span class="type">QString</span> pType<span class="operator">,</span> <span class="type">int</span> pCount<span class="operator">,</span> <span class="type">QString</span> pFilterType<span class="operator">,</span> <span class="type">QString</span> pOrderType)
+  {
+      <span class="type">QString</span> hostname <span class="operator">=</span> <span class="string">&quot;http://sehir-etkinlikleri.com/vplay/events.php&quot;</span>;
+      <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span><span class="type">QString</span><span class="operator">&gt;</span> tmap;
+      tmap<span class="operator">.</span>insert(<span class="string">&quot;type&quot;</span><span class="operator">,</span> pType);
+      tmap<span class="operator">.</span>insert(<span class="string">&quot;total&quot;</span><span class="operator">,</span><span class="type">QString</span><span class="operator">::</span>number(pCount));
+      <span class="keyword">if</span> (pFilterType<span class="operator">.</span>length() <span class="operator">&gt;</span> <span class="number">1</span>)
+          tmap<span class="operator">.</span>insert(<span class="string">&quot;filterType&quot;</span><span class="operator">,</span>  pFilterType);
+
+      mLastReqMap <span class="operator">=</span> tmap;
+      mRESTManager<span class="operator">-</span><span class="operator">&gt;</span>GET(hostname<span class="operator">,</span> tmap);
+  }
+
+  <span class="comment">/*!
+      \fn void RequestManager::getPlaces()
+      Send GET Request to server in order to get \e{places} from database.
+  */</span>
+  <span class="type">void</span> RequestManager<span class="operator">::</span>getPlaces()
+  {
+      <span class="type">QString</span> hostname <span class="operator">=</span> <span class="string">&quot;http://sehir-etkinlikleri.com/vplay/places.php&quot;</span>;
+      <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span><span class="type">QString</span><span class="operator">&gt;</span> tmap;
+      tmap<span class="operator">.</span>insert(<span class="string">&quot;type&quot;</span><span class="operator">,</span> <span class="string">&quot;places_view&quot;</span>);
+
+      mRESTManager<span class="operator">-</span><span class="operator">&gt;</span>GET(hostname<span class="operator">,</span> tmap);
+  }
+
+</pre>
+</div>
+<!-- @@@requestmanager.cpp.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

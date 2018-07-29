@@ -1,4 +1,3 @@
-import VPlayApps 1.0
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
@@ -8,6 +7,10 @@ import "../../items"
 import "../../items/delegates"
 import "../../items/delegates"
 import "../../items/decoration/icons"
+import "../../items/map"
+import "../../items/decoration/spaces"
+
+import VPlayApps 1.0
 
 
 Page
@@ -16,9 +19,37 @@ Page
     width: appWindow.width;
     height : appWindow.height;
 
+    title: selectedEventTitle;
+    backNavigationEnabled: true;
     property var selectedEventModel;
+    rightBarItem:NavigationBarItem {
+
+        // we specify the width of the item with the contentWidth property
+        // the item width then includes the contentWidth and a default padding
+        contentWidth: contentRect.width
+
+        // the navigation bar item shows a colored rectangle
+        Rectangle {
+          id: contentRect
+          width: dp(Theme.navigationBar.defaultIconSize)
+          height: width
+          anchors.centerIn: parent
+          color: "transparent";
 
 
+          Icon {
+            anchors.fill: parent
+            icon: IconType.navicon
+            color: Theme.navigationBar.itemColor
+
+            MouseArea
+            {
+                onClicked: appWindow.openNavDrawer();
+                anchors.fill: parent;
+            }
+          }
+        }
+      } // NavigationBarItem
 
     Flickable {
         id: selectedEventPageFlickable;
@@ -135,84 +166,6 @@ Page
                         z: 2;
 
 
-                        // Favourite...
-                        TextedIconSelectedEventPage
-                        {
-                            id:favButton
-                            width: parent.height;
-                            height: parent.height;
-                            anchors.top: parent.top;
-                            anchors.right: shareButton.left;
-                            anchors.rightMargin: width/5;
-                            iconPath:"../../assets/images/fa/love-x64.png";
-                            iconColor:paintIcon();
-                            iconText: "Favori";
-                            textColor: "gray";
-
-                            property bool isButtonEnabled: true;
-                            MouseArea
-                            {
-                                anchors.fill: parent;
-                                onClicked:
-                                {
-                                    if (!appWindow.checkInternetConnection())
-                                        return;
-
-                                    if (!appWindow.loggedIn)
-                                    {
-                                        appWindow.openPopupFavError(1);
-                                        return;
-                                    }
-
-                                    if (!favButton.isButtonEnabled)
-                                        return;
-
-                                    favButton.isButtonEnabled = false;
-                                    buttonEnabler.start();
-                                    if (parent.iconColor === "red")
-                                        eventManager.delFavourites(ProfileManager.getStoredMail(),
-                                                                   ProfileManager.getStoredPass(),
-                                                                   selectedEventPage.eventID);
-                                    else
-                                        eventManager.addFavourites(ProfileManager.getStoredMail(),
-                                                                   ProfileManager.getStoredPass(),
-                                                                   selectedEventPage.eventID);
-                                }
-                            }
-
-                            Timer
-                            {
-                                id: buttonEnabler;
-                                interval: 300;
-                                running: false;
-                                onTriggered:
-                                {
-                                    favButton.isButtonEnabled = true;
-                                    stop();
-                                }
-
-                            }
-
-                            function paintIcon()
-                            {
-                                try
-                                {
-    //                                if (selectedEventPage == null || selectedEventPage.selectedEventModel === null)
-    //                                    return "gray";
-
-                                    if (ProfileManager.isEventFavourite(selectedEventPage.eventID))
-                                        return "red";
-                                    else
-                                        return "gray";
-                                }
-                                catch(err)
-                                {
-                                    return "gray";
-                                }
-                            }
-
-                        }
-
                         // Share...
                         TextedIconSelectedEventPage
                         {
@@ -224,14 +177,14 @@ Page
                             anchors.rightMargin: parent.width*0.05;
                             iconPath:  "../../assets/images/fa/share-x64.png";
                             iconColor: "#41cd52";
-                            iconText: "Paylaş";
+                            iconText: "Share";
                             textColor: "gray";
                             MouseArea
                             {
                                 anchors.fill: parent;
                                 onClicked:
                                 {
-                                    SehirUtils.prepareContentAndShare(selectedEventPage.eventID);
+                                    nativeUtils.share("Let's go to this event!" ,"http://sehir-etkinlikleri.com/android/share.php" + "?SEID=" + selectedEventPage.eventID)
                                 }
                             }
                         }
@@ -239,8 +192,7 @@ Page
                 }
 
                 // Boşluk
-                Rectangle { Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
-                Rectangle { Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
+                SpaceSelectedEventPageContents {}
 
                 // Açıklama
                 TextFieldWithIconAndHeader
@@ -252,13 +204,14 @@ Page
 
                     headerWRatio: 0.55
                     iconSrc: "../../assets/images/selectedEventPage/description.png";
-                    headerText: qsTr("Etkinlik Açıklaması");
+                    headerText: qsTr("Description");
                     detailText: ""//selectedEventPage.selectedEventModel.modelData.Description;
     //                isLongText: true;
 
                 }
                 // Boşluk
-                Rectangle { visible: aciklama.visible;Layout.fillWidth: true; width: parent.width; height: 7; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: aciklama.visible}
+
                 TextFieldWithIconAndHeader
                 {
                     id: aciklamaMetni;
@@ -274,7 +227,7 @@ Page
 
                 }
 
-                Rectangle {visible: saat.visible; Layout.fillWidth: true; width: parent.width; height: appWindow.height / 20; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: saat.visible}
 
                 // Site
                 TextFieldWithIconAndHeader
@@ -287,7 +240,7 @@ Page
 
                     visible: webSitesi.length > 1 ? true : false;
                     iconSrc: "../../assets/images/selectedEventPage/link.png";
-                    headerText: "Link";
+                    headerText: "Website";
                     isLink: true;
                     detailText: ""; //webSitesi != "" ? webSitesi : "Bilinmiyor"
                 }
@@ -313,7 +266,7 @@ Page
                     }
                 }
                 // Boşluk
-                Rectangle { visible: site.visible;Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: site.visible}
 
                 TextFieldWithIconAndHeader
                 {
@@ -322,12 +275,12 @@ Page
                     Layout.fillWidth: true;
                     width: parent.width;
                     iconSrc: "../../assets/images/selectedEventPage/date.png";
-                    headerText: "Tarih";
+                    headerText: "Date";
                     detailText: selectedEventPage.selectedEventModel.modelData.EventDate;
                 }
 
                 // Boşluk
-                Rectangle { visible: tarih.visible;Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: tarih.visible}
 
                 TextFieldWithIconAndHeader
                 {
@@ -337,14 +290,14 @@ Page
                     width: parent.width;
 
                     iconSrc: "../../assets/images/selectedEventPage/clock.png";
-                    headerText: "Saat";
+                    headerText: "Time";
                     detailText: selectedEventPage.selectedEventModel.modelData.EventTime;
 
                     visible: detailText.length > 0 ? true : false;
                 }
 
                 // Boşluk
-                Rectangle {visible: saat.visible; Layout.fillWidth: true; width: parent.width; height: appWindow.height / 20; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: saat.visible}
 
                 TextFieldWithIconAndHeader
                 {
@@ -353,38 +306,12 @@ Page
                     Layout.fillWidth: true;
                     width: parent.width;
                     iconSrc: "../../assets/images/fa/tag-x64.png";
-                    headerText: "Yer";
+                    headerText: "Place";
                     detailText: selectedEventPage.selectedEventModel.modelData.Yer;
                 }
 
                 // Boşluk
-                Rectangle {visible: yer.visible; Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
-
-
-    //            // Ücret Bilgisi
-    //            TextFieldWithIconAndHeader
-    //            {
-    //                id: ucret;
-    //                property string ucretBilgisi:  selectedEventPage.selectedEventModel.modelData.Tag1 // parent.calcUcret(selectedEventPage.selectedEventModel.modelData.Tag1);
-    //                visible: false; // ucretBilgisi.length > 1 ? true : false;
-    //                iconHeight:appWindow.height / 20;
-    //                Layout.fillWidth: true;
-    //                width: parent.width;
-
-    //                iconSrc:  "../../assets/images/fa/tl-icon.png";
-    //                headerText: "Ücret";
-    //                detailText: ucretBilgisi
-
-    //            }
-    //            function calcUcret(text)
-    //            {
-    //                console.log("Ücret bilgisi : " + text);
-    //                return (text == "Ücretli" || text == "Ücretsiz" || text == "Bilinmiyor") ? model.modelData.Tag1 : "";
-    //            }
-
-    //            // Boşluk
-    //            Rectangle { visible: ucret.visible;Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
-
+                SpaceSelectedEventPageContents {visible: yer.visible}
                 // Telefon
                 TextFieldWithIconAndHeader
                 {
@@ -394,7 +321,7 @@ Page
                     width: parent.width;
 
                     iconSrc: "../../assets/images/selectedEventPage/telephone.png";
-                    headerText: "Telefon";
+                    headerText: "Phone";
                     detailText: selectedEventPage.selectedEventModel.modelData.Telephone != "" ? selectedEventPage.selectedEventModel.modelData.Telephone : "Bilinmiyor";
 
 
@@ -407,13 +334,12 @@ Page
                             if (callNumber.length > 3 && callNumber != "Bilinmiyor")
                             {
                                 Qt.openUrlExternally("tel:+" + callNumber);
-                                //                            NativeController.directCall(callNumber);
                             }
                         }
                     }
                 }
                 // Boşluk
-                Rectangle { visible: telefon.visible;Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: telefon.visible}
 
 
 
@@ -426,9 +352,10 @@ Page
                     width: parent.width;
 
                     iconSrc: "../../assets/images/selectedEventPage/pin.png";
-                    headerText: "Adres";
+                    headerText: "Address";
                     detailText: ""; // selectedEventPage.selectedEventModel.modelData.Address;
                 }
+
                 TextFieldWithIconAndHeader
                 {
                     id: adresİcerik;
@@ -441,82 +368,38 @@ Page
                     headerText: "";
                     detailText:  selectedEventPage.selectedEventModel.modelData.Address;
                 }
-                Rectangle
-                {
-                    color:"transparent";
-                    width: parent.width;
 
-                }
 
                 // Boşluk
-                Rectangle {visible: adres.visible; Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
+                SpaceSelectedEventPageContents {visible: adres.visible}
 
-                Rectangle
+                GoogleStaticMapItem
                 {
                     visible: true;
                     width: parent.width;
-                    height: 500;
+                    height: dp(200);
                     Layout.fillWidth: true;
                     color: "transparent";
 
-                    Image {
-                        id: googleMapStaticImage;
-                        property string constant: "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyD3crnSmwEYtw31-5FKBKr5H-xAEpNgzvU&"
-                                                  + "center=" + selectedEventPage.selectedEventModel.modelData.Coordinate + "&zoom=16&size=" + Math.ceil(760) + "x"  + Math.ceil(430)
-                                                  + "&markers=color:red|label:A|scale:2|" + selectedEventPage.selectedEventModel.modelData.Coordinate + "|title:" + selectedEventPage.selectedEventModel.modelData.Yer ;
-                        property variant temp;
-                        property string latitude: "-34.397";
-                        property string longitude: "150.644";
+                    staticApiKey: "AIzaSyD3crnSmwEYtw31-5FKBKr5H-xAEpNgzvU";
+                    latitude: getLatitudeFromInput(selectedPlacePage.model.modelData.Coordinate);
+                    longitude: getLongitudeFromInput(selectedPlacePage.model.modelData.Coordinate);
+                    title:selectedPlacePage.model.modelData.Name;
 
-                        source: constant;
-                        width: parent.width;
-                        height: parent.height;
-                        sourceSize: Qt.size(width ,  height);
-
-                        function prepareMap()
-                        {
-                            temp = pCoordinate.split(",");
-                            latitude = temp[0];
-                            longitude = temp[1];
-
-                        }
-
-                    }
-
-                    MouseArea
+                    enableGetDirection: true;
+                    function getLatitudeFromInput(pInput)
                     {
-                        anchors.fill: parent;
-                        property string directionAPIKey : "AIzaSyBjCFhR7k4a7pQ7DPrcWtu2t18F7vgxV4c";
-                        property string origin :selectedEventPage.selectedEventModel.modelData.Address;
-                        property string directionURL: "";
-
-                        onClicked:
-                        {
-                            origin = origin.replace(" ", "+");
-                            origin = origin.replace(";", "+");
-                            origin = origin.replace(".", "+");
-                            origin = origin.replace("-", "+");
-                            origin = origin.replace("/", "+");
-                            directionURL =  "https://www.google.com/maps?saddr=My+Location&daddr=" + selectedEventPage.selectedEventModel.modelData.Coordinate;
-
-                            console.log("Trying to open google maps : "  + directionURL);
-                            Qt.openUrlExternally(directionURL);
-                        }
+                        var temp = pInput.split(",");
+                        return temp[0];
                     }
-
-                    //                Rectangle
-                    //                {
-                    //                    width: parent.width * 0.7;
-                    //                    height: parent.height;
-                    //                    anchors.right:  parent.right;
-                    //                    anchors.rightMargin: parent.width * 0.03;
-
-                    //                }
-
-
+                    function getLongitudeFromInput(pInput)
+                    {
+                        var temp = pInput.split(",");
+                        return temp[1];
+                    }
                 }
 
-                Rectangle { Layout.fillWidth: true; width: parent.width; height: 14; color: "transparent";}
+                Rectangle { Layout.fillWidth: true; width: parent.width; height: dp(14); color: "transparent";}
 
                 Rectangle
                 {
@@ -579,7 +462,7 @@ Page
                                 id: directionsContent;
                                 height: parent.height;
                                 anchors.right: parent.right;
-                                text: "Adres Tarifi Al"
+                                text: "Directions"
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                                 color: "white"

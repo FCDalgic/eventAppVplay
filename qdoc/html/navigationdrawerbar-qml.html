@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>NavigationDrawerBar.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >NavigationDrawerBar.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">NavigationDrawerBar.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$NavigationDrawerBar.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import QtQuick 2.7
+  import QtQuick.Layouts 1.3
+  import QtQuick.Controls 2.1
+  import QtQuick.Controls.Material 2.1
+
+  import VPlayApps 1.0
+
+  import &quot;../items&quot;
+  import &quot;../items/decoration/spaces&quot;
+
+  <span class="type">Drawer</span> {
+      <span class="name">id</span>: <span class="name">myBar</span>
+      <span class="name">z</span>: <span class="number">1</span>
+      <span class="name">leftPadding</span>: <span class="number">0</span>
+
+      <span class="name">width</span> : <span class="name">appWindow</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">.68</span>;
+      <span class="name">height</span>: <span class="name">appWindow</span>.<span class="name">height</span>
+      <span class="name">visible</span>: <span class="number">false</span>;
+
+      property <span class="type">real</span> <span class="name">index</span>: <span class="number">0</span>;
+
+      <span class="name">dragMargin</span>: <span class="name">appWindow</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.05</span>;
+      <span class="name">onIndexChanged</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Drawer index changed&quot;</span> <span class="operator">+</span> <span class="name">index</span>);
+      <span class="name">background</span>: <span class="name">Rectangle</span>
+      {
+          <span class="name">anchors</span>.fill : <span class="name">parent</span>;
+          <span class="name">color</span>: <span class="name">appWindow</span>.<span class="name">colorDrawer</span>;
+      }
+
+      <span class="name">onVisibleChanged</span>:
+      {
+          <span class="keyword">if</span> (!<span class="name">visible</span>)
+              <span class="keyword">return</span>;
+
+          <span class="name">textUsername</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">textUsername</span>.<span class="name">getUsername</span>();
+      }
+
+      <span class="type">Flickable</span> {
+          <span class="name">id</span>: <span class="name">flickableDrawer</span>
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+          <span class="comment">//    anchors.fill: parent</span>
+          <span class="name">clip</span>: <span class="number">true</span>
+          <span class="name">contentHeight</span>: <span class="name">drawerColumn</span>.<span class="name">height</span>
+          <span class="name">flickableDirection</span>: <span class="name">Flickable</span>.<span class="name">VerticalFlick</span>
+          <span class="name">interactive</span>: <span class="number">false</span>;
+          property <span class="type">real</span> <span class="name">sectionHeight</span>:  <span class="name">height</span> <span class="operator">/</span> <span class="number">15</span>;
+
+          <span class="type">Column</span> {
+              <span class="name">id</span>: <span class="name">drawerColumn</span>
+              <span class="name">focus</span>: <span class="number">false</span>
+              <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+              <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+              <span class="name">spacing</span>: <span class="number">5</span>;
+              <span class="comment">// BannerÄ±n yer alacaÄŸÄ± alan.</span>
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">height</span>  : <span class="name">appWindow</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.20</span>;
+                  <span class="name">color</span>: <span class="name">appWindow</span>.<span class="name">colorMain</span>;
+
+                  <span class="type">ColorableIcon</span>
+                  {
+                      <span class="name">id</span>: <span class="name">userPhotoDrawer</span>;
+                      <span class="name">width</span>   : <span class="name">Math</span>.<span class="name">min</span>(<span class="name">parent</span>.<span class="name">width</span> , <span class="name">parent</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">.9</span>);
+                      <span class="name">height</span>  : <span class="name">width</span>;
+
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+
+                      <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/user-x64.png&quot;</span>; <span class="comment">//  &quot;../../assets/images/fa/user-x64.png&quot;;</span>
+                      <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+                      <span class="name">overlayColor</span>: <span class="string">&quot;white&quot;</span>;
+
+                      <span class="type">MouseArea</span>
+                      {
+                          <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                          <span class="name">onClicked</span>:
+                          {
+                              <span class="name">nativeUtils</span>.<span class="name">displayCameraPicker</span>(<span class="string">&quot;Profile Image&quot;</span>);
+
+                          }
+                      }
+
+                      <span class="type">Connections</span> {
+                          <span class="name">target</span>: <span class="name">nativeUtils</span>
+                          <span class="name">onCameraPickerFinished</span>: {
+                              <span class="keyword">if</span>(<span class="name">accepted</span>) <span class="name">userPhotoDrawer</span>.<span class="name">iconPath</span> <span class="operator">=</span> <span class="name">path</span>
+                          }
+                      }
+                  }
+
+                  <span class="type">Rectangle</span>
+                  {
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">.8</span>;
+                      <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">.1</span>;
+                      <span class="name">anchors</span>.left: <span class="name">parent</span>.<span class="name">left</span>;
+                      <span class="name">anchors</span>.leftMargin: <span class="number">15</span>;
+                      <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>;
+                      <span class="name">anchors</span>.bottomMargin: <span class="number">15</span>;
+                      <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+                      <span class="type">Text</span> {
+                          <span class="name">id</span>: <span class="name">textUsername</span>;
+                          <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span><span class="number">.8</span>;
+                          <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.8</span>;
+                          <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>;
+                          <span class="name">text</span>: <span class="name">getUsername</span>();
+                          <span class="name">font</span>.pointSize: <span class="number">100</span>
+                          <span class="name">minimumPointSize</span>: <span class="number">10</span>
+                          <span class="name">fontSizeMode</span>: <span class="name">Text</span>.<span class="name">Fit</span>
+                          <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">WordWrap</span>;
+                          <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignBottom</span>
+                          <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+
+                          <span class="keyword">function</span> <span class="name">getUsername</span>()
+                          {
+                              <span class="keyword">if</span>(<span class="name">appWindow</span>.<span class="name">loggedIn</span>)
+                                  <span class="keyword">return</span> <span class="name">ProfileManager</span>.<span class="name">getStoredMail</span>();
+                              <span class="keyword">else</span>
+                                  <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;
+                          }
+
+                      }
+
+                  }
+
+              }
+
+              <span class="type">NavigationButton</span>{
+                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/home-x64.png&quot;</span>;
+                  <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Homepage&quot;</span>);
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">height</span>: <span class="name">flickableDrawer</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">20</span>;
+                  <span class="name">color</span>: <span class="name">flickableDrawer</span>.<span class="name">index</span> <span class="operator">==</span> <span class="number">0</span> ? <span class="string">&quot;lightgray&quot;</span> : <span class="string">&quot;transparent&quot;</span>;
+
+                  <span class="type">MouseArea</span>
+                  {
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">onClicked</span>:
+                      {
+                          <span class="comment">//                        if (navPane.depth != 1)</span>
+                          <span class="comment">//                            navPane.pushPageByPageNumber(1);</span>
+                          <span class="name">appWindow</span>.<span class="name">goHomepage</span>();
+                          <span class="name">appWindow</span>.<span class="name">setSwipeIndexManually</span>(<span class="number">0</span>);
+                          <span class="name">myBar</span>.<span class="name">close</span>();
+                      }
+
+                  }
+              }
+
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="type">SpaceSelectedEventPageContents</span>{}
+
+              <span class="type">NavigationButton</span>{
+                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/description-x64.png&quot;</span>;
+                  <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;About&quot;</span>);
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">color</span>: <span class="name">flickableDrawer</span>.<span class="name">index</span> <span class="operator">==</span> <span class="number">8</span> ? <span class="string">&quot;lightgray&quot;</span> : <span class="string">&quot;transparent&quot;</span>;
+                  <span class="name">height</span>: <span class="name">flickableDrawer</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">20</span>;
+
+                  <span class="type">MouseArea</span>
+                  {
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">onClicked</span>:
+                      {
+                          <span class="name">appWindow</span>.<span class="name">categorySelected</span>(<span class="string">&quot;about&quot;</span>);
+                          <span class="name">myBar</span>.<span class="name">close</span>();
+                      }
+
+                  }
+              }
+
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="type">SpaceSelectedEventPageContents</span>{}
+              <span class="type">NavigationButton</span>{
+                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/bug-x256.png&quot;</span>;
+                  <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Found an Error&quot;</span>);
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">color</span>: <span class="name">flickableDrawer</span>.<span class="name">index</span> <span class="operator">==</span> <span class="number">8</span> ? <span class="string">&quot;lightgray&quot;</span> : <span class="string">&quot;transparent&quot;</span>;
+                  <span class="name">height</span>: <span class="name">flickableDrawer</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">20</span>;
+
+                  <span class="type">MouseArea</span>
+                  {
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">onClicked</span>:
+                      {
+                          <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="string">&quot;mailto:?to=iletisim@sehir-etkinlikleri.com&amp;subject=Found a  bug&amp;body=&quot;</span>);
+                      }
+
+                  }
+              }
+
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="type">SpaceSelectedEventPageContents</span>{}
+
+              <span class="type">NavigationButton</span>{
+                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/lightbulb-x256.png&quot;</span>;
+                  <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Got an idea!&quot;</span>);
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">color</span>: <span class="name">flickableDrawer</span>.<span class="name">index</span> <span class="operator">==</span> <span class="number">8</span> ? <span class="string">&quot;lightgray&quot;</span> : <span class="string">&quot;transparent&quot;</span>;
+                  <span class="name">height</span>: <span class="name">flickableDrawer</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">20</span>;
+
+                  <span class="type">MouseArea</span>
+                  {
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">onClicked</span>:
+                      {
+                          <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="string">&quot;mailto:?to=iletisim@sehir-etkinlikleri.com&amp;subject=Have an idea&amp;body=&quot;</span>);
+                      }
+
+                  }
+              }
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="type">SpaceSelectedEventPageContents</span>{}
+
+              <span class="type">NavigationButton</span>{
+                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/mail-x256.png&quot;</span>;
+                  <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Contact Us&quot;</span>);
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">color</span>: <span class="name">flickableDrawer</span>.<span class="name">index</span> <span class="operator">==</span> <span class="number">8</span> ? <span class="string">&quot;lightgray&quot;</span> : <span class="string">&quot;transparent&quot;</span>;
+                  <span class="name">height</span>: <span class="name">flickableDrawer</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">20</span>;
+
+                  <span class="type">MouseArea</span>
+                  {
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">onClicked</span>:
+                      {
+                          <span class="name">Qt</span>.<span class="name">openUrlExternally</span>(<span class="string">&quot;mailto:?to=iletisim@sehir-etkinlikleri.com&amp;subject=Contact Us&amp;body=&quot;</span>);
+                      }
+
+                  }
+              }
+
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="comment">//            Item { Layout.fillWidth:  true; height: 8; }</span>
+              <span class="type">Rectangle</span> { <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;  <span class="name">height</span>: <span class="number">8</span>;
+                  <span class="type">Rectangle</span>
+                  {
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">.95</span>;
+                      <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span><span class="operator">/</span><span class="number">2</span>;
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                      <span class="name">color</span>: <span class="name">appWindow</span>.<span class="name">colorMain</span>;
+                      <span class="name">gradient</span>: <span class="name">Gradient</span> {
+                          <span class="type">GradientStop</span> {
+                              <span class="name">position</span>: <span class="number">0.00</span>;
+                              <span class="name">color</span>: <span class="string">&quot;#fdfdfd&quot;</span>;
+                          }
+                          <span class="type">GradientStop</span> {
+                              <span class="name">position</span>: <span class="number">0.50</span>;
+                              <span class="name">color</span>: <span class="string">&quot;#661349&quot;</span>;
+                          }
+                          <span class="type">GradientStop</span> {
+                              <span class="name">position</span>: <span class="number">1.00</span>;
+                              <span class="name">color</span>: <span class="string">&quot;#ffffff&quot;</span>;
+                          }
+                      }
+                  }
+
+              }
+
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="type">SpaceSelectedEventPageContents</span>{}
+
+              <span class="type">NavigationButton</span>{
+                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/fa/like-x256.png&quot;</span>;
+                  <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Share Us&quot;</span>);
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">color</span>: <span class="name">flickableDrawer</span>.<span class="name">index</span> <span class="operator">==</span> <span class="number">8</span> ? <span class="string">&quot;lightgray&quot;</span> : <span class="string">&quot;transparent&quot;</span>;
+                  <span class="name">height</span>: <span class="name">flickableDrawer</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">20</span>;
+
+                  <span class="type">MouseArea</span>
+                  {
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">onClicked</span>:
+                      {
+                          <span class="name">nativeUtils</span>.<span class="name">share</span>(<span class="string">&quot;Let's go to this event!&quot;</span> ,<span class="string">&quot;http://sehir-etkinlikleri.com/android/share.php&quot;</span> <span class="operator">+</span> <span class="string">&quot;?SEID=-1&quot;</span>)
+                      }
+
+                  }
+              }
+
+              <span class="comment">// space between content - see google material guide</span>
+              <span class="comment">//            Item { Layout.fillWidth:  true; height: 8; }</span>
+              <span class="comment">// Rectangle { color: &quot;transparent&quot;;  width: parent.width;  height: 8;</span>
+              <span class="comment">//     Rectangle</span>
+              <span class="comment">//     {</span>
+              <span class="comment">//         width: parent.width * .95;</span>
+              <span class="comment">//         height: parent.height/2;</span>
+              <span class="comment">//         anchors.centerIn: parent;color: appWindow.colorMain;</span>
+              <span class="comment">//         gradient: Gradient {</span>
+              <span class="comment">//             GradientStop {</span>
+              <span class="comment">//                 position: 0.00;</span>
+              <span class="comment">//                 color: &quot;#fdfdfd&quot;;</span>
+              <span class="comment">//             }</span>
+              <span class="comment">//             GradientStop {</span>
+              <span class="comment">//                 position: 0.50;</span>
+              <span class="comment">//                 color: &quot;#661349&quot;;</span>
+              <span class="comment">//             }</span>
+              <span class="comment">//             GradientStop {</span>
+              <span class="comment">//                 position: 1.00;</span>
+              <span class="comment">//                 color: &quot;#ffffff&quot;;</span>
+              <span class="comment">//             }</span>
+              <span class="comment">//         }</span>
+              <span class="comment">//     }</span>
+              //
+              <span class="comment">// }</span>
+
+          } <span class="comment">// ColumnLayout myButtons</span>
+          <span class="comment">// ScrollIndicator.vertical: ScrollIndicator { }</span>
+
+      } <span class="comment">// Flickable</span>
+
+  } <span class="comment">// drawer</span>
+
+</pre>
+</div>
+<!-- @@@NavigationDrawerBar.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

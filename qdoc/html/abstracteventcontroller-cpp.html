@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>AbstractEventController.cpp | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >AbstractEventController.cpp</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">AbstractEventController.cpp</h1>
+<span class="subtitle"></span>
+<!-- $$$abstracteventcontroller.cpp.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#include &quot;abstracteventcontroller.h&quot;</span>
+
+  AbstractEventController<span class="operator">::</span>AbstractEventController(<span class="type">QObject</span> <span class="operator">*</span>parent) : <span class="type">QObject</span>(parent)
+  {
+
+  }
+
+  <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span> AbstractEventController<span class="operator">::</span>getEvents()
+  {
+      <span class="keyword">return</span> <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span>(<span class="keyword">this</span><span class="operator">,</span> mEventList);
+  }
+
+  <span class="type">void</span> AbstractEventController<span class="operator">::</span>addEventData(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer <span class="operator">*</span><span class="operator">&gt;</span> pEvents)
+  {
+      mEventList<span class="operator">.</span>clear();
+      mEventList<span class="operator">.</span>append(pEvents);
+
+      <span class="keyword">emit</span> eventListChanged();
+  }
+
+  <span class="type">void</span> AbstractEventController<span class="operator">::</span>addEventData(EventContainer <span class="operator">*</span>pEvent)
+  {
+      mEventList<span class="operator">.</span>append(pEvent);
+
+      <span class="keyword">emit</span> eventListChanged();
+  }
+
+  <span class="type">void</span> AbstractEventController<span class="operator">::</span>addEventData(<span class="type">QString</span> pID<span class="operator">,</span> <span class="type">QString</span> pName<span class="operator">,</span> <span class="type">QString</span> pCategory1<span class="operator">,</span> <span class="type">QString</span> pCategory2<span class="operator">,</span> <span class="type">QString</span> pEventDate<span class="operator">,</span> <span class="type">QString</span> pAddress<span class="operator">,</span> <span class="type">QString</span> pCoordinate<span class="operator">,</span> <span class="type">QString</span> pModifiedDate<span class="operator">,</span> <span class="type">QString</span> pDescription<span class="operator">,</span> <span class="type">QString</span> pLink<span class="operator">,</span> <span class="type">QString</span> pTags<span class="operator">,</span> <span class="type">QString</span> pImageURL)
+  {
+  <span class="comment">//    EventContainer *tContainer = new EventContainer(pID, pName, pCategory1, pCategory2 , pEventDate , pAddress, pCoordinate, pModifiedDate, pDescription, pLink,pTags,pImageURL);</span>
+
+  <span class="comment">//    mEventList.append(tContainer);</span>
+
+  <span class="comment">//    mEventList.clear();</span>
+  <span class="comment">//    mEventList.append(tContainer);</span>
+      <span class="comment">//    emit eventListChanged();</span>
+  }
+
+  <span class="type">void</span> AbstractEventController<span class="operator">::</span>cleanData()
+  {
+      mEventList<span class="operator">.</span>clear();
+      <span class="keyword">emit</span> eventListChanged();
+  }
+
+  <span class="type">int</span> AbstractEventController<span class="operator">::</span>getSectionCount(<span class="type">QString</span> pSectionName <span class="operator">,</span> <span class="type">QString</span> pSectionCriteria)
+  {
+      <span class="type">int</span> counter <span class="operator">=</span> <span class="number">0</span>;
+      foreach (EventContainer <span class="operator">*</span>container<span class="operator">,</span> mEventList) {
+          <span class="keyword">if</span> (pSectionCriteria <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;EventDate&quot;</span>)
+              <span class="keyword">if</span> (pSectionName <span class="operator">=</span><span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>getEventDate())
+                  counter<span class="operator">+</span><span class="operator">+</span>;
+      }
+
+      <span class="keyword">return</span> counter;
+  }
+
+  <span class="type">void</span> AbstractEventController<span class="operator">::</span>clear()
+  {
+      mEventList<span class="operator">.</span>clear();
+      <span class="keyword">emit</span> eventListChanged();
+  }
+
+</pre>
+</div>
+<!-- @@@abstracteventcontroller.cpp.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

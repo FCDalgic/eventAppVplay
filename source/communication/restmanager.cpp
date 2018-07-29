@@ -1,7 +1,5 @@
 #include "restmanager.h"
 
-
-
 RESTManager::RESTManager(QObject *parent) : QObject(parent)
 {
     mAccessManager = new QNetworkAccessManager();
@@ -14,7 +12,7 @@ RESTManager::RESTManager(QObject *parent) : QObject(parent)
  * @param hostName : address of your REST request.
  * @param data : a map which contains parameters and their values to bind paraemeters to that request.
  */
-void RESTManager::GET(const QString hostName, QMap<QString, QString> data)
+void RESTManager::GET(QString hostName, QMap<QString, QString> data)
 {
     QUrl url(hostName);
 
@@ -41,7 +39,7 @@ void RESTManager::GET(const QString hostName, QMap<QString, QString> data)
  * @param hostName : address of your REST request.
  * @param data : a map which contains parameters and their values to bind paraemeters to that request.
  */
-void RESTManager::POST(const QString hostName, QMap<QString, QString> data)
+void RESTManager::POST(QString hostName, QMap<QString, QString> data)
 {
     QUrl url(hostName);
 
@@ -59,7 +57,12 @@ void RESTManager::POST(const QString hostName, QMap<QString, QString> data)
 
     url.setQuery(query.query());
 
-       mAccessManager->post(QNetworkRequest(url), query.toString(QUrl::FullyEncoded).toUtf8());
+    mAccessManager->post(QNetworkRequest(url), query.toString(QUrl::FullyEncoded).toUtf8());
+}
+
+void RESTManager::testFN()
+{
+
 }
 
 /**

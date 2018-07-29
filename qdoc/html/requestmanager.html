@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- requestmanager.cpp -->
+  <title>RequestManager Class | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >RequestManager</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">RequestManager Class</h1>
+<!-- $$$RequestManager-brief -->
+<p>The <a href="requestmanager.html">RequestManager</a> class * Handles whole data requests. * Registered to Meta System in order to be used by QML elements The PreviewWindow class inherits QObject. The class receives raw server response and then tries to parse it. If input can be parsed succesfully, related signal will be emited according to desired data type. &#x2e;.&#x2e; <a href="#details">More...</a></p>
+<!-- @@@RequestManager -->
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign">   <span class="preprocessor">#include &lt;RequestManager&gt;</span>
+</td></tr></table></div><ul>
+<li><a href="requestmanager-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#RequestManager">RequestManager</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+</table></div>
+<a name="public-slots"></a>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#getEventsByType">getEventsByType</a></b>(QString <i>pType</i>, int <i>pCount</i>, QString <i>pFilterType</i> = &quot;&quot;, QString <i>pOrderType</i> = &quot;&quot;)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#getPlaces">getPlaces</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#onEventMessageParsed">onEventMessageParsed</a></b>(QString <i>pType</i>, QList&lt;EventContainer *&gt; <i>pEvents</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#onpPlacesMessageParsed">onpPlacesMessageParsed</a></b>(QString <i>pType</i>, QList&lt;PlaceContainer *&gt; <i>pPlaces</i>)</td></tr>
+</table></div>
+<a name="signals"></a>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#categoryEventsReceived">categoryEventsReceived</a></b>(QList&lt;EventContainer *&gt; <i>pEvents</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#homepageRecentEventsRecevied">homepageRecentEventsRecevied</a></b>(QList&lt;EventContainer *&gt; <i>pEvents</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#placesListReceived">placesListReceived</a></b>(QList&lt;PlaceContainer *&gt; <i>pPlaces</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="requestmanager.html#recentEventsRecevied">recentEventsRecevied</a></b>(QList&lt;EventContainer *&gt; <i>pEvents</i>)</td></tr>
+</table></div>
+<a name="details"></a>
+<!-- $$$RequestManager-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The <a href="requestmanager.html">RequestManager</a> class * Handles whole data requests. * Registered to Meta System in order to be used by QML elements The PreviewWindow class inherits QObject. The class receives raw server response and then tries to parse it. If input can be parsed succesfully, related signal will be emited according to desired data type. &#x2e;.&#x2e;</p>
+</div>
+<!-- @@@RequestManager -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$RequestManager[overload1]$$$RequestManagerQObject* -->
+<h3 class="fn" id="RequestManager"><a name="RequestManager"></a>RequestManager::<span class="name">RequestManager</span>(<span class="type">QObject</span> *<i>parent</i> = nullptr)</h3>
+<p>Default constructs an instance of RequestManager.</p><!-- @@@RequestManager -->
+<!-- $$$categoryEventsReceived[overload1]$$$categoryEventsReceivedQList<EventContainer*> -->
+<h3 class="fn" id="categoryEventsReceived"><a name="categoryEventsReceived"></a><code>[signal] </code><span class="type">void</span> RequestManager::<span class="name">categoryEventsReceived</span>(<span class="type">QList</span>&lt;<span class="type">EventContainer</span> *&gt; <i>pEvents</i>)</h3>
+<p>This signal is emited when we get new category type event list from <a href="networkmessageparser.html">NetworkMessageParser</a>. <i>pEvents</i>; event list</p>
+<!-- @@@categoryEventsReceived -->
+<!-- $$$getEventsByType[overload1]$$$getEventsByTypeQStringintQStringQString -->
+<h3 class="fn" id="getEventsByType"><a name="getEventsByType"></a><code>[slot] </code><span class="type">void</span> RequestManager::<span class="name">getEventsByType</span>(<span class="type">QString</span> <i>pType</i>, <span class="type">int</span> <i>pCount</i>, <span class="type">QString</span> <i>pFilterType</i> = &quot;&quot;, <span class="type">QString</span> <i>pOrderType</i> = &quot;&quot;)</h3>
+<p>Send GET Request to server in order to get <i>events</i> from database according to given type, count, filterType and/or order type. <i>pOrderType</i>; Ordering info for SQL search <i>pFilterType</i>; Filter type for SQL search <i>pCount</i>; #events we want to get. <i>pType</i>; Desired type of event.</p>
+<!-- @@@getEventsByType -->
+<!-- $$$getPlaces[overload1]$$$getPlaces -->
+<h3 class="fn" id="getPlaces"><a name="getPlaces"></a><code>[slot] </code><span class="type">void</span> RequestManager::<span class="name">getPlaces</span>()</h3>
+<p>Send GET Request to server in order to get <i>places</i> from database.</p>
+<!-- @@@getPlaces -->
+<!-- $$$homepageRecentEventsRecevied[overload1]$$$homepageRecentEventsReceviedQList<EventContainer*> -->
+<h3 class="fn" id="homepageRecentEventsRecevied"><a name="homepageRecentEventsRecevied"></a><code>[signal] </code><span class="type">void</span> RequestManager::<span class="name">homepageRecentEventsRecevied</span>(<span class="type">QList</span>&lt;<span class="type">EventContainer</span> *&gt; <i>pEvents</i>)</h3>
+<p>This signal is emited when we get homepage recent type event list from <a href="networkmessageparser.html">NetworkMessageParser</a>. <i>pEvents</i>; event list</p>
+<!-- @@@homepageRecentEventsRecevied -->
+<!-- $$$onEventMessageParsed[overload1]$$$onEventMessageParsedQStringQList<EventContainer*> -->
+<h3 class="fn" id="onEventMessageParsed"><a name="onEventMessageParsed"></a><code>[slot] </code><span class="type">void</span> RequestManager::<span class="name">onEventMessageParsed</span>(<span class="type">QString</span> <i>pType</i>, <span class="type">QList</span>&lt;<span class="type">EventContainer</span> *&gt; <i>pEvents</i>)</h3>
+<p>Triggers when we get event request response from server. Then emits the appropriate signal which is related with transmitted event type to server. Each emitable signal are corresponding to related container which are used in QML elements <i>pEvents</i>; List of events received from server reply. <i>pType</i>; Received request type</p>
+<!-- @@@onEventMessageParsed -->
+<!-- $$$onpPlacesMessageParsed[overload1]$$$onpPlacesMessageParsedQStringQList<PlaceContainer*> -->
+<h3 class="fn" id="onpPlacesMessageParsed"><a name="onpPlacesMessageParsed"></a><code>[slot] </code><span class="type">void</span> RequestManager::<span class="name">onpPlacesMessageParsed</span>(<span class="type">QString</span> <i>pType</i>, <span class="type">QList</span>&lt;<span class="type">PlaceContainer</span> *&gt; <i>pPlaces</i>)</h3>
+<p>Triggers when we get place_view request response from server. Then emits the appropriate signal which is related with transmitted type to server. Each emitable signal are corresponding to related container which are used in QML elements <i>pPlaces</i>; List of places received from server reply. <i>pType</i>; Received request type</p>
+<!-- @@@onpPlacesMessageParsed -->
+<!-- $$$placesListReceived[overload1]$$$placesListReceivedQList<PlaceContainer*> -->
+<h3 class="fn" id="placesListReceived"><a name="placesListReceived"></a><code>[signal] </code><span class="type">void</span> RequestManager::<span class="name">placesListReceived</span>(<span class="type">QList</span>&lt;<span class="type">PlaceContainer</span> *&gt; <i>pPlaces</i>)</h3>
+<p>This signal is emited when we get new place list from <a href="networkmessageparser.html">NetworkMessageParser</a>. <i>pPlaces</i>; place list</p>
+<!-- @@@placesListReceived -->
+<!-- $$$recentEventsRecevied[overload1]$$$recentEventsReceviedQList<EventContainer*> -->
+<h3 class="fn" id="recentEventsRecevied"><a name="recentEventsRecevied"></a><code>[signal] </code><span class="type">void</span> RequestManager::<span class="name">recentEventsRecevied</span>(<span class="type">QList</span>&lt;<span class="type">EventContainer</span> *&gt; <i>pEvents</i>)</h3>
+<p>This signal is emited when we get recent type new event list from <a href="networkmessageparser.html">NetworkMessageParser</a>. <i>pEvents</i>; event list</p>
+<!-- @@@recentEventsRecevied -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

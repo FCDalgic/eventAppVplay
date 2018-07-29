@@ -146,7 +146,7 @@ ListView {
         FooterListview
         {
             visible: listViewPlaces.showListFooter;
-            text: "Bu sayfada şu an "+ foodEvents.eventList.length + " etkinlik görüntülenmektedir.";
+            text:  PlacesResults.placeList().length + " places found.";
         }
 
     }
@@ -167,7 +167,6 @@ ListView {
         if (!visible)
             return;
 
-        console.log("trying to set categoryname for msgheader");
         msgHeader.setCategoryName(appWindow.currentlySelectedCategoryName);
 
 

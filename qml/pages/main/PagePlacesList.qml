@@ -8,171 +8,204 @@ import QtGraphicalEffects 1.0
 
 import "../../items/delegates"
 import "../../items/listview"
-import "../../items/listview/categories/food"
 import "../../items"
 
-Flickable {
-    id: flickablePageSelectedCategory;
+import VPlayApps 1.0
+
+
+ListPage
+{
+    id: pagePlaceList;
+    title: "Places"
+    model: PlacesResults.placeList;
     clip: true
 
-    function canGoTop()
-    {
-        if (listviewPlaces.contentY < 20 )
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+    backNavigationEnabled: true;
+    focus: true
+    rightBarItem:NavigationBarItem {
 
-    }
+        // we specify the width of the item with the contentWidth property
+        // the item width then includes the contentWidth and a default padding
+        contentWidth: contentRect.width
 
-
-    NumberAnimation {
-        id: scrollTopAnimator;
-        target: listviewPlaces;
-        easing.type: Easing.InOutQuart
-        properties: "contentY";
-        from: listviewPlaces.contentY;
-        to: 0;
-        running: false;
-        duration: 1000;
-    }
-    function scrollTop()
-    {
-        scrollTopAnimator.start();
-    }
-
-    Component.onCompleted:
-    {
-        if (visible)
-            listviewPlaces.setCategoryName(appWindow.currentlySelectedCategoryName);
-    }
+        // the navigation bar item shows a colored rectangle
+        Rectangle {
+          id: contentRect
+          width: dp(Theme.navigationBar.defaultIconSize)
+          height: width
+          anchors.centerIn: parent
+          color: "transparent";
 
 
-    property string modelType: "art";
-
-    Rectangle
-    {
-        id: bilgilendirme;
-        width: parent.width;
-        height: appWindow.height / 6;
-        color: "white";
-        anchors.top: parent.top;
-        radius: height / 10;
-
-        ColorableIcon
-        {
-            id: bilgilendirmeResim;
-            width: height;
-            iconPath:"../../assets/images/fa/info-x256.png";
-            height: parent.height / 3;
-            color: "transparent";
-            anchors.left: parent.left;
-            anchors.top:parent.top;
-
-            Component.onCompleted:
-            {
-                var oran = (height / appWindow.height);
-                console.log("Ekran yükseklik oranı: " + oran);
-            }
-        }
-
-        Rectangle
-        {
-            id: bilgilendirmeMetniTutucu;
-            width: parent.width - ( bilgilendirmeResim.height + kapatbutonu.height + 10);
-            height: parent.height;
-            color: "transparent";
-            anchors.left: bilgilendirmeResim.right;
-
-
-            Text
-            {
-                width: parent.width * .95;
-                anchors.centerIn: parent;
-                height: parent.height;
-                text:   "Ankara’da düzenlenen yemek workshoplarından tadım günlerine pek çok gurme etkinliği, çok yakında Şehir Etkinlikleri’nde sizlerle... ";
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.WordWrap;
-                horizontalAlignment: Text.AlignLeft;
-                color:"gray";
-            }
-        }
-        ColorableIcon
-        {
-            id: kapatbutonu;
-            width: height;
-            iconPath:"../../assets/images/fa/close-x256.png";
-            height: parent.height / 3;
-            color: "transparent";
-            overlayColor: "gray";
-            anchors.top:parent.top;
-            anchors.left: bilgilendirmeMetniTutucu.right;
+          Icon {
+            anchors.fill: parent
+            icon: IconType.navicon
+            color: Theme.navigationBar.itemColor
 
             MouseArea
             {
+                onClicked: appWindow.openNavDrawer();
                 anchors.fill: parent;
-                onClicked:
-                {
-                    parent.parent.height = 0;
-                    parent.parent.visible = false;
-                }
             }
+          }
         }
-
-
-    }
-
-//    MobileListview
-//    {
-//        id:listviewPlaces;
-//        model: foodEvents.eventList;
-//        width: parent.width;
-//        height: parent.height - bilgilendirme.height;
-//        anchors.top: bilgilendirme.bottom;
-//        anchors.topMargin: 5;
-//    }
-
-    ListViewPlaces
-    {
-        id: listviewPlaces;
-        model: PlacesList.placeList;
-        width: parent.width;
-        height: parent.height - bilgilendirme.height;
-        anchors.top: bilgilendirme.bottom;
-        anchors.topMargin: 5;
-    }
-
-
-
-    function setDelegate(pDelegateName)
-    {
-        if (pDelegateName == "art")
-        {
-            listviewPlaces.model = categoryResults.eventList;
-        }
-    }
-
-    function whoAmI() {
-        return qsTr("category")
-    }
+      } // NavigationBarItem
 
     property string lastHeader: "";
 
 
-    function whatWasMyTitle()
+    property real previousContentY: 0;
+    property string modelType: "art";
+    property string eventType: "";
+    property string sectionFilter: "EventDate";
+    property real status: 0;
+
+
+
+    delegate: PlaceListItemDelegate
     {
-        return lastHeader;
+        placeModel: modelData
+        small: false
+        onClicked:
+        {
+            appWindow.selectPlace(model);
+        }
+
     }
 
-    // called immediately after push()
-    function init() {
-        console.log(qsTr("Init done from One"))
+    // Section
+    Component {
+        id: sectionHeading
+        SimpleSection
+        {
+
+            title: section // E.g. "Category: Fruits"
+            textItem.horizontalAlignment: Text.AlignHCenter // center text horizontally
+            enabled: true // make section clickable
+        }
     }
-    // called immediately after pop()
-    function cleanup() {
-        console.log(qsTr("Cleanup done from One"))
+    section.property: sectionFilter;
+    section.criteria: ViewSection.FullString
+    section.delegate: sectionHeading
+    // Section ends.
+
+    function setCategoryName(pName)
+    {
+        eventType = pName;
     }
-} // flickable
+
+    ListviewMessageHeader
+    {
+        id: msgHeader;
+        anchors.top: parent.top;
+        z :2;
+    }
+
+
+    // Timer
+    function configureLodingText()
+    {
+        if (!visible)
+            return;
+
+        msgHeader.setCategoryName(appWindow.currentlySelectedCategoryName);
+
+
+        if (pagePlaceList.listView.count > 0)
+        {
+            msgHeader.status = 0;
+        }
+        else
+        {
+            // 1. Internet bağlantısını kontrol et.
+            if (!isOnline)
+            {
+                msgHeader.status = 1;
+            }
+            else
+            {
+                msgHeader.status = 3;
+                stopTimers();
+                lastCheckTimer.start();
+            }
+        }
+
+        console.log("configuring loading text in pageSelecteCategory" + msgHeader.status);
+
+    }
+
+
+    function doCheckLastTime()
+    {
+        if (!visible)
+        {
+            msgHeader.status = 0;
+            return;
+        }
+
+
+        if (pagePlaceList.listView.count > 0)
+        {
+            msgHeader.status = 0;
+            stopTimers();
+        }
+        else
+        {
+            // 1. Internet bağlantısını kontrol et.
+            if (!isOnline)
+            {
+                msgHeader.status = 1;
+            }
+            else
+            {
+                msgHeader.status = 2;
+            }
+        }
+
+    }
+
+    function stopTimers()
+    {
+        if (loaderTimer.running)
+        {
+            loaderTimer.stop();
+        }
+
+        if (lastCheckTimer.running)
+        {
+            lastCheckTimer.stop();
+        }
+    }
+
+    Timer
+    {
+        id: loaderTimer;
+        interval: 1000;
+        running: false;
+        repeat: false;
+        onTriggered: configureLodingText();
+
+    }
+    Timer
+    {
+        id: lastCheckTimer;
+        interval: 3000;
+        running: false;
+        repeat: false;
+        onTriggered: doCheckLastTime();
+
+    }
+
+    Component.onCompleted:
+    {
+
+        appWindow.delay(1000, function() {
+            loaderTimer.start();
+        });
+
+    }
+
+}
+
+
+

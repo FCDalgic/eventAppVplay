@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>AbstractEventController.h | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >AbstractEventController.h</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">AbstractEventController.h</h1>
+<span class="subtitle"></span>
+<!-- $$$abstracteventcontroller.h.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  <span class="preprocessor">#ifndef ABSTRACTEVENTCONTROLLER_H</span>
+  <span class="preprocessor">#define ABSTRACTEVENTCONTROLLER_H</span>
+
+  <span class="preprocessor">#include &lt;QObject&gt;</span>
+  <span class="preprocessor">#include &lt;qqmllist.h&gt;</span>
+
+  <span class="preprocessor">#include &lt;source/data/eventcontainer.h&gt;</span>
+
+  <span class="keyword">class</span> AbstractEventController : <span class="keyword">public</span> <span class="type">QObject</span>
+  {
+      Q_OBJECT
+  <span class="keyword">public</span>:
+      <span class="keyword">explicit</span> AbstractEventController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+      Q_PROPERTY(<span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span> eventList READ getEvents NOTIFY eventListChanged)
+
+      <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span> getEvents();
+
+  <span class="keyword">signals</span>:
+      <span class="type">void</span> eventListChanged();
+      <span class="type">void</span> RefreshScreen();
+  <span class="keyword">public</span> <span class="keyword">slots</span>:
+      <span class="type">void</span> addEventData(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> pEvents);
+      <span class="type">void</span> addEventData(EventContainer<span class="operator">*</span> pEvent);
+      <span class="type">void</span> addEventData(<span class="type">QString</span> pID<span class="operator">,</span><span class="type">QString</span> pName<span class="operator">,</span><span class="type">QString</span> pCategory1
+                       <span class="operator">,</span><span class="type">QString</span> pCategory2<span class="operator">,</span><span class="type">QString</span> pEventDate<span class="operator">,</span><span class="type">QString</span> pAddress
+                       <span class="operator">,</span><span class="type">QString</span> pCoordinate<span class="operator">,</span><span class="type">QString</span> pModifiedDate<span class="operator">,</span><span class="type">QString</span> pDescription
+                       <span class="operator">,</span><span class="type">QString</span> pLink<span class="operator">,</span><span class="type">QString</span> pTags<span class="operator">,</span><span class="type">QString</span> pImageURL);
+
+      <span class="type">void</span> cleanData();
+
+      Q_INVOKABLE <span class="type">int</span> getSectionCount(<span class="type">QString</span> pSectionName<span class="operator">,</span> <span class="type">QString</span> pSectionCriteria <span class="operator">=</span> <span class="string">&quot;EventDate&quot;</span>);
+
+      Q_INVOKABLE <span class="type">void</span> clear();
+  <span class="keyword">public</span>:
+      <span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> mEventList;
+  };
+
+  <span class="preprocessor">#endif // ABSTRACTEVENTCONTROLLER_H</span>
+
+</pre>
+</div>
+<!-- @@@abstracteventcontroller.h.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

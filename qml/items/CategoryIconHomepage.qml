@@ -39,7 +39,7 @@ Rectangle
         Text
         {
             width: parent.width   * 0.9;
-            height: parent.height * 0.4;
+            height: parent.height * 0.3;
             horizontalAlignment: Text.AlignHCenter;
             font.pixelSize: height *  container.fontPixelRatio;
             text: container.categoryName;

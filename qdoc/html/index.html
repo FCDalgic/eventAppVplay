@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- project.qdoc -->
+  <title>Event App Assignment | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >Event App Assignment</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Event App Assignment</h1>
+<span class="subtitle"></span>
+<!-- $$$index.html-description -->
+<div class="descr"> <a name="details"></a>
+<a name="about"></a>
+<h2 id="about">About</h2>
+<p>EventApp or <i>Şehir Etkinlikleri</i> is a mobile application which provides all events in your city. It is currently available only for Ankara, Turkey, but later who knows. Full version of this application can be found in <a href="https://play.google.com/store/apps/details?id=tr.com.tusco.mobile.sehiretkinlikleri&hl=tr"><i>here</i></a>.</p>
+<p>This version is an proof of concept of original one which is developed by using V-Play Engine with Qt 5.10.1 Framework. In order to demonstrate coding skills and documentation abilities:</p>
+<ul>
+<li>Most of qml items are converted to V-Play items such as Flickable -&gt; AppFlickable, SwipeView -&gt; Navigation and StackView -&gt; NavigationStack</li>
+<li>The documentation is created by using QDoc. Documentation procedure is learnt from <a href="https://github.com/anatolyk82/Collisions">Collusions Game</a> and <a href="https://github.com/RSATom/Qt/blob/master/qtandroidextras/examples/androidextras/notification/doc/src/qtandroidextras-example-notification.qdoc">QtNotifier</a></li>
+</ul>
+<a name="screenshots"></a>
+<h3 >ScreenShots</h3>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/main.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/selectedEvent.jpg" alt="" /></p></td><td ><p class="centerAlign"><img src="images/drawer.jpg" alt="" /></p></td></tr>
+</table></div>
+<a name="design-overview"></a>
+<h2 id="design-overview">Design Overview</h2>
+<p>In this section project structure and UI design strategy are given.</p>
+<a name="project-structure"></a>
+<h3 >Project Structure</h3>
+<ul>
+<li>assets<ul>
+<li>images ( *.png, *.jpg)</li>
+</ul>
+</li>
+<li>source ( *.cpp, *.h)<ul>
+<li>main.cpp</li>
+<li>MainController.cpp</li>
+<li>communication</li>
+<li>data</li>
+<li>modelcontrollers</li>
+</ul>
+</li>
+<li>qml ( *.qml)</li>
+<li>docs (*.qdoc, *.qdocconf, *.css , *.html)</li>
+</ul>
+<p>File informations and it's list are given in Section C++ files.</p>
+<a name="ui-design-strategy"></a>
+<h3 >UI Design Strategy</h3>
+<p>In this application, UI consits of a main StackNavigation and its components. The first component of the item is selected as Navigation in order to provide users to access most common options just by swiping between tabs/pages. Then, whenever user selects an event, place or category the application pushs another pages to stack to visualize person's choice. The implementation of this scene is given below where <a href="mobileapp-qml.html">MobileApp</a> is inhereted from <a href="iappproperties-qml.html">IAppProperties</a> and IAppProperties is inhereted from <a href="https://v-play.net/doc/vplayapps-app/">App</a> component.</p>
+<pre class="cpp">
+
+  import QtQuick 2.4
+  import VPlayApps 1.0
+  import &quot;items&quot;
+  import &quot;pages/main&quot;
+  import &quot;navigation&quot;
+
+  <span class="type">MobileApp</span> {
+      <span class="name">id</span>: <span class="name">appWindow</span>
+
+      <span class="type">Page</span> {
+        <span class="comment">// make navigation public, so app-demo launcher can track navigation changes and log screens with Google Analytics</span>
+        property <span class="type">alias</span> <span class="name">childNavigationStack</span>: <span class="name">globalNavStack</span>
+        property <span class="type">alias</span> <span class="name">navigation</span>: <span class="name">navigation</span>
+        <span class="name">useSafeArea</span>: <span class="number">false</span> <span class="comment">// full screen</span>
+
+        <span class="type">NavigationStack</span> {
+            <span class="name">id</span>: <span class="name">globalNavStack</span>
+
+            <span class="comment">// Wrapper page</span>
+            <span class="type">Page</span> {
+
+                <span class="name">useSafeArea</span>: <span class="number">false</span> <span class="comment">// full screen</span>
+
+                <span class="name">title</span>: <span class="name">currentAppTitle</span>;
+
+                <span class="comment">// To access Drawer anywhere from this level of stack.</span>
+                <span class="name">rightBarItem</span>:<span class="name">NavigationBarItem</span> {
+
+                    <span class="comment">// we specify the width of the item with the contentWidth property</span>
+                    <span class="comment">// the item width then includes the contentWidth and a default padding</span>
+                    <span class="name">contentWidth</span>: <span class="name">contentRect</span>.<span class="name">width</span>
+
+                    <span class="comment">// the navigation bar item shows a colored rectangle</span>
+                    <span class="type">Rectangle</span> {
+                      <span class="name">id</span>: <span class="name">contentRect</span>
+                      <span class="name">width</span>: <span class="name">dp</span>(<span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">defaultIconSize</span>)
+                      <span class="name">height</span>: <span class="name">width</span>
+                      <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                      <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+                      <span class="type">Icon</span> {
+                        <span class="name">anchors</span>.fill: <span class="name">parent</span>
+                        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">navicon</span>
+                        <span class="name">color</span>: <span class="name">Theme</span>.<span class="name">navigationBar</span>.<span class="name">itemColor</span>
+
+                        <span class="type">MouseArea</span>
+                        {
+                            <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                            <span class="name">onClicked</span>: <span class="name">navigationBar</span>.<span class="name">open</span>();
+                        }
+                      }
+                    }
+                  } <span class="comment">// NavigationBarItem</span>
+
+                <span class="type">Navigation</span> {
+                    <span class="name">id</span>: <span class="name">navigation</span>
+                    <span class="comment">// Comment to use a navigation drawer instead of tabs on Android</span>
+                    <span class="name">navigationMode</span>: <span class="name">navigationModeTabs</span>
+
+                    <span class="name">onCurrentIndexChanged</span>: <span class="name">swipeViewIndexChanged</span>(<span class="name">currentIndex</span>);
+
+                    <span class="type">NavigationItem</span> {
+                        <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Homepage&quot;</span>);
+                        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">home</span>
+                        <span class="name">showInDrawer</span>: <span class="number">false</span>;
+
+                        <span class="type">Homepage</span>
+                        {
+
+                        }
+                    }
+
+                    <span class="type">NavigationItem</span> {
+                        <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Recents&quot;</span>)
+                        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">thlarge</span>;
+
+                        <span class="type">PageRecents</span> {
+
+                        }
+                    }
+
+                    <span class="type">NavigationItem</span> {
+                        <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Places&quot;</span>)
+                        <span class="name">icon</span>: <span class="name">IconType</span>.<span class="name">locationarrow</span>;
+
+                        <span class="type">PagePlacesList</span> {
+
+                        }
+                    }
+
+                } <span class="comment">// Navigation ends.</span>
+
+            } <span class="comment">// Page ends.</span>
+
+        }<span class="comment">//Stack ends</span>
+      }
+
+      <span class="comment">// Custom Drawer</span>
+      <span class="type">NavigationDrawerBar</span>{
+          <span class="name">id</span>: <span class="name">navigationBar</span>
+      }
+  }
+
+</pre>
+<p>As it can seen from the screenshots, to provide ability of accessing drawer from any pages the following code snippet is added to each top level Page component in the project.</p>
+<pre class="cpp">
+
+  <span class="comment">// To access Drawer anywhere from this level of stack.</span>
+  rightBarItem:NavigationBarItem {
+
+    <span class="comment">// we specify the width of the item with the contentWidth property</span>
+    <span class="comment">// the item width then includes the contentWidth and a default padding</span>
+    contentWidth: contentRect<span class="operator">.</span>width
+
+    <span class="comment">// the navigation bar item shows a colored rectangle</span>
+    Rectangle {
+          id: contentRect
+          width: dp(Theme<span class="operator">.</span>navigationBar<span class="operator">.</span>defaultIconSize)
+          height: width
+          anchors<span class="operator">.</span>centerIn: parent
+          color: <span class="string">&quot;transparent&quot;</span>;
+
+
+          Icon {
+            anchors<span class="operator">.</span>fill: parent
+            icon: IconType<span class="operator">.</span>navicon
+            color: Theme<span class="operator">.</span>navigationBar<span class="operator">.</span>itemColor
+
+            MouseArea
+            {
+                    anchors<span class="operator">.</span>fill: parent;
+                    onClicked: navigationBar<span class="operator">.</span>open();
+            }
+          }
+    }
+  } <span class="comment">// NavigationBarItem</span>
+
+</pre>
+<a name="setting-up-theme"></a>
+<h3 >Setting Up Theme</h3>
+<p>The color combination of the application is set by Theme component of Qt.</p>
+<pre class="cpp">
+
+  onInitTheme:
+  {
+          Theme<span class="operator">.</span>colors<span class="operator">.</span>backgroundColor <span class="operator">=</span> colorMain;
+          <span class="comment">// Theme.navigationAppDrawer.backgroundColor =colorMain;</span>
+          <span class="comment">// Theme.navigationAppDrawer.itemBackgroundColor = colorMain;</span>
+           Theme<span class="operator">.</span>navigationBar<span class="operator">.</span>itemColor <span class="operator">=</span> <span class="string">&quot;white&quot;</span>
+           Theme<span class="operator">.</span>navigationBar<span class="operator">.</span>backgroundColor <span class="operator">=</span>colorMain;
+
+          Theme<span class="operator">.</span>navigationBar<span class="operator">.</span>dividerColor <span class="operator">=</span> colorMain;
+          Theme<span class="operator">.</span>navigationBar<span class="operator">.</span>titleColor <span class="operator">=</span> <span class="string">&quot;white&quot;</span>;
+          Theme<span class="operator">.</span>tabBar<span class="operator">.</span>backgroundColor <span class="operator">=</span> <span class="string">&quot;white&quot;</span>;
+          Theme<span class="operator">.</span>colors<span class="operator">.</span>tintColor <span class="operator">=</span> colorMain;
+          Theme<span class="operator">.</span>tabBar<span class="operator">.</span>markerColor <span class="operator">=</span> colorMain;
+          Theme<span class="operator">.</span>listSection<span class="operator">.</span>backgroundColor <span class="operator">=</span> colorMain;
+          Theme<span class="operator">.</span>listSection<span class="operator">.</span>textColor <span class="operator">=</span> <span class="string">&quot;white&quot;</span>;
+
+          Theme<span class="operator">.</span>update();
+
+  }
+
+</pre>
+<a name="integrating-c-and-qml"></a>
+<h2 id="integrating-c-and-qml">Integrating C++ and QML</h2>
+<p>Backend and frontend are integrated to each other via <a href="maincontroller-cpp.html">MainController</a> class.</p>
+<pre class="qml">
+
+  MainController<span class="operator">::</span>MainController(<span class="type">QQmlContext</span> <span class="operator">*</span>pRoot<span class="operator">,</span> <span class="type">QObject</span> <span class="operator">*</span>parent)
+      : <span class="type">QObject</span>(parent)
+      <span class="operator">,</span> mRoot(pRoot)
+      <span class="operator">,</span> mCategoryEvents(NULL)
+      <span class="operator">,</span> mRequestManager(NULL)
+      <span class="operator">,</span> mHomepageRecents(NULL)
+  {
+
+      qmlRegisterType<span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span>();
+      qmlRegisterType<span class="operator">&lt;</span>PlaceContainer<span class="operator">&gt;</span>();
+
+      initialize();
+
+  }
+
+  <span class="type">void</span> MainController<span class="operator">::</span>register2Meta()
+  {
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;RequestManager&quot;</span>  <span class="operator">,</span> mRequestManager );
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;CategoryResults&quot;</span> <span class="operator">,</span> mCategoryEvents);
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;PlacesResults&quot;</span>   <span class="operator">,</span> mPlacesController);
+      mRoot<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;HomeRecentEvents&quot;</span><span class="operator">,</span> mHomepageRecents);
+  }
+
+</pre>
+<p><b>See Also</b> <a href="requestmanager-cpp.html">communication/RequestManager.cpp</a> , <a href="abstracteventcontroller-cpp.html">modelcontrollers/AbstractEventController.cpp</a>, <a href="abstractplacescontroller-cpp.html">modelcontrollers/AbstractPlacesController.cpp</a></p>
+<a name="presenting-data"></a>
+<h2 id="presenting-data">Presenting Data</h2>
+<p>Since this a live application, all data should be accessible from a server. Therefore, a link is created to provide that ability and served by RESTful service.</p>
+<a name="preparing-requests"></a>
+<h3 >Preparing Requests</h3>
+<p>In backend part, we accessed that data by sending GET and POST requests which are declared in <a href="requestmanager-cpp.html">RequestManager</a> class.</p>
+<pre class="qml">
+
+  <span class="comment">/**
+   * @brief RESTManager::GET creates GET request.
+   * @param hostName : address of your REST request.
+   * @param data : a map which contains parameters and their values to bind paraemeters to that request.
+   */</span>
+  <span class="type">void</span> RESTManager<span class="operator">::</span>GET(<span class="type">QString</span> hostName<span class="operator">,</span> <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">QString</span><span class="operator">&gt;</span> data)
+  {
+      <span class="type">QUrl</span> url(hostName);
+
+      <span class="keyword">if</span> (data<span class="operator">.</span>size() <span class="operator">&lt;</span> <span class="number">1</span>)
+      {
+          mAccessManager<span class="operator">-</span><span class="operator">&gt;</span>get(<span class="type">QNetworkRequest</span>(url));
+          <span class="keyword">return</span>;
+      }
+
+  <span class="comment">/**
+   * @brief RESTManager::POST creates POST request.
+   * @param hostName : address of your REST request.
+   * @param data : a map which contains parameters and their values to bind paraemeters to that request.
+   */</span>
+  <span class="type">void</span> RESTManager<span class="operator">::</span>POST(<span class="type">QString</span> hostName<span class="operator">,</span> <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">QString</span><span class="operator">&gt;</span> data)
+  {
+      <span class="type">QUrl</span> url(hostName);
+
+      <span class="keyword">if</span> (data<span class="operator">.</span>size() <span class="operator">&lt;</span> <span class="number">1</span>)
+      {
+          mAccessManager<span class="operator">-</span><span class="operator">&gt;</span>get(<span class="type">QNetworkRequest</span>(url));
+          <span class="keyword">return</span>;
+      }
+
+</pre>
+<a name="parsing-server-reply"></a>
+<h3 >Parsing Server Reply</h3>
+<p>At first, we connected messageReady2Parse signal to parseNetworkMessage slot to notify <a href="networkmessageparser-cpp.html">NetworkMessageParser</a> when a new reply is received.</p>
+<pre class="qml">
+
+  <span class="comment">//1</span>
+  <span class="type">void</span> RequestManager<span class="operator">::</span>initializeConnections()
+  {
+      connect(mRESTManager <span class="operator">,</span> SIGNAL(messageReady2Parse(<span class="type">QString</span>))<span class="operator">,</span> mParser<span class="operator">,</span> SLOT(parseNetworkMessage(<span class="type">QString</span>)));
+
+      connect(mParser <span class="operator">,</span> SIGNAL(requestMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>))<span class="operator">,</span> <span class="keyword">this</span> <span class="operator">,</span> SLOT(onEventMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+      connect(mParser <span class="operator">,</span> SIGNAL(placesMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span>)) <span class="operator">,</span> <span class="keyword">this</span> <span class="operator">,</span> SLOT(onpPlacesMessageParsed(<span class="type">QString</span><span class="operator">,</span><span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span>)));
+  }
+
+</pre>
+<p>Then, we parse JSON message to extract data in above slot.</p>
+<pre class="qml">
+
+      \fn void NetworkMessageParser::parseNetworkMessage(QString pMessage)
+      Tries to parse given input message.
+      \a pMessage is the input message observed from QNetworkReply
+  */</span>
+  <span class="type">void</span> NetworkMessageParser<span class="operator">::</span>parseNetworkMessage(<span class="type">QString</span> pMessage)
+  {
+      mUnicodeDecoder<span class="operator">.</span>setHtml(pMessage);
+      <span class="type">QString</span> decoded <span class="operator">=</span> mUnicodeDecoder<span class="operator">.</span>toPlainText();
+
+      <span class="type">QJsonDocument</span> document <span class="operator">=</span> <span class="type">QJsonDocument</span><span class="operator">::</span>fromJson(decoded<span class="operator">.</span>toUtf8());
+      <span class="type">QJsonObject</span>  jsonObject <span class="operator">=</span> document<span class="operator">.</span>object();
+
+      <span class="type">QJsonArray</span>  jsonArray;
+
+      <span class="keyword">try</span>
+      {
+          <span class="type">QString</span> tType <span class="operator">=</span>  jsonObject<span class="operator">[</span><span class="string">&quot;request_type&quot;</span><span class="operator">]</span><span class="operator">.</span>toString();
+
+          <span class="keyword">if</span> (tType <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;places_view&quot;</span>)
+          {
+
+              jsonArray <span class="operator">=</span> jsonObject<span class="operator">[</span><span class="string">&quot;places&quot;</span><span class="operator">]</span><span class="operator">.</span>toArray();
+              <span class="type">QList</span><span class="operator">&lt;</span>PlaceContainer<span class="operator">*</span><span class="operator">&gt;</span> tList;
+
+              <span class="keyword">if</span> (jsonArray<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span>)
+              {
+                  PlaceContainer <span class="operator">*</span>tContainer;
+
+                  foreach (<span class="keyword">const</span> <span class="type">QJsonValue</span> <span class="operator">&amp;</span> value<span class="operator">,</span> jsonArray) {
+
+                      tContainer <span class="operator">=</span> <span class="keyword">new</span> PlaceContainer();
+
+                      <span class="type">QJsonObject</span> obj <span class="operator">=</span> value<span class="operator">.</span>toObject();
+
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setName             (obj<span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setAddress          (obj<span class="operator">[</span><span class="string">&quot;address&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setCoordinate       (obj<span class="operator">[</span><span class="string">&quot;coordinate&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setTelephone        (obj<span class="operator">[</span><span class="string">&quot;phone&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setLink             (obj<span class="operator">[</span><span class="string">&quot;website&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setImage            (obj<span class="operator">[</span><span class="string">&quot;image&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+
+                      tList<span class="operator">.</span>append(tContainer);
+                  }
+
+                  <span class="keyword">if</span> (tList<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span>)
+                      <span class="keyword">emit</span> placesMessageParsed(tType <span class="operator">,</span> tList);
+              }
+          }
+          <span class="keyword">else</span>
+          {
+              jsonArray <span class="operator">=</span> jsonObject<span class="operator">[</span><span class="string">&quot;events&quot;</span><span class="operator">]</span><span class="operator">.</span>toArray();
+              <span class="type">QList</span><span class="operator">&lt;</span>EventContainer<span class="operator">*</span><span class="operator">&gt;</span> tList;
+
+              <span class="keyword">if</span> (jsonArray<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span>)
+              {
+
+                  <span class="type">QString</span> tEventTime; <span class="type">QStringList</span> tStringList;
+                  EventContainer <span class="operator">*</span>tContainer;
+                  foreach (<span class="keyword">const</span> <span class="type">QJsonValue</span> <span class="operator">&amp;</span> value<span class="operator">,</span> jsonArray) {
+
+                      tContainer <span class="operator">=</span> <span class="keyword">new</span> EventContainer();
+
+                      <span class="type">QJsonObject</span> obj <span class="operator">=</span> value<span class="operator">.</span>toObject();
+
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setID               (obj<span class="operator">[</span><span class="string">&quot;id&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setName             (obj<span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      <span class="comment">// Rearranging date format to desired one.</span>
+                      <span class="type">QString</span> tDate <span class="operator">=</span> obj<span class="operator">[</span><span class="string">&quot;eventDate&quot;</span><span class="operator">]</span><span class="operator">.</span>toString()<span class="operator">.</span>replace(<span class="string">&quot; &quot;</span><span class="operator">,</span> <span class="string">&quot;&quot;</span>);
+                      <span class="type">QStringList</span> dates<span class="operator">=</span> tDate<span class="operator">.</span>split(<span class="string">&quot;-&quot;</span>);
+                      tDate <span class="operator">=</span> dates<span class="operator">[</span><span class="number">2</span><span class="operator">]</span> <span class="operator">+</span> <span class="string">&quot;.&quot;</span> <span class="operator">+</span>  dates<span class="operator">[</span><span class="number">1</span><span class="operator">]</span> <span class="operator">+</span> <span class="string">&quot;.&quot;</span> <span class="operator">+</span> dates<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>;
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setEventDate(tDate);
+
+                      <span class="comment">// To able to create faster sectioning in QML ListViews, Date information is manipulated</span>
+                      <span class="type">int</span> tSiralamaDegeri <span class="operator">=</span> <span class="type">QString</span>(dates<span class="operator">.</span>at(<span class="number">2</span>))<span class="operator">.</span>toInt()
+                                          <span class="operator">+</span> <span class="type">QString</span>(dates<span class="operator">.</span>at(<span class="number">1</span>))<span class="operator">.</span>toInt() <span class="operator">*</span> <span class="number">20</span>
+                                          <span class="operator">+</span> <span class="type">QString</span>(dates<span class="operator">.</span>at(<span class="number">0</span>))<span class="operator">.</span>toInt() <span class="operator">*</span> <span class="number">10</span>;
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setSiralamaOlcutu(tSiralamaDegeri);
+                      <span class="comment">// DiÄŸer deÄŸerler</span>
+                      tEventTime <span class="operator">=</span> obj<span class="operator">[</span><span class="string">&quot;eventTime&quot;</span><span class="operator">]</span><span class="operator">.</span>toString();
+                      <span class="keyword">if</span> (tEventTime <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;00:00:00&quot;</span>)
+                          tEventTime <span class="operator">=</span> <span class="string">&quot;BelirtilmemiÅŸ&quot;</span>;
+                      <span class="keyword">else</span>
+                      {
+                          tStringList <span class="operator">=</span> tEventTime<span class="operator">.</span>split(<span class="string">&quot;:&quot;</span>);
+                          tEventTime <span class="operator">=</span> tStringList<span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">+</span> <span class="string">&quot;:&quot;</span> <span class="operator">+</span> tStringList<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>;
+                      }
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setEventTime        (tEventTime);
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setCategory1        (obj<span class="operator">[</span><span class="string">&quot;category1&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setCategory2        (obj<span class="operator">[</span><span class="string">&quot;category2&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setYer              (obj<span class="operator">[</span><span class="string">&quot;yer&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setAddress          (obj<span class="operator">[</span><span class="string">&quot;address&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setCoordinate       (obj<span class="operator">[</span><span class="string">&quot;coordinate&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setTelephone        (obj<span class="operator">[</span><span class="string">&quot;telefon&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setLink             (obj<span class="operator">[</span><span class="string">&quot;link&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setRezervasyon      (obj<span class="operator">[</span><span class="string">&quot;biletRezevasyon&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setDescription      (obj<span class="operator">[</span><span class="string">&quot;description&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setTag1             (obj<span class="operator">[</span><span class="string">&quot;tag1&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setTag2             (obj<span class="operator">[</span><span class="string">&quot;tag2&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setTag3             (obj<span class="operator">[</span><span class="string">&quot;tag3&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setImageURL         (obj<span class="operator">[</span><span class="string">&quot;imageURL&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+                      tContainer<span class="operator">-</span><span class="operator">&gt;</span>setModifiedDate     (obj<span class="operator">[</span><span class="string">&quot;modifiedDate&quot;</span><span class="operator">]</span><span class="operator">.</span>toString());
+
+                      tList<span class="operator">.</span>append(tContainer);
+                  }
+
+              }
+
+              <span class="keyword">if</span> (tList<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">0</span>)
+                  <span class="keyword">emit</span> requestMessageParsed(tType <span class="operator">,</span> tList);
+          }
+
+      }
+      <span class="keyword">catch</span> (<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>)
+      {
+          qCritical() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;An error occured while trying to parse given server reply.&quot;</span>;
+      }
+
+  }
+
+</pre>
+<a name="notifying-qml-components"></a>
+<h3 >Notifying QML Components</h3>
+<p>Since we get a list from server, it should be registered to Qt Meta properly. Therefore we created two abstract class to provide base implementation of registeration which are <a href="abstracteventcontroller-cpp.html">AbstractEventController</a> and <a href="abstractplacescontroller-cpp.html">AbstractPlacesController</a> respectively. Sample implementation is given below.</p>
+<pre class="cpp">
+
+  \\ in header file<span class="operator">.</span>
+  Q_PROPERTY(<span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span> eventList READ getEvents NOTIFY eventListChanged)
+
+  \\ in cpp file<span class="operator">.</span> when we want to access <span class="keyword">this</span> list from QML
+  <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span> AbstractEventController<span class="operator">::</span>getEvents()
+  {
+          <span class="keyword">return</span> <span class="type">QQmlListProperty</span><span class="operator">&lt;</span>EventContainer<span class="operator">&gt;</span>(<span class="keyword">this</span><span class="operator">,</span> mEventList);
+  }
+  \\ in cpp file<span class="operator">.</span> When we get <span class="keyword">new</span> list of events from server<span class="operator">.</span>
+  <span class="type">void</span> AbstractEventController<span class="operator">::</span>addEventData(<span class="type">QList</span><span class="operator">&lt;</span>EventContainer <span class="operator">*</span><span class="operator">&gt;</span> pEvents)
+  {
+          mEventList<span class="operator">.</span>clear();
+          mEventList<span class="operator">.</span>append(pEvents);
+
+          <span class="keyword">emit</span> eventListChanged();
+  }
+
+</pre>
+<a name="additional-informations"></a>
+<h2 id="additional-informations">Additional Informations</h2>
+<a name="used-v-play-functions"></a>
+<h3 >Used V-Play Functions</h3>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><a href="https://v-play.net/doc/vplayapps-app/#isOnline-prop"><b>isOnline:</b></a></td><td >Very useful to check the Internet connection.</td></tr>
+<tr valign="top" class="even"><td ><a href="https://v-play.net/doc/vplayapps-listpage/"><b>ListPage:</b></a></td><td >Awesome component which provides functionality normaly achived by using Page, Flickable and Listview respectively.</td></tr>
+<tr valign="top" class="odd"><td ><a href="https://v-play.net/doc/nativeutils/#displayCameraPicker-method"><b>Camera Picker:</b></a></td><td >Beter than QCaminho open source implementation and easier to use.</td></tr>
+<tr valign="top" class="even"><td ><a href="https://v-play.net/doc/nativeutils/#share-method"><b>Share:</b></a></td><td >Easy to use.</td></tr>
+<tr valign="top" class="odd"><td ><a href="https://v-play.net/doc/vplayapps-navigation/"><b>Navigation:</b></a></td><td >Awesome compoenent which provides power of SwipeView and Tabbar compenents while binding their indexes to highlight related icons.</td></tr>
+<tr valign="top" class="even"><td ><a href="https://v-play.net/doc/vplayapps-navigationstack/"><b>NavigationStack:</b></a></td><td >popAllExceptFirstAndPush(source, options) function is so helpful.</td></tr>
+</table></div>
+<a name="custom-components-and-functions"></a>
+<h3 >Custom Components and Functions</h3>
+<a name="google-static-map-googlestaticmapitem"></a>
+<h4 >Google Static Map : <a href="qml-googlestaticmapitem.html">GoogleStaticMapItem</a></h4>
+<p>Creates static map image dynamically with using Google's Static Map API. A proper license key should be generated in order to use this API. For more information about the API and its limitations please refere <a href="https://developers.google.com/maps/documentation/maps-static/intro"><i>API Reference</i></a>.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th ><a href="qml-googlestaticmapitem.html">GoogleStaticMapItem</a></th><th >Usage</th><th >Sample Output</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="cpp">
+
+  import <span class="type">QtQuick</span> <span class="number">2.7</span>
+  import <span class="type">QtQuick</span><span class="operator">.</span>Layouts <span class="number">1.3</span>
+  import <span class="type">QtQuick</span><span class="operator">.</span>Controls <span class="number">2.1</span>
+  import <span class="type">QtGraphicalEffects</span> <span class="number">1.0</span>
+
+  Rectangle
+  {
+          property string staticApiKey: <span class="string">&quot;&quot;</span>;
+          property real latitude: <span class="number">0</span>;
+          property real longitude: <span class="number">0</span>;
+          property real pictureWidth: <span class="number">800</span>;
+          property real pictureHeight: <span class="number">500</span>;
+          property real zoom: <span class="number">16</span>;
+          property real pictureHeight: <span class="number">500</span>;
+          property real scale: <span class="number">2</span>;
+          property string title: <span class="string">&quot;&quot;</span>;
+          property bool enableGetDirection: <span class="keyword">false</span>;
+
+          color: <span class="string">&quot;transparent&quot;</span>;
+
+          Image {
+                  id: googleMapStaticImage;
+                  property string constant: <span class="string">&quot;https://maps.googleapis.com/maps/api/staticmap?key=&quot;</span>;
+                  property string url: constant <span class="operator">+</span> parent<span class="operator">.</span>staticApiKey
+                    <span class="operator">+</span> <span class="string">&quot;&amp;center=&quot;</span> <span class="operator">+</span> parent<span class="operator">.</span>latitude <span class="operator">+</span> <span class="string">&quot;, &quot;</span> <span class="operator">+</span> parent<span class="operator">.</span>longitude
+                    <span class="operator">+</span> <span class="string">&quot;&amp;zoom=&quot;</span> <span class="operator">+</span> parent<span class="operator">.</span>zoom
+                    <span class="operator">+</span> <span class="string">&quot;&amp;size=&quot;</span> <span class="operator">+</span> Math<span class="operator">.</span>ceil(parent<span class="operator">.</span>pictureWidth) <span class="operator">+</span> <span class="string">&quot;x&quot;</span>  <span class="operator">+</span> Math<span class="operator">.</span>ceil(parent<span class="operator">.</span>pictureHeight)
+                    <span class="operator">+</span> <span class="string">&quot;&amp;markers=color:red|label:A|&quot;</span>
+                    <span class="operator">+</span> <span class="string">&quot;scale:2|&quot;</span>
+                    <span class="operator">+</span> <span class="string">&quot;title:&quot;</span> <span class="operator">+</span> parent<span class="operator">.</span>title;
+                  property variant temp;
+                  property string latitude: <span class="string">&quot;-34.397&quot;</span>;
+                  property string longitude: <span class="string">&quot;150.644&quot;</span>;
+
+                  source: url;
+                  width: parent<span class="operator">.</span>width;
+                  height: parent<span class="operator">.</span>height;
+                  sourceSize: <span class="type">Qt</span><span class="operator">.</span>size(width <span class="operator">,</span>  height);
+
+          }
+
+          MouseArea
+          {
+                  anchors<span class="operator">.</span>fill: parent;
+                  onClicked:
+                  {
+                          <span class="keyword">if</span> (parent<span class="operator">.</span>enableGetDirection)
+                          {
+                                  var directionURL <span class="operator">=</span>  <span class="string">&quot;https://www.google.com/maps?saddr=My+Location&amp;daddr=&quot;</span>
+                                  <span class="operator">+</span> parent<span class="operator">.</span>latitude <span class="operator">+</span> <span class="string">&quot;,&quot;</span> <span class="operator">+</span> parent<span class="operator">.</span>longitude;
+                                  <span class="type">Qt</span><span class="operator">.</span>openUrlExternally(directionURL);
+                          }
+                  }
+          }
+  }
+
+</pre>
+</td><td ><pre class="qml">
+
+                  GoogleStaticMapItem
+                  {
+                      visible: true;
+                      width: parent.width;
+                      height: dp(200);
+                      Layout.fillWidth: true;
+                      color: &quot;transparent&quot;;
+
+                      staticApiKey: &quot;AIzaSyD3crnSmwEYtw31-5FKBKr5H-xAEpNgzvU&quot;;
+                      latitude: getLatitudeFromInput(selectedPlacePage.model.modelData.Coordinate);
+                      longitude: getLongitudeFromInput(selectedPlacePage.model.modelData.Coordinate);
+                      title:selectedPlacePage.model.modelData.Name;
+
+                      enableGetDirection: true;
+                      function getLatitudeFromInput(pInput)
+                      {
+                          var temp = pInput.split(&quot;,&quot;);
+                          return temp[0];
+                      }
+                      function getLongitudeFromInput(pInput)
+                      {
+                          var temp = pInput.split(&quot;,&quot;);
+                          return temp[1];
+                      }
+                  }
+                  SpaceSelectedEventPageContents {visible: aciklama.visible}
+
+</pre>
+</td><td ><p class="centerAlign"><img src="images/selectedEvent.jpg" alt="" /></p></td></tr>
+</table></div>
+<a name="sending-email"></a>
+<h4 >Sending EMail</h4>
+<p>Full sample code can be found in <a href="pageselectedevent-qml.html">PageSelectedEvent.qml</a>} {PageSelectedEvent}. Opening the number dialer can done by using legitimate URL scheme, which is <b><i>tel:+</i></b> For instance in <a href="pageselectedevent-qml.html">PageSelectedEvent.qml</a>} {PageSelectedEvent} it is used as:</p>
+<pre class="cpp">
+
+  MouseArea
+  {
+          anchors<span class="operator">.</span>fill: parent;
+          onClicked:  <span class="type">Qt</span><span class="operator">.</span>openUrlExternally(<span class="string">&quot;mailto:?to=iletisim@sehir-etkinlikleri.com&amp;subject=Information&amp;body=&quot;</span>);
+  }
+
+</pre>
+<p>which opens the default email program in your environment (Android, Linux, Windows, IOS) and creates a template email which has subject equals to <i>Information</i> and deliver address equals to <i>iletisim@sehir-etkinlikleri.com</i>.</p>
+<a name="opening-number-dialer"></a>
+<h4 >Opening Number Dialer</h4>
+<p>Full sample code can be found in <a href="pageabout-qml.html">PageAbout</a>. Opening an email service can achieved by using legitimate URL scheme, which is <b><i>mailto:?</i></b> For instance in {PageAbout.qml} {PageAbout} it is used as:</p>
+<pre class="cpp">
+
+  onClicked:
+       {
+               <span class="keyword">if</span> (callNumber<span class="operator">.</span>length <span class="operator">&gt;</span> <span class="number">3</span>)
+               {
+                       <span class="type">Qt</span><span class="operator">.</span>openUrlExternally(<span class="string">&quot;tel:+&quot;</span> <span class="operator">+</span> callNumber);
+               }
+       }
+
+</pre>
+<p>Then, your environment default number dialer will pop.</p>
+<a name="c-files"></a>
+<h2 id="c-files">C++ Files</h2>
+<ul>
+<li><a href="abstracteventcontroller-cpp.html">modelcontrollers/AbstractEventController.cpp</a></li>
+<li><a href="abstracteventcontroller-h.html">modelcontrollers/AbstractEventController.h</a></li>
+<li><a href="abstractplacescontroller-cpp.html">modelcontrollers/AbstractPlacesController.cpp</a></li>
+<li><a href="abstractplacescontroller-h.html">modelcontrollers/AbstractPlacesController.h</a></li>
+<li><a href="categoryeventcontroller-cpp.html">modelcontrollers/CategoryEventsController.cpp</a></li>
+<li><a href="categoryeventcontroller-h.html">modelcontrollers/CategoryEventsController.h</a></li>
+<li><a href="eventcontainer-cpp.html">data/EventContainer.cpp</a></li>
+<li><a href="eventcontainer-cpp.html">data/EventContainer.cpp</a></li>
+<li><a href="maincontroller-cpp.html">MainController.cpp</a></li>
+<li><a href="maincontroller-h.html">MainController.h</a></li>
+<li><a href="networkmessageparser-cpp.html">communication/NetworkMessageParser.cpp</a></li>
+<li><a href="networkmessageparser-h.html">communication/NetworkMessageParser.h</a></li>
+<li><a href="placecontainer-cpp.html">data/PlaceContainer.cpp</a></li>
+<li><a href="placecontainer-cpp.html">data/PlaceContainer.cpp</a></li>
+<li><a href="restmanager-cpp.html">communication/RESTManager.cpp</a></li>
+<li><a href="restmanager-h.html">communication/RESTManager.h</a></li>
+<li><a href="requestmanager-cpp.html">communication/RequestManager.cpp</a></li>
+<li><a href="requestmanager-h.html">communication/RequestManager.h</a></li>
+<li><a href="toprecenteventscontroller-cpp.html">modelcontrollers/TopRecentEventsController.cpp</a></li>
+<li><a href="toprecenteventscontroller-h.html">modelcontrollers/TopRecentEventsController.h</a></li>
+</ul>
+<a name="qml-files"></a>
+<h2 id="qml-files">QML Files</h2>
+<ul>
+<li><a href="homepage-qml.html">qml/pages/main/Homepage.qml</a></li>
+<li><a href="iappproperties-qml.html">qml/IAppProperties.qml</a></li>
+<li><a href="main-qml.html">qml/Main.qml</a></li>
+<li><a href="mobileapp-qml.html">qml/MobileApp.qml</a></li>
+<li><a href="navigationbutton-qml.html">qml/navigation/IAppProperties.qml</a></li>
+<li><a href="navigationdrawerbar-qml.html">qml/navigation/IAppProperties.qml</a></li>
+<li><a href="pageplaceslist-qml.html">qml/pages/main/IAppProperties.qml</a></li>
+<li><a href="pagerecents-qml.html">qml/pages/main/PageRecents.qml</a></li>
+<li><a href="pageselectedevent-qml.html">qml/pages/selections/PageSelectedEvent.qml</a></li>
+<li><a href="pageselectedplace-qml.html">qml/pages/selections/PageSelectedPlace.qml</a></li>
+<li><a href="pageselectedcategory-qml.html">qml/pages/selections/PageSelectedCategory.qml</a></li>
+<li><a href="pageabout-qml.html">qml/pages/others/PageAbout.qml</a></li>
+</ul>
+</div>
+<!-- @@@index.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

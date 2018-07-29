@@ -1,0 +1,345 @@
+/*!
+    \page index.html
+	\title Event App Assignment
+	\brief Brief explanation of job assignment project
+	
+
+\section1 About
+
+EventApp or \e{Şehir Etkinlikleri} is a mobile application which provides all events in your city. It is currently available only for Ankara, Turkey, but later who knows. Full version of this application can be found in \l{https://play.google.com/store/apps/details?id=tr.com.tusco.mobile.sehiretkinlikleri&hl=tr} {\e{here}}.
+
+This version is an proof of concept of original one which is developed by using V-Play Engine with Qt 5.10.1 Framework. In order to demonstrate coding skills and documentation abilities:
+\list
+	\li Most of qml items are converted to V-Play items such as Flickable -> AppFlickable, SwipeView -> Navigation and StackView -> NavigationStack
+	\li The documentation is created by using QDoc. Documentation procedure is learnt from \l{https://github.com/anatolyk82/Collisions} {Collusions Game} and \l{https://github.com/RSATom/Qt/blob/master/qtandroidextras/examples/androidextras/notification/doc/src/qtandroidextras-example-notification.qdoc} {QtNotifier}
+\endlist
+
+
+\section2 ScreenShots
+\table
+    \row
+        \li \image qdoc/images/main.png
+        \li \image qdoc/images/selectedEvent.jpg
+		\li \image qdoc/images/drawer.jpg
+\endtable
+	
+
+\section1 Design Overview
+In this section project structure and UI design strategy are given.
+
+\section2 Project Structure
+\list
+	\li assets
+		\list
+			\li images ( *.png, *.jpg)
+		\endlist
+	\li source ( *.cpp, *.h)
+		\list
+			\li main.cpp
+			\li MainController.cpp
+			\li communication
+			\li data
+			\li modelcontrollers
+		\endlist
+	\li qml ( *.qml)
+	\li docs (*.qdoc, *.qdocconf, *.css , *.html)
+\endlist
+
+File informations and it's list are given in Section C++ files.
+
+\section2 UI Design Strategy
+In this application, UI consits of a main StackNavigation and its components. The first component of the item is selected as Navigation in order to provide users to access most common options just by swiping between tabs/pages. Then, whenever user selects an event, place or category the application pushs another pages to stack to visualize person's choice. The implementation of this scene is given below where \l{MobileApp.qml} {MobileApp} is inhereted from \l{IAppProperties.qml} {IAppProperties} and IAppProperties is inhereted from 
+\l {https://v-play.net/doc/vplayapps-app/}{App} component.
+
+\quotefile qml/Main.qml
+
+As it can seen from the screenshots, to provide ability of accessing drawer from any pages the following code snippet is added to each top level Page component in the project.
+\code
+	// To access Drawer anywhere from this level of stack.
+	rightBarItem:NavigationBarItem {
+
+	  // we specify the width of the item with the contentWidth property
+	  // the item width then includes the contentWidth and a default padding
+	  contentWidth: contentRect.width
+
+	  // the navigation bar item shows a colored rectangle
+	  Rectangle {
+		id: contentRect
+		width: dp(Theme.navigationBar.defaultIconSize)
+		height: width
+		anchors.centerIn: parent
+		color: "transparent";
+
+
+		Icon {
+		  anchors.fill: parent
+		  icon: IconType.navicon
+		  color: Theme.navigationBar.itemColor
+
+		  MouseArea
+		  {
+			  anchors.fill: parent;
+			  onClicked: navigationBar.open();
+		  }
+		}
+	  }
+	} // NavigationBarItem
+\endcode
+
+
+\section2 Setting Up Theme
+The color combination of the application is set by Theme component of Qt.
+
+\code
+onInitTheme:
+{
+	Theme.colors.backgroundColor = colorMain;
+	// Theme.navigationAppDrawer.backgroundColor =colorMain;
+	// Theme.navigationAppDrawer.itemBackgroundColor = colorMain;
+	 Theme.navigationBar.itemColor = "white"
+	 Theme.navigationBar.backgroundColor =colorMain;
+
+	Theme.navigationBar.dividerColor = colorMain;
+	Theme.navigationBar.titleColor = "white";
+	Theme.tabBar.backgroundColor = "white";
+	Theme.colors.tintColor = colorMain;
+	Theme.tabBar.markerColor = colorMain;
+	Theme.listSection.backgroundColor = colorMain;
+	Theme.listSection.textColor = "white";
+
+	Theme.update();
+
+}
+\endcode
+
+\section1 Integrating C++ and QML
+Backend and frontend are integrated to each other via \l {MainController.cpp} {MainController} class.
+
+\quotefromfile source/MainController.cpp
+\skipto MainController::MainController(QQmlContext *pRoot, QObject *parent)
+\printuntil }
+\skipto MainController::register2Meta()
+\printuntil }
+
+\b{See Also} \l {RequestManager.cpp} {communication/RequestManager.cpp} , \l {AbstractEventController.cpp} {modelcontrollers/AbstractEventController.cpp}, \l {AbstractPlacesController.cpp} {modelcontrollers/AbstractPlacesController.cpp}
+
+
+
+\section1 Presenting Data
+Since this a live application, all data should be accessible from a server. Therefore, a link is created to provide that ability and served by RESTful service. 
+
+\section2 Preparing Requests
+In backend part, we accessed that data by sending GET and POST requests which are declared in \l {RequestManager.cpp} {RequestManager} class. 
+
+\quotefromfile source/communication/RESTManager.cpp
+\skipto /**
+\printuntil }
+\skipto /**
+\printuntil }
+
+\section2 Parsing Server Reply
+At first, we connected messageReady2Parse signal to parseNetworkMessage slot to notify \l {NetworkMessageParser.cpp} {NetworkMessageParser} when a new reply is received.
+\quotefromfile source/communication/RequestManager.cpp
+\skipto //1
+\printuntil }
+
+Then, we parse JSON message to extract data in above slot.
+\quotefromfile source/communication/NetworkMessageParser.cpp
+\skipto parseNetworkMessage
+\printuntil /^\}/
+
+\section2 Notifying QML Components
+Since we get a list from server, it should be registered to Qt Meta properly. Therefore we created two abstract class to provide base implementation of registeration which are \l {AbstractEventController.cpp} {AbstractEventController} and \l {AbstractPlacesController.cpp} {AbstractPlacesController} respectively. Sample implementation is given below.
+
+\code
+	\\ in header file.
+	Q_PROPERTY(QQmlListProperty<EventContainer> eventList READ getEvents NOTIFY eventListChanged)
+	
+	\\ in cpp file. when we want to access this list from QML
+	QQmlListProperty<EventContainer> AbstractEventController::getEvents()
+	{
+		return QQmlListProperty<EventContainer>(this, mEventList);
+	}
+	\\ in cpp file. When we get new list of events from server.
+	void AbstractEventController::addEventData(QList<EventContainer *> pEvents)
+	{
+		mEventList.clear();
+		mEventList.append(pEvents);
+
+		emit eventListChanged();
+	}
+\endcode
+
+\section1 Additional Informations
+
+
+\section2 Used V-Play Functions
+\table
+	\row
+		\li \l {https://v-play.net/doc/vplayapps-app/#isOnline-prop} {\b{isOnline:}}
+		\li Very useful to check the Internet connection.
+	\row
+		\li \l {https://v-play.net/doc/vplayapps-listpage/} {\b{ListPage:}}
+		\li Awesome component which provides functionality normaly achived by using Page, Flickable and Listview respectively.
+	\row
+		\li \l {https://v-play.net/doc/nativeutils/#displayCameraPicker-method} {\b{Camera Picker:}}
+		\li Beter than QCaminho open source implementation and easier to use.
+	\row
+		\li \l {https://v-play.net/doc/nativeutils/#share-method} {\b{Share:}}
+		\li Easy to use.	
+	\row
+		\li \l {https://v-play.net/doc/vplayapps-navigation/} {\b{Navigation:}}
+		\li Awesome compoenent which provides power of SwipeView and Tabbar compenents while binding their indexes to highlight related icons.
+	\row
+		\li \l {https://v-play.net/doc/vplayapps-navigationstack/} {\b{NavigationStack:}}
+		\li popAllExceptFirstAndPush(source, options) function is so helpful.
+\endtable
+
+\section2 Custom Components and Functions
+
+\section3 Google Static Map : \l {GoogleStaticMapItem} {GoogleStaticMapItem}
+Creates static map image dynamically with using Google's Static Map API. A proper license key should be generated in order to use this API. For more information about the API and its limitations please refere \l {https://developers.google.com/maps/documentation/maps-static/intro} {\e{API Reference}}.
+
+\table
+	\header
+		\li GoogleStaticMapItem
+		\li Usage
+		\li Sample Output
+	\row
+		\li 
+		\code 
+			import QtQuick 2.7
+			import QtQuick.Layouts 1.3
+			import QtQuick.Controls 2.1
+			import QtGraphicalEffects 1.0
+
+			Rectangle
+			{
+				property string staticApiKey: "";
+				property real latitude: 0;
+				property real longitude: 0;
+				property real pictureWidth: 800;
+				property real pictureHeight: 500;
+				property real zoom: 16;
+				property real pictureHeight: 500;
+				property real scale: 2;
+				property string title: "";
+				property bool enableGetDirection: false;
+
+				color: "transparent";
+
+				Image {
+					id: googleMapStaticImage;
+					property string constant: "https://maps.googleapis.com/maps/api/staticmap?key=";
+					property string url: constant + parent.staticApiKey
+					  + "&center=" + parent.latitude + ", " + parent.longitude
+					  + "&zoom=" + parent.zoom
+					  + "&size=" + Math.ceil(parent.pictureWidth) + "x"  + Math.ceil(parent.pictureHeight)
+					  + "&markers=color:red|label:A|"
+					  + "scale:2|"
+					  + "title:" + parent.title;
+					property variant temp;
+					property string latitude: "-34.397";
+					property string longitude: "150.644";
+
+					source: url;
+					width: parent.width;
+					height: parent.height;
+					sourceSize: Qt.size(width ,  height);
+
+				}
+
+				MouseArea
+				{
+					anchors.fill: parent;
+					onClicked:
+					{
+						if (parent.enableGetDirection)
+						{
+							var directionURL =  "https://www.google.com/maps?saddr=My+Location&daddr=" 
+							+ parent.latitude + "," + parent.longitude;
+							Qt.openUrlExternally(directionURL);
+						}
+					}
+				}
+			}
+
+		\endcode
+		\li \quotefromfile qml/pages/selections/PageSelectedPlace.qml
+			\skipto GoogleStaticMapItem
+			\printuntil SpaceSelectedEventPageContents
+			
+		\li \image qdoc/images/selectedEvent.jpg
+\endtable 
+
+ 
+\section3 Sending EMail
+Full sample code can be found in \l PageSelectedEvent.qml} {PageSelectedEvent}. Opening the number dialer can done by using legitimate URL scheme, which is \b{\e{tel:+}} 
+For instance in \l PageSelectedEvent.qml} {PageSelectedEvent} it is used as:
+\code
+	MouseArea
+	{
+		anchors.fill: parent;
+		onClicked:  Qt.openUrlExternally("mailto:?to=iletisim@sehir-etkinlikleri.com&subject=Information&body=");
+	}
+\endcode
+
+which opens the default email program in your environment (Android, Linux, Windows, IOS) and creates a template email which has subject equals to \e{Information} and deliver address equals to \e{iletisim@sehir-etkinlikleri.com}.
+
+
+\section3 Opening Number Dialer
+Full sample code can be found in \l {PageAbout.qml} {PageAbout}. Opening an email service can achieved by using legitimate URL scheme, which is \b{\e{mailto:?}} 
+For instance in {PageAbout.qml} {PageAbout} it is used as:
+\code
+   onClicked:
+	{
+		if (callNumber.length > 3)
+		{
+			Qt.openUrlExternally("tel:+" + callNumber);
+		}
+	}
+\endcode
+Then, your environment default number dialer will pop.
+
+
+\section1 C++ Files
+\list
+	\li \l {AbstractEventController.cpp} {modelcontrollers/AbstractEventController.cpp}
+	\li \l {AbstractEventController.h} {modelcontrollers/AbstractEventController.h}
+	\li \l {AbstractPlacesController.cpp} {modelcontrollers/AbstractPlacesController.cpp}
+	\li \l {AbstractPlacesController.h} {modelcontrollers/AbstractPlacesController.h}
+	\li \l {CategoryEventsController.cpp} {modelcontrollers/CategoryEventsController.cpp}
+	\li \l {CategoryEventsController.h} {modelcontrollers/CategoryEventsController.h}
+	\li \l {EventContainer.cpp} {data/EventContainer.cpp}
+	\li \l {EventContainer.cpp} {data/EventContainer.cpp}
+    \li \l {MainController.cpp} {MainController.cpp}
+	\li \l {MainController.h} {MainController.h}
+	\li \l {NetworkMessageParser.cpp} {communication/NetworkMessageParser.cpp}
+	\li \l {NetworkMessageParser.h} {communication/NetworkMessageParser.h}
+	\li \l {PlaceContainer.cpp} {data/PlaceContainer.cpp}
+	\li \l {PlaceContainer.cpp} {data/PlaceContainer.cpp}
+	\li \l {RESTManager.cpp} {communication/RESTManager.cpp}
+	\li \l {RESTManager.h} {communication/RESTManager.h}
+	\li \l {RequestManager.cpp} {communication/RequestManager.cpp}
+	\li \l {RequestManager.h} {communication/RequestManager.h}
+	\li \l {TopRecentEventsController.cpp} {modelcontrollers/TopRecentEventsController.cpp}
+	\li \l {TopRecentEventsController.h} {modelcontrollers/TopRecentEventsController.h}
+
+\endlist
+\section1 QML Files
+\list
+	\li \l {Homepage.qml} {qml/pages/main/Homepage.qml}
+    \li \l {IAppProperties.qml} {qml/IAppProperties.qml}
+	\li \l {Main.qml} {qml/Main.qml}
+	\li \l {MobileApp.qml} {qml/MobileApp.qml}
+	\li \l {NavigationButton.qml} {qml/navigation/IAppProperties.qml}
+	\li \l {NavigationDrawerBar.qml} {qml/navigation/IAppProperties.qml}
+	\li \l {PagePlacesList.qml} {qml/pages/main/IAppProperties.qml}
+	\li \l {PageRecents.qml} {qml/pages/main/PageRecents.qml}
+	\li \l {PageSelectedEvent.qml} {qml/pages/selections/PageSelectedEvent.qml}
+	\li \l {PageSelectedPlace.qml} {qml/pages/selections/PageSelectedPlace.qml}
+	\li \l {PageSelectedCategory.qml} {qml/pages/selections/PageSelectedCategory.qml}
+	\li \l {PageAbout.qml} {qml/pages/others/PageAbout.qml}
+\endlist
+
+*/

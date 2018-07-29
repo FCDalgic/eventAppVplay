@@ -1,0 +1,216 @@
+// ############################# Main Controller  ############################## 
+/*!
+    \page  maincontroller.cpp.html
+	\title MainController.cpp
+	\quotefile source/maincontroller.cpp
+*/
+
+/*!
+    \page  maincontroller.h.html
+	\title MainController.h
+	\quotefile source/maincontroller.h
+*/
+// ############################# NetworkMessageParser  ############################## 
+/*!
+    \page  networkmessageparser.cpp.html
+	\title NetworkMessageParser.cpp
+	\quotefile source/communication/networkmessageparser.cpp
+*/
+
+/*!
+    \page  networkmessageparser.h.html
+	\title NetworkMessageParser.h
+	\quotefile source/communication/networkmessageparser.h
+*/
+// ############################# RequestManager  ##############################
+/*!
+    \page  requestmanager.cpp.html
+	\title RequestManager.cpp
+	\quotefile source/communication/requestmanager.cpp
+*/
+
+/*!
+    \page  requestmanager.h.html
+	\title RequestManager.h
+	\quotefile source/communication/requestmanager.h
+*/
+
+// ############################# RESTManager  ##############################
+/*!
+    \page  restmanager.cpp.html
+	\title RESTManager.cpp
+	\quotefile source/communication/restmanager.cpp
+*/
+
+/*!
+    \page  restmanager.h.html
+	\title RESTManager.h
+	\quotefile source/communication/restmanager.h
+*/
+
+// ########################### Event Container  #############################
+/*!
+    \page  eventcontainer.cpp.html
+	\title EventContainer.cpp
+	\quotefile source/data/eventcontainer.cpp
+*/
+
+/*!
+    \page  eventcontainer.h.html
+	\title EventContainer.h
+	\quotefile source/data/eventcontainer.h
+*/
+
+// ############################ Place Container  #############################
+/*!
+    \page  placecontainer.cpp.html
+	\title PlaceContainer.cpp
+	\quotefile source/data/placecontainer.cpp
+*/
+
+/*!
+    \page  placecontainer.h.html
+	\title PlaceContainer.h
+	\quotefile source/data/placecontainer.h
+*/
+
+// ###################### Abstract Event Controller  ##########################
+/*!
+    \page  abstracteventcontroller.cpp.html
+	\title AbstractEventController.cpp
+	\quotefile source/modelcontrollers/abstracteventcontroller.cpp
+*/
+
+/*!
+    \page  abstracteventcontroller.h.html
+	\title AbstractEventController.h
+	\quotefile source/modelcontrollers/abstracteventcontroller.h
+*/
+
+// ###################### Category Events Controller  #########################
+/*!
+    \page  categoryeventcontroller.cpp.html
+	\title CategoryEventsController.cpp
+	\quotefile source/modelcontrollers/categoryeventcontroller.cpp
+*/
+
+/*!
+    \page  categoryeventcontroller.h.html
+	\title CategoryEventsController.h
+	\quotefile source/modelcontrollers/categoryeventcontroller.h
+*/
+
+
+// ###################### Top Recent Events Controller  ##########################
+/*!
+    \page  toprecenteventscontroller.cpp.html
+	\title TopRecentEventsController.cpp
+	\quotefile source/modelcontrollers/toprecenteventscontroller.cpp
+*/
+
+/*!
+    \page  toprecenteventscontroller.h.html
+	\title TopRecentEventsController.h
+	\quotefile source/modelcontrollers/toprecenteventscontroller.h
+*/
+
+
+// ###################### Abstract Places Controller  ##########################
+/*!
+    \page  abstractplacescontroller.cpp.html
+	\title AbstractPlacesController.cpp
+	\quotefile source/modelcontrollers/abstractplacescontroller.cpp
+*/
+
+/*!
+    \page  abstractplacescontroller.h.html
+	\title AbstractPlacesController.h
+	\quotefile source/modelcontrollers/abstractplacescontroller.h
+*/
+
+// ----------------------------- QML Files --------------------------------------
+// ###################### IAppProperties  ##########################
+/*!
+    \page  IAppProperties.qml.html
+	\title IAppProperties.qml
+	\quotefile qml/IAppProperties.qml
+*/
+
+// ###################### MobileApp  ##########################
+/*!
+    \page  MobileApp.qml.html
+	\title MobileApp.qml
+	\quotefile qml/MobileApp.qml
+*/
+
+// ###################### Main  ##########################
+/*!
+    \page  Main.qml.html
+	\title Main.qml
+	\quotefile qml/Main.qml
+*/
+
+// ###################### Homepage  ##########################
+/*!
+    \page  Homepage.qml.html
+	\title Homepage.qml
+	\quotefile qml/pages/main/Homepage.qml
+*/
+
+// ###################### PagePlacesList  ##########################
+/*!
+    \page  PagePlacesList.qml.html
+	\title PagePlacesList.qml
+	\quotefile qml/pages/main/PagePlacesList.qml
+*/
+
+// ###################### PageRecents  ##########################
+/*!
+    \page  PageRecents.qml.html
+	\title PageRecents.qml
+	\quotefile qml/pages/main/PageRecents.qml
+*/
+
+// ###################### PageSelectedCategory  ##########################
+/*!
+    \page  PageSelectedCategory.qml.html
+	\title PageSelectedCategory.qml
+	\quotefile qml/pages/selections/PageSelectedCategory.qml
+*/
+// ###################### PageSelectedEvent  ##########################
+/*!
+    \page  PageSelectedEvent.qml.html
+	\title PageSelectedEvent.qml
+	\quotefile qml/pages/selections/PageSelectedEvent.qml
+*/
+// ###################### PageSelectedPlace  ##########################
+/*!
+    \page  PageSelectedPlace.qml.html
+	\title PageSelectedPlace.qml
+	\quotefile qml/pages/selections/PageSelectedPlace.qml
+*/
+// ###################### PageAbout  ##########################
+/*!
+    \page  PageAbout.qml.html
+	\title PageAbout.qml
+	\quotefile qml/pages/others/PageAbout.qml
+*/
+
+// ###################### NavigationButton  ##########################
+/*!
+    \page  NavigationButton.qml.html
+	\title NavigationButton.qml
+	\quotefile qml/navigation/NavigationButton.qml
+*/
+// ###################### NavigationDrawerBar  ##########################
+/*!
+    \page  NavigationDrawerBar.qml.html
+	\title NavigationDrawerBar.qml
+	\quotefile qml/navigation/NavigationDrawerBar.qml
+*/
+// ###################### Google Static Map Item  ##########################
+/*!
+    \page  GoogleStaticMapItem.qml.html
+	\title GoogleStaticMapItem.qml
+	\quotefile qml/items/map/GoogleStaticMapItem.qml
+*/

@@ -10,90 +10,98 @@ import "../../items/delegates"
 import "../../items/listview"
 import "../../items"
 
-Flickable {
-    id: flickablePageSelectedCategory;
-    //    width: appWindow.width;
-    //    height : appWindow.height;
-    //    anchors.fill: parent
+import VPlayApps 1.0
+
+
+ListPage
+{
+    id: listviewSelectedCategory;
+    title: selectedCategoryTitle;
+    model: CategoryResults.eventList;
+    backNavigationEnabled: true;
+    focus: true
     clip: true
-    // StackView manages this, so please no anchors here
-    // anchors.fill: parent
 
-    // Sayfa Yukarı Kaydırılabilir mi?
-    function canGoTop()
+    backgroundColor: "blue";
+    listView
     {
-        if (listviewSelectedCategory.contentY < 20 )
-        {
-            return false;
+        // width: parent.width - dp(20);
+        backgroundColor: colorMain;
+        spacing: 4;
+        emptyText.text : "No items available";
+
+    }
+
+    property real previousContentY: 0;
+    property string sectionFilter: "EventDate";
+    property real status: 0;
+
+    rightBarItem:NavigationBarItem {
+
+        // we specify the width of the item with the contentWidth property
+        // the item width then includes the contentWidth and a default padding
+        contentWidth: contentRect.width
+
+        // the navigation bar item shows a colored rectangle
+        Rectangle {
+          id: contentRect
+          width: dp(Theme.navigationBar.defaultIconSize)
+          height: width
+          anchors.centerIn: parent
+          color: "transparent";
+
+
+          Icon {
+            anchors.fill: parent
+            icon: IconType.navicon
+            color: Theme.navigationBar.itemColor
+
+            MouseArea
+            {
+                onClicked: appWindow.openNavDrawer();
+                anchors.fill: parent;
+            }
+          }
         }
-        else
+      } // NavigationBarItem
+
+    delegate: EventListItemDelegate
+    {
+        eventModel: modelData
+        anchors.horizontalCenter : parent.horizontalCenter;
+        small: true
+        onClicked:
         {
-            return true;
+            appWindow.eventSelected(model);
         }
 
     }
 
-
-    NumberAnimation {
-        id: scrollTopAnimator;
-        target: listviewSelectedCategory;
-        easing.type: Easing.InOutQuart
-        properties: "contentY";
-        from: listviewSelectedCategory.contentY;
-        to: 0;
-        running: false;
-        duration: 1000;
-    }
-    function scrollTop()
-    {
-        scrollTopAnimator.start();
-    }
-
-    Component.onCompleted:
-    {
-
-//        loaderTimer.start();
-        if (visible)
-            listviewSelectedCategory.setCategoryName(appWindow.currentlySelectedCategoryName);
-    }
-
-
-    property string modelType: "art";
-
-      MobileListview
-      {
-          id:listviewSelectedCategory;
-          model: categoryResults.eventList;
-          anchors.fill: parent;
-
-      }
-
-    function setDelegate(pDelegateName)
-    {
-        if (pDelegateName == "art")
+    // Section
+    Component {
+        id: sectionHeading
+        SimpleSection
         {
-            listviewSelectedCategory.model = categoryResults.eventList;
+            style.compactStyle: true;
+            style.backgroundColor: "white";
+            style.textColor: colorMain;
+            width: listviewSelectedCategory.width - dp(20);
+            anchors.horizontalCenter:  parent.horizontalCenter;
+
+
+            title: section // E.g. "Category: Fruits"
+            textItem.horizontalAlignment: Text.AlignHCenter // center text horizontally
+            enabled: true // make section clickable
         }
     }
+    section.property: sectionFilter;
+    section.criteria: ViewSection.FullString
+    section.delegate: sectionHeading
+    // Section ends.
 
-    function whoAmI() {
-        return qsTr("category")
-    }
-
-    property string lastHeader: "";
-
-
-    function whatWasMyTitle()
+    function setCategoryName(pName)
     {
-        return lastHeader;
+        eventType = pName;
     }
 
-    // called immediately after push()
-    function init() {
-        console.log(qsTr("Init done from One"))
-    }
-    // called immediately after pop()
-    function cleanup() {
-        console.log(qsTr("Cleanup done from One"))
-    }
-} // flickable
+}

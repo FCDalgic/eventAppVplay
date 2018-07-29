@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sources.qdoc -->
+  <title>Homepage.qml | EventApp 0.1</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="main">
+    <div class="main-rounded">
+      <div class="navigationbar">
+        <table><tr>
+<td >Homepage.qml</td>        </tr></table>
+      </div>
+    </div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Homepage.qml</h1>
+<span class="subtitle"></span>
+<!-- $$$Homepage.qml.html-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">
+
+  import QtQuick 2.7
+  import QtQuick.Layouts 1.3
+  import QtQuick.Controls 2.1
+  import QtQuick.Controls.Styles 1.2
+  import QtGraphicalEffects 1.0
+  import VPlayApps 1.0
+
+  import &quot;../../items&quot;
+  import &quot;../../items/delegates&quot;
+  import &quot;../../items/popups&quot;
+  import &quot;../../items/headers&quot;
+  import &quot;../../items/listview/categories/homepage&quot;
+
+  <span class="type">Page</span>
+  {
+
+      <span class="type">AppFlickable</span> {
+          <span class="name">id</span>: <span class="name">homepageFlick</span>
+          <span class="name">anchors</span>.fill: <span class="name">parent</span>
+          <span class="name">contentHeight</span>: <span class="name">content</span>.<span class="name">height</span>
+
+          <span class="type">MouseArea</span>
+          {
+              <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+              <span class="name">onClicked</span>:
+              {
+                  <span class="name">Qt</span>.<span class="name">inputMethod</span>.<span class="name">hide</span>();
+              }
+          }
+
+          <span class="type">Column</span> {
+              <span class="name">id</span>: <span class="name">content</span>
+              <span class="name">focus</span>: <span class="number">false</span>
+              <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+              <span class="name">anchors</span>.top: <span class="name">parent</span>.<span class="name">top</span>;
+              <span class="name">anchors</span>.horizontalCenter : <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+              <span class="name">spacing</span>: <span class="number">0</span>;
+              property <span class="type">bool</span> <span class="name">isSearchEnabled</span>: <span class="number">false</span>;
+              <span class="comment">// BannerÄ±n yer alacaÄŸÄ± alan.</span>
+              <span class="type">Rectangle</span>
+              {
+                  <span class="name">id</span>: <span class="name">bannerContaier</span>;
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                  <span class="name">height</span>  : <span class="name">appWindow</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.4</span>;
+                  <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+                  <span class="comment">// Banner</span>
+                  <span class="comment">//            ColorableIcon{</span>
+                  <span class="type">Rectangle</span>{
+                      <span class="name">id</span>: <span class="name">banner</span>;
+                      <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                      <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                      <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>;
+
+                      <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+                      <span class="comment">// Ä°mza - Logo</span>
+                      <span class="type">Rectangle</span>
+                      {
+                          <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>;
+                          <span class="name">height</span>:  <span class="name">parent</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.5</span>;
+                          <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>;
+
+                          <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+                          <span class="name">anchors</span>.top: <span class="name">parent</span>.<span class="name">top</span>;
+                          <span class="name">anchors</span>.topMargin:  <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">8</span>;
+
+                          <span class="type">Image</span>
+                          {
+                              <span class="name">id</span> : <span class="name">imgImza</span>;
+                              <span class="name">fillMode</span>: <span class="name">Image</span>.<span class="name">PreserveAspectFit</span>
+                              <span class="name">anchors</span>.fill: <span class="name">parent</span>;
+                              <span class="name">source</span>:<span class="string">&quot;../../../assets/images/v3/Logo_.png&quot;</span>;
+                          }
+                          <span class="type">ColorOverlay</span>
+                          {
+                              <span class="name">source</span>:<span class="name">imgImza</span>;
+                              <span class="name">anchors</span>.fill:  <span class="name">imgImza</span>;
+                              <span class="name">color</span>: <span class="string">&quot;white&quot;</span>;
+                          }
+                      }
+
+                      <span class="comment">// Categories</span>
+                      <span class="type">Rectangle</span>
+                      {
+                          <span class="name">id</span>: <span class="name">categoryContaier</span>;
+                          <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>;
+                          <span class="name">height</span>  : <span class="name">categoryContaierLayout</span>.<span class="name">implicitHeight</span>;
+                          <span class="name">color</span> : <span class="string">&quot;transparent&quot;</span>;
+                          <span class="comment">//                    anchors.bottomMargin: 5;//  parent.height / 30;</span>
+                          <span class="name">anchors</span>.bottom: <span class="name">banner</span>.<span class="name">bottom</span>;
+                          property <span class="type">real</span> <span class="name">length</span>:  <span class="name">width</span> <span class="operator">*</span> <span class="number">0.20</span>;
+                          property <span class="type">real</span> <span class="name">pHeight</span>: <span class="name">bannerContaier</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">4</span>;
+
+                          <span class="type">Row</span>
+                          {
+                              <span class="name">id</span>: <span class="name">categoryContaierLayout</span>;
+                              <span class="name">anchors</span>.centerIn: <span class="name">parent</span>;
+                              <span class="name">spacing</span>: <span class="number">1</span>;
+
+                              <span class="type">CategoryIconHomepage</span>
+                              {
+                                  <span class="name">width</span>: <span class="name">categoryContaier</span>.<span class="name">length</span>;
+                                  <span class="name">height</span>: <span class="name">categoryContaier</span>.<span class="name">pHeight</span>;
+                                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/v3/TÃ¼mÃ¼.png&quot;</span>;
+                                  <span class="name">categoryName</span>: <span class="string">&quot;All&quot;</span>;
+                                  <span class="comment">//                        overlayColor: &quot;#297fb8&quot;;</span>
+                                  <span class="name">onCategorySelected</span>:
+                                  {
+                                      <span class="name">appWindow</span>.<span class="name">categorySelected</span>(<span class="string">&quot;all&quot;</span>);
+                                      <span class="name">appWindow</span>.<span class="name">setDrawerIndex</span>(<span class="number">4</span>);
+                                  }
+                              }
+
+                              <span class="type">CategoryIconHomepage</span>
+                              {
+                                  <span class="name">width</span>: <span class="name">categoryContaier</span>.<span class="name">length</span>;
+                                  <span class="name">height</span>: <span class="name">categoryContaier</span>.<span class="name">pHeight</span>;
+                                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/v3/Sanat.2.png&quot;</span>; <span class="comment">// &quot;../../assets/images/fa/concert.png&quot;;</span>
+                                  <span class="name">categoryName</span>: <span class="string">&quot;Entertainment&quot;</span>;
+                                  <span class="comment">//                        overlayColor: &quot;#297fb8&quot;;</span>
+                                  <span class="name">onCategorySelected</span>:
+                                  {
+                                      <span class="name">appWindow</span>.<span class="name">categorySelected</span>(<span class="string">&quot;concert&quot;</span>);
+                                      <span class="name">appWindow</span>.<span class="name">setDrawerIndex</span>(<span class="number">4</span>);
+                                  }
+                              }
+
+                              <span class="type">CategoryIconHomepage</span>
+                              {
+                                  <span class="name">width</span>: <span class="name">categoryContaier</span>.<span class="name">length</span>;
+                                  <span class="name">height</span>: <span class="name">categoryContaier</span>.<span class="name">pHeight</span>;
+                                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/v3/EÄŸitim.png&quot;</span>;
+                                  <span class="name">categoryName</span>: <span class="string">&quot;Academic&quot;</span>;
+                                  <span class="comment">//                        overlayColor: &quot;#297fb8&quot;;</span>
+                                  <span class="name">onCategorySelected</span>:
+                                  {
+                                      <span class="name">appWindow</span>.<span class="name">categorySelected</span>(<span class="string">&quot;academic&quot;</span>);
+                                      <span class="name">appWindow</span>.<span class="name">setDrawerIndex</span>(<span class="number">5</span>);
+                                  }
+                              }
+
+                              <span class="type">CategoryIconHomepage</span>
+                              {
+                                  <span class="name">width</span>: <span class="name">categoryContaier</span>.<span class="name">length</span>;
+                                  <span class="name">height</span>: <span class="name">categoryContaier</span>.<span class="name">pHeight</span>;
+                                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/v3/Cocuklar.2.png&quot;</span>;
+                                  <span class="name">categoryName</span>: <span class="string">&quot;Kids&quot;</span>;
+                                  <span class="comment">//                        overlayColor: &quot;#297fb8&quot;;</span>
+                                  <span class="name">onCategorySelected</span>:
+                                  {
+                                      <span class="name">appWindow</span>.<span class="name">categorySelected</span>(<span class="string">&quot;kids&quot;</span>);
+                                      <span class="name">appWindow</span>.<span class="name">setDrawerIndex</span>(<span class="number">4</span>);
+                                  }
+                              }
+
+                              <span class="type">CategoryIconHomepage</span>
+                              {
+                                  <span class="name">width</span>: <span class="name">categoryContaier</span>.<span class="name">length</span>;
+                                  <span class="name">height</span>: <span class="name">categoryContaier</span>.<span class="name">pHeight</span>;
+                                  <span class="name">iconPath</span>: <span class="string">&quot;../../assets/images/v3/fork-spoon-x256.png&quot;</span>;
+                                  <span class="name">categoryName</span>: <span class="string">&quot;Workshops&quot;</span>;
+                                  <span class="comment">//                        overlayColor: &quot;#297fb8&quot;;</span>
+                                  <span class="name">onCategorySelected</span>:
+                                  {
+                                      <span class="name">appWindow</span>.<span class="name">categorySelected</span>(<span class="string">&quot;food&quot;</span>);
+                                      <span class="name">appWindow</span>.<span class="name">setDrawerIndex</span>(<span class="number">4</span>);
+                                  }
+                              }
+
+                              <span class="type">Item</span>
+                              {
+                                  <span class="name">Layout</span>.fillWidth: <span class="number">true</span>;
+                                  <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>;
+                              }
+                          }
+                      }
+
+                  }
+
+              }
+
+              <span class="type">ListviewHomepage</span>
+              {
+                  <span class="name">id</span>: <span class="name">homePageRecentEventsListview</span>;
+                  <span class="name">focus</span>: <span class="number">true</span>
+                  <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="number">30</span>;
+                  <span class="name">model</span>: <span class="name">HomeRecentEvents</span>.<span class="name">eventList</span>;
+                  <span class="name">height</span>:  <span class="name">Math</span>.<span class="name">min</span>(<span class="name">dp</span>(<span class="number">2000</span>), <span class="name">contentHeight</span>)
+                  <span class="name">interactive</span>: <span class="number">false</span>;
+                  <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>;
+
+                  <span class="name">backgroundColor</span>: <span class="string">&quot;transparent&quot;</span>;
+                  <span class="name">onCountChanged</span>:
+                  {
+
+                  }
+              }
+
+          } <span class="comment">// ColumnLayout flickLayout</span>
+
+      }
+  }
+
+</pre>
+</div>
+<!-- @@@Homepage.qml.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <acronym title="Copyright">&copy;</acronym> 2017 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.<br>    Qt and respective logos are trademarks of The Qt Company Ltd.     in Finland and/or other countries worldwide. All other trademarks are property
+   of their respective owners. </p>
+</div>
+</body>
+</html>

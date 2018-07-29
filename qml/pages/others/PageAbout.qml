@@ -5,13 +5,45 @@ import QtQuick.Controls 2.1
 import "../../items"
 import "../../items/delegates"
 
+import VPlayApps 1.0
+
+
 Page
 {
     id: homePage;
     width: appWindow.width;
     height : appWindow.height;
 
+    backgroundColor: "white";
+    title: "About Us";
+    rightBarItem:NavigationBarItem {
 
+        // we specify the width of the item with the contentWidth property
+        // the item width then includes the contentWidth and a default padding
+        contentWidth: contentRect.width
+
+        // the navigation bar item shows a colored rectangle
+        Rectangle {
+          id: contentRect
+          width: dp(Theme.navigationBar.defaultIconSize)
+          height: width
+          anchors.centerIn: parent
+          color: "transparent";
+
+
+          Icon {
+            anchors.fill: parent
+            icon: IconType.navicon
+            color: Theme.navigationBar.itemColor
+
+            MouseArea
+            {
+                onClicked: appWindow.openNavDrawer();
+                anchors.fill: parent;
+            }
+          }
+        }
+      } // NavigationBarItem
     // Sayfa Yukarı Kaydırılabilir mi?
     function canGoTop()
     {
@@ -25,15 +57,15 @@ Page
 
     NumberAnimation {
         id: scrollTopAnimator;
-        target: flickablePageSelectedCategory
+        target: flickablePageAbout
         property: "contentY"
         duration: 1000;
-        from: contentY;
+        from: flickablePageAbout.contentY;
         to: 0;
         easing.type: Easing.InOutQuad
     }
 
-    Flickable {
+    AppFlickable {
         id: flickablePageAbout;
         anchors.fill: parent;
         //    anchors.fill: parent
@@ -73,7 +105,7 @@ Page
                     horizontalAlignment: Text.AlignJustify;
                     wrapMode: Text.WordWrap;
                     text:
-                        "   Şehir Etkinlikleri, Ankara'da düzenlenen tiyatrolardan konserlere, fuarlardan sergilere, seminerlerden eğitimlere, kısacası şehre dair ne varsa sizlere kolaylıkla ulaştırmayı amaçlamaktadır. Şimdiye kadar sizlere,";
+                        "   Şehir Etkinlikleri, aims to provide information about  from concerts to theaters, exhibitions to galeries, trainings to seminars; in short whatever is organized in Ankara. Up to now, we shared";
                 }
 
                 color: "transparent";
@@ -126,7 +158,7 @@ Page
                     width: parent.width;
                     wrapMode: Text.WordWrap;
                     horizontalAlignment: Text.AlignHCenter;
-                    text:"farklı yerdeki,";
+                    text:"in different places,";
 //                    color: "#297fb8";
                 }
 
@@ -179,7 +211,7 @@ Page
                     width: parent.width;
                     horizontalAlignment: Text.AlignHCenter;
 //                    color: "#297fb8";
-                    text:"farklı etkinliği,";
+                    text:"different events";
                 }
 
                 color: "transparent";
@@ -202,9 +234,8 @@ Page
                     horizontalAlignment: Text.AlignJustify;
                     wrapMode: Text.WordWrap;
                     text:
-                        "sunduk. Söz konusu etkinliklerin hiçbiri tarafımızca organize edilmemektedir." +
-                        " Bu sebeple etkinliğe katılmadan önce özellikle yer ve" +
-                        " saat bilgilerini kontrol etmeniz önerilir.";
+                        " None of the events are organized by us." +
+                        " Therefore, before attending any we suggest you to check date and time information of event.";
                 }
             }
             Item
@@ -232,12 +263,10 @@ Page
                     horizontalAlignment: Text.AlignJustify;
                     wrapMode: Text.WordWrap;
                     text:
-                        "   Fikirleriniz bizim için değerli! Tüm görüş, öneri ve düşüncelerinizi bize mail yoluyla iletebilirsiniz, en kısa zamanda tarafınıza dönüş yapılacaktır. "
-                        +"İletişim için: ";
+                        "   Your opinions are valuable for us!  For all your opinion, suggestions and idea you can reach us via email. We will respond you ASAP. Contanct us:"
                     onLinkActivated: Qt.openUrlExternally(link);
                 }
             }
-
 
             // Boşluk
             Rectangle { Layout.fillWidth: true; width: parent.width; height: 10; color: "transparent";}
@@ -284,7 +313,7 @@ Page
                     horizontalAlignment: Text.AlignHCenter;
                     wrapMode: Text.WordWrap;
                     text:
-                        "Şehir Etkinlikleri ile gelin beraber şehrin tadını çıkaralım!"
+                        "Let's enjoy the city together!"
                     font.bold: true;
                     onLinkActivated: Qt.openUrlExternally(link);
                     color: appWindow.colorMain;
@@ -296,7 +325,7 @@ Page
 
 
 
-        ScrollIndicator.vertical: ScrollIndicator { }
+      //   ScrollIndicator.vertical: ScrollIndicator { }
 
     }
 

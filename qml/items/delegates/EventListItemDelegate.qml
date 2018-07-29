@@ -7,6 +7,7 @@ Rectangle {
   height: row.height + dp(10) * 2
   width: !parent ? 0 :(small ? parent.width - dp(25) : parent.width) // dp(25) is section selection width
   color: Theme.listItem.backgroundColor
+  radius:  height * .2;
   property var eventModel
   property bool small
   signal clicked
@@ -24,7 +25,7 @@ Rectangle {
 
   Row {
     id: row
-    width: parent.width - dp(Theme.navigationBar.defaultBarItemPadding) * 2
+    width: parent.width - dp(Theme.navigationBar.defaultBarItemPadding) * 4
     anchors.centerIn: parent
     spacing: dp(Theme.navigationBar.defaultBarItemPadding)
 
@@ -67,13 +68,6 @@ Rectangle {
     }
   }
 
-  Rectangle {
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
-    width: Theme.isIos ? parent.width - avatar.width - row.spacing - dp(Theme.navigationBar.defaultBarItemPadding) : parent.width
-    color: Theme.listItem.dividerColor
-    height: px(1)
-  }
 
   Icon {
     icon: IconType.angleright

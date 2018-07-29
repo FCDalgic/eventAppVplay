@@ -5,17 +5,13 @@ import "items"
 import "navigation"
 import "pages"
 import "pages/others"
-import "items/popups"
-import "items/headers"
-import "items/footers"
-import "items/main"
 import "pages/selections"
 IAppProperties {
 
     function setSelectedEventName(pName)
     {
         selectedEventTitle = pName;
-        if (selectedEventTitle.length > 21)
+        if (selectedEventTitle.length > 33)
         {
             var parts = selectedEventTitle.split(" ");
             var count = parts.length;
@@ -26,7 +22,7 @@ IAppProperties {
                 var str   = parts[i];
                 var total = selectedEventTitle.length  + str.length;
 
-                if (total <= 21)
+                if (total <= 33)
                     selectedEventTitle +=  " " + parts[i];
                 else
                 {
@@ -51,9 +47,8 @@ IAppProperties {
 
     onGoHomepage:
     {
-        navPane.pop(null);
-        stackedHeader.backHome();
-        stackedFooter.backHome();
+        globalNavStack.popAllExceptFirst();
+
     }
 
     function changeCurrentIndex(id){
@@ -124,31 +119,23 @@ IAppProperties {
 
 
     Component { id: selectedEventPageComponent;  PageSelectedEvent { selectedEventModel: selectedEventModelData; } }
+    Component { id: selectedPlacePageComponent;  PageSelectedPlace {  model: selectedPlaceModelData } }
+    Component { id: selectedCategoryPageComponent;  PageSelectedCategory { title: selectedCategoryTitle } }
     Component { id: aboutPageComponent;  PageAbout {  } }
+
     function eventSelected(pEventData)
     {
-        console.log("Event selected called in main.qml");
         closeSearchPanelReceived();
         selectedEventModelData =  pEventData;
-        // eventManager.increaseHitCount(pEventData.modelData.ID);
-        // setHeaderByID(3 , "");
-        // setFooterByID(3);
-        // navPane.pushPageByPageNumber(3);
-        globalNavStack.popAllExceptFirstAndPush(selectedEventPageComponent, { });
-        // globalNavStack.push(Qt.resolvedUrl(selectedEventPageComponent))
-
+        selectedEventTitle = pEventData.modelData.Name;
+        globalNavStack.popAllExceptFirstAndPush(selectedEventPageComponent, {});
     }
     // Mekan listesi ekranında herhangi bir mekan seçildiğinde ekranın güncellenmesi için.
     function selectPlace(pPlaceData)
     {
-        console.log("Place selected called in main.qml");
-        closeSearchPanelReceived();
+        console.log("place selected");
         selectedPlaceModelData =  pPlaceData;
-
-        setHeaderByID(13 , "");
-        setFooterByID(13);
-        navPane.pushPageByPageNumber(13);
-        setSelectedEventName(pPlaceData.modelData.Name);
+        globalNavStack.popAllExceptFirstAndPush(selectedPlacePageComponent, {});
     }
 
     function categorySelected(pCategoryName)
@@ -160,140 +147,65 @@ IAppProperties {
         // StackView'a ait olanlar.
         if (pCategoryName === "concert")
         {
-            categoryResults.clear();
-
+            CategoryResults.clear();
             RequestManager.getEventsByType("concert", 10);
-            selectedCategoryTitle = qsTr("Sanat Eğlence");
-        }
-        else if (pCategoryName === "admin")
-        {
-            RequestManager.getEventsByType("admin", 10);
-            selectedCategoryTitle = qsTr("Admin");
+            selectedCategoryTitle = qsTr("Art & Entertainment");
         }
         else if (pCategoryName === "academic")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("academic", 10);
-            selectedCategoryTitle = qsTr("Eğitim");
+            selectedCategoryTitle = qsTr("Academic");
         }
         else if (pCategoryName === "kids")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("kids",10);
-            selectedCategoryTitle = qsTr("Çocuk");
+            selectedCategoryTitle = qsTr("Kids");
         }
         else if (pCategoryName === "food")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("food",10);
-            selectedCategoryTitle = qsTr("Yemek");
-            lastSelectedCategoryTitle = pCategoryName;
+            selectedCategoryTitle = qsTr("Foods & Workshops");
+            //lastSelectedCategoryTitle = pCategoryName;
 
-            setFooterByID(11);
-            setHeaderByID(11 , selectedCategoryTitle);
-            navPane.pushPageByPageNumber(11);
-            return;
-        }
-        else if (pCategoryName === "outdoor")
-        {
-            categoryResults.clear();
-            RequestManager.getEventsByType("outdoor", 10);
-            selectedCategoryTitle = qsTr("Açık Hava Etkinlikleri");
-        }
-        else if (pCategoryName === "other")
-        {
-            RequestManager.getEventsByType("other", 10);
-            selectedCategoryTitle = qsTr("Diğer Etkinlikler");
+            // setFooterByID(11);
+            // setHeaderByID(11 , selectedCategoryTitle);
+            // navPane.pushPageByPageNumber(11);
+            // return;
         }
         else if (pCategoryName === "about")
         {
-            selectedCategoryTitle = qsTr("Hakkımızda");
-            setHeaderByID(4 , selectedCategoryTitle);
-            setFooterByID(4);
-            navPane.pushPageByPageNumber(4 , "Hakkımızda");
+            globalNavStack.popAllExceptFirstAndPush(aboutPageComponent, {});
             return;
         }
-        else if (pCategoryName === "about_se")
-        {
-            selectedCategoryTitle = "Şehir Etkinlikleri Hakkında";
-            setHeaderByID(9,selectedEventTitle);
-            setFooterByID(9);
-            navPane.pushPageByPageNumber(9);
-            return;
-        }
-        else if (pCategoryName === "about_contributions")
-        {
-            selectedCategoryTitle = "Neler Yaptık?";
-            setHeaderByID(12,selectedEventTitle);
-            setFooterByID(12);
-            navPane.pushPageByPageNumber(12);
-            return;
-        }
-        else if (pCategoryName === "terms")
-        {
-            selectedCategoryTitle = "Kullanım Koşulları";
-            setHeaderByID(10,selectedEventTitle);
-            setFooterByID(10);
-            navPane.pushPageByPageNumber(10);
-            return;
-        }
-        // SwipeView 'e ait olanlar.
         else if (pCategoryName === "recent")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("recent", 10);
             selectedCategoryTitle = qsTr("En Yeni Etkinlikler");
             return;
         }
         else if (pCategoryName === "popular")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("popular", 10);
             selectedCategoryTitle = qsTr("En Popüler Etkinlikler");
             return;
         }
         else if (pCategoryName === "missed")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("missed", 10);
             selectedCategoryTitle = qsTr("Kaçırdığınız Etkinlikler")
             // return;
         }
         else if (pCategoryName === "all")
         {
-            categoryResults.clear();
+            CategoryResults.clear();
             RequestManager.getEventsByType("all", 10);
-            selectedCategoryTitle = qsTr("Tüm Etkinlikler")
-        }
-        else if (pCategoryName === "page_authantication")
-        {
-            categoryResults.clear();
-            setHeaderByID(5 , "Giriş Yap");
-            setFooterByID(5);
-            navPane.pushPageByPageNumber(5 , "Giriş Yap");
-            return;
-        }
-        else if (pCategoryName === "page_signin")
-        {
-            categoryResults.clear();
-            setHeaderByID(6 , "Kayıt Ol");
-            setFooterByID(6);
-            navPane.pushPageByPageNumber(6 , "Kayıt Ol");
-            return;
-        }
-        else if (pCategoryName === "page_forgot_my_password")
-        {
-            setHeaderByID(7 , "Şifremi Unuttum");
-            setFooterByID(7);
-            navPane.pushPageByPageNumber(7 , "Şifremi Unuttum");
-            return;
-        }
-        else if (pCategoryName === "page_update_my_password")
-        {
-            setHeaderByID(8 , "Şifremi Güncelle");
-            setFooterByID(8);
-            navPane.pushPageByPageNumber(8 , "Şifremi Güncelle");
-            return;
+            selectedCategoryTitle = qsTr("All Events")
         }
         else
         {
@@ -301,13 +213,8 @@ IAppProperties {
         }
 
         lastSelectedCategoryTitle = pCategoryName;
-
-        setFooterByID(2);
-        setHeaderByID(2 , selectedCategoryTitle);
-        navPane.pushPageByPageNumber(2);
+        globalNavStack.popAllExceptFirstAndPush(selectedCategoryPageComponent, {});
         console.log("Category Seleted : " + pCategoryName);
-        //            eventListComponent.setDelegate("art");
-
     }
 
     property string currentlySelectedCategoryName: "";
@@ -380,24 +287,32 @@ IAppProperties {
     onSwipeViewIndexChanged:
     {
         console.log("Swipeview index changed" + pIndex);
-        if (pIndex === 1)
+        if (pIndex === 0)
+        {
+            RequestManager.getEventsByType("homepage_recent");
+        }
+        else if (pIndex === 1)
         {
             RequestManager.getEventsByType("all", 10);
         }
         else if (pIndex === 2)
         {
-            if (loggedIn)
-                eventManager.getFavourites(ProfileManager.getStoredMail() , ProfileManager.getStoredPass());
+            console.log("Trying to get places");
+            RequestManager.getPlaces();
         }
-        else if (pIndex === 3)
-        {
-            //RequestManager.getEventsByType("missed", 10);
-            eventManager.getPlaces();
-            // categorySelected("missed");
-        }
-
-        setDrawerIndex(pIndex);
 
     }
 
+
+    function timerInstance() {
+        return Qt.createQmlObject("import QtQuick 2.0; Timer {}", appWindow);
+    }
+
+    function delay(delayTime, cb) {
+        var timer =  timerInstance();
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.triggered.connect(cb);
+        timer.start();
+    }
 }
