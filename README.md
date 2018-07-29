@@ -26,8 +26,7 @@ coding skills and documentation abilities:
 ### ScreenShots
 
 +--------------------------+--------------------------+--------------------------+
-| ![](qdoc/images/main.png)     | ![](qdoc/images/selectedEvent | ![](qdoc/images/drawer.jpg)   |
-|                          | .jpg)                    |                          |
+| ![](qdoc/images/main.png)     | ![](qdoc/images/selectedEvent.jpg | ![](qdoc/images/drawer.jpg
 +--------------------------+--------------------------+--------------------------+
 
 Design Overview
