@@ -48,5 +48,5 @@ File informations and it's list are given in Section C++ files.
 
 ### Detailed Explanation and Details
 
-For more information please visit the [link](qdoc/html/index.html)
+For more information please visit the [link](http://htmlpreview.github.io/?https://github.com/FCDalgic/eventAppVplay/blob/master/qdoc/html/index.html)
 
