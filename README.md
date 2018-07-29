@@ -24,7 +24,7 @@ coding skills and documentation abilities:
     [QtNotifier](https://github.com/RSATom/Qt/blob/master/qtandroidextras/examples/androidextras/notification/doc/src/qtandroidextras-example-notification.qdoc)
 
 ### ScreenShots
-![](qdoc/images/main.png) ![]((qdoc/images/selectedEvent.jpg) ![](qdoc/images/drawer.jpg))
+![](qdoc/images/main.png) ![](qdoc/images/selectedEvent.jpg) ![](qdoc/images/drawer.jpg))
 
 Design Overview
 ---------------
