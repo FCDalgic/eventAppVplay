@@ -48,6 +48,7 @@ File informations and it's list are given in Section C++ files.
 
 ### Detailed Explanation and Details
 
+<<<<<<< HEAD
 For more information please visit the [link](qdoc/html/index.html)
 In this application, UI consits of a main StackNavigation and its
 components. The first component of the item is selected as Navigation in
@@ -722,3 +723,7 @@ Software Foundation.\
  Qt and respective logos are trademarks of The Qt Company Ltd. in
 Finland and/or other countries worldwide. All other trademarks are
 property of their respective owners.
+=======
+For more information please visit the [link](http://htmlpreview.github.io/?https://github.com/FCDalgic/eventAppVplay/blob/master/qdoc/html/index.html)
+
+>>>>>>> 8691b7765612b41e9371ffe8d0562c914a0c8d29
