@@ -40,7 +40,9 @@ SOURCES += main.cpp \
     source/modelcontrollers/abstractplacescontroller.cpp \
     source/modelcontrollers/completeplacescontroller.cpp \
     source/modelcontrollers/categoryeventcontroller.cpp \
-    source/modelcontrollers/toprecenteventscontroller.cpp
+    source/modelcontrollers/toprecenteventscontroller.cpp \
+    source/auth/profilemanager.cpp \
+    source/auth/userinfocontainer.cpp
 
 android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
@@ -72,7 +74,10 @@ HEADERS += \
     source/modelcontrollers/abstractplacescontroller.h \
     source/modelcontrollers/completeplacescontroller.h \
     source/modelcontrollers/categoryeventcontroller.h \
-    source/modelcontrollers/toprecenteventscontroller.h
+    source/modelcontrollers/toprecenteventscontroller.h \
+    source/auth/profilemanager.h \
+    source/auth/seutils.h \
+    source/auth/userinfocontainer.h
 
 DISTFILES += \
     qml/MobileApp.qml \
@@ -84,7 +89,11 @@ DISTFILES += \
     qml/pages/common/CustomListPage.qml \
     qml/items/delegates/PlaceListItemDelegate.qml \
     qml/items/decoration/spaces/SpaceSelectedEventPageContents.qml \
-    qml/items/map/GoogleStaticMapItem.qml
+    qml/items/map/GoogleStaticMapItem.qml \
+    qml/pages/auth/PageRequestAuthantication.qml \
+    qml/pages/main/PageProfileLoader.qml \
+    qml/pages/auth/PageProfile.qml \
+    qml/pages/auth/PageFavourites.qml
 
 build_online_docs: {
     QMAKE_DOCS_TARGETDIR = qtota

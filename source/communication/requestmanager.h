@@ -25,6 +25,10 @@ signals:
 
     // Place signals
     void placesListReceived(QList<PlaceContainer*> pPlaces);
+
+    // Profie Signals
+    void favouriteEventsRecevied(QList<EventContainer*> pEvents);
+
 public slots:
     void onEventMessageParsed(QString pType, QList<EventContainer*> pEvents);
     void onpPlacesMessageParsed(QString pType, QList<PlaceContainer*> pPlaces);

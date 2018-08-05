@@ -10,6 +10,7 @@ Rectangle{
     // Default values
     property real hRatio: 0.5;
     property real wRatio: 0.5;
+    property real fillMode:  Image.Stretch;
     property string overlayColor: appWindow.colorMain;
 
     onAlignChanged: {
@@ -25,6 +26,7 @@ Rectangle{
         width: parent.width * parent.wRatio;
         height: parent.height  * parent.hRatio;
         anchors.centerIn: parent;
+        fillMode: parent.fillMode;
         source: iconPath;
         sourceSize: Qt.size(width ,height);
 

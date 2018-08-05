@@ -7,8 +7,6 @@ import VPlayApps 1.0
 
 import "../../items"
 import "../../items/delegates"
-import "../../items/popups"
-import "../../items/headers"
 import "../../items/listview/categories/homepage"
 
 

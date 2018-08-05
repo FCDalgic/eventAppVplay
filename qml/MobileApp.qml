@@ -1,4 +1,6 @@
 import VPlayApps 1.0
+import VPlayPlugins 1.0
+
 import QtQuick 2.4
 
 import "items"
@@ -314,5 +316,99 @@ IAppProperties {
         timer.repeat = false;
         timer.triggered.connect(cb);
         timer.start();
+
+    }
+
+    // #################################### Alerts and Dialogs ##########################################
+
+    // #################################### Authatication Management ####################################
+    // enum UserStatus
+    // {
+    //     GENERAL_NOT_LOGGED = 0,
+    //     LOGIN_MAIL_CONFIRMATION_NEED = 1,
+    //     LOGIN_NOT_REGISTERED = 2,
+    //     LOGIN_LOGGED = 3,
+    //     SIGNUP_ALREADY_EXIST = 4,
+    //     RESET_PASSWORD_MAIL_SENT = 5,
+    //     RESET_PASSWORD_NOT_REGISTERED = 6,
+    //     RESET_PASSWORD_UPDATED = 7,
+    //     RESET_PASSWORD_CODE_NOT_MATCHED = 8
+    // };
+    Connections
+    {
+        target: ProfileManager;
+        onLoginStatusChanged:
+        {
+            var status = ProfileManager.getUserStatusID();
+            if (status === 3 || status === 1 || status === 7)
+            {
+                isUserLogged = true;
+                nativeUtils.displayMessageBox(qsTr("Succesfully logged in"), "", 2);
+            }
+            else
+            {
+                isUserLogged = fbComponent.loggedIn;
+            }
+
+            switch(status)
+            {
+            case 2:
+                console.info("Trying to open display alert for user not exists");
+                nativeUtils.displayAlertDialog(qsTr("Signin Failed"), qsTr("User not exists."), qsTr("OK"), qsTr(""))
+                break
+            case 4:
+                nativeUtils.displayAlertDialog(qsTr("SignUp Failed"), qsTr("User already exists."), qsTr("OK"), qsTr("Cancel"))
+                break;
+            case 5:
+                nativeUtils.displayAlertDialog(qsTr("Reset Password"), qsTr("Password is successfuly reset. Please login with your new password"), qsTr("OK"), qsTr("Cancel"))
+                break;
+            }
+        }
+    }
+
+    function loginWithFB()
+    {
+        if (!fbComponent.loggedIn)
+        {
+            fbComponent.openSession()
+        }
+    }
+
+    // ###################### Social Logins ###############################
+    Facebook
+    {
+        id: fbComponent;
+        readonly property bool loggedIn: sessionState === Facebook.SessionOpened
+        appId: "313153156090949";
+        readPermissions: [ "public_profile", "email", "user_friends" ]
+        publishPermissions: ["publish_actions"]
+
+        // fetch data after log in
+        onSessionStateChanged: {
+            if (sessionState === Facebook.SessionOpened) {
+                fetchUserDetails() // get user details
+                ProfileManager.signUp(fbComponent.profile.firstName + "-" + fbComponent.profile.firstName , "seFb" + fbComponent.profile.userId);
+                facebook.getGraphRequest("me/friends", { fields: "id,name,picture" }) // get friends that use the app
+            }
+        }
+
+        // handle completed get-friends graph request
+        onGetGraphRequestFinished: {
+            if(resultState !== Facebook.ResultOk)
+                NativeDialog.confirm("Retrieving Friends Failed", "", function(){}, false)
+
+            // show friends
+            if(graphPath === "me/friends") {
+                friendsList.model = JSON.parse(result).data
+            }
+        }
+
+        // handle completed post-message graph request
+        onPostGraphRequestFinished: {
+            if(resultState !== Facebook.ResultOk)
+                NativeDialog.confirm("Post Request Failed", "", function(){}, false)
+            else
+                NativeDialog.confirm("Message Posted Successfully", "", function(){}, false)
+        }
     }
 }

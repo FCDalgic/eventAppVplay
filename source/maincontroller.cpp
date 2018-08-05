@@ -18,6 +18,7 @@ MainController::MainController(QQmlContext *pRoot, QObject *parent)
     , mCategoryEvents(NULL)
     , mRequestManager(NULL)
     , mHomepageRecents(NULL)
+    , mProfileManager(NULL)
 {
 
     qmlRegisterType<EventContainer>();
@@ -45,6 +46,7 @@ void MainController::initObject()
     mCategoryEvents   = new CategoryEventController();
     mPlacesController = new CompletePlacesController();
     mHomepageRecents  = new TopRecentEventsController();
+    mProfileManager   = new ProfileManager();
 
 }
 
@@ -54,6 +56,7 @@ void MainController::register2Meta()
     mRoot->setContextProperty("CategoryResults" , mCategoryEvents);
     mRoot->setContextProperty("PlacesResults"   , mPlacesController);
     mRoot->setContextProperty("HomeRecentEvents", mHomepageRecents);
+    mRoot->setContextProperty("ProfileManager"  , mProfileManager);
 }
 
 
@@ -62,10 +65,14 @@ void MainController::initializeConnections()
     connect(mRequestManager , SIGNAL(categoryEventsReceived(QList<EventContainer*>))  , mCategoryEvents   , SLOT(addEventData(QList<EventContainer*>)));
     connect(mRequestManager , SIGNAL(placesListReceived(QList<PlaceContainer*>))      , mPlacesController , SLOT(addPlaces(QList<PlaceContainer*>)));
     connect(mRequestManager , SIGNAL(homepageRecentEventsRecevied(QList<EventContainer*>))  , mHomepageRecents       , SLOT(addEventData(QList<EventContainer*>)));
+    connect(mRequestManager , SIGNAL(favouriteEventsRecevied(QList<EventContainer*>)) , mProfileManager   , SLOT(addEventData(QList<EventContainer*>)));
 
 }
 
 void MainController::initHomepage()
 {
     mRequestManager->getEventsByType("homepage_recent" , 10);
+
+    mProfileManager->autoLoginOnStart();
+
 }

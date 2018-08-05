@@ -69,6 +69,8 @@ void RequestManager::onEventMessageParsed(QString pType, QList<EventContainer *>
 {
     if (pType == "homepage_recent")
         emit homepageRecentEventsRecevied(pEvents);
+    else if (pType == "getFav" || pType == "addFav" || pType == "delFav")
+        emit favouriteEventsRecevied(pEvents);
     else
         emit categoryEventsReceived(pEvents);
 }

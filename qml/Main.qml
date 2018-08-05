@@ -2,6 +2,7 @@ import QtQuick 2.4
 import VPlayApps 1.0
 import "items"
 import "pages/main"
+import "pages/auth"
 import "navigation"
 
 MobileApp {
@@ -60,7 +61,7 @@ MobileApp {
                   id: navigation
                   // Comment to use a navigation drawer instead of tabs on Android
                   navigationMode: navigationModeTabs
-
+                    tabPosition: Qt.BottomEdge;
                   onCurrentIndexChanged: swipeViewIndexChanged(currentIndex);
 
 
@@ -85,12 +86,21 @@ MobileApp {
                       }
                   }
 
-
                   NavigationItem {
                       title: qsTr("Places")
                       icon: IconType.locationarrow;
 
                       PagePlacesList {
+
+
+                      }
+                  }
+
+                  NavigationItem {
+                      title: qsTr("Profile")
+                      icon: IconType.user;
+
+                      PageProfileLoader {
 
 
                       }

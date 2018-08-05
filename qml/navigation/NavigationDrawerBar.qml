@@ -68,24 +68,34 @@ Drawer {
 
                     anchors.centerIn: parent;
 
-                    iconPath: "../../assets/images/fa/user-x64.png"; //  "../../assets/images/fa/user-x64.png";
+                    fillMode: Image.PreserveAspectFit;
+                    iconPath: ProfileManager.Picture.length > 5 ? ProfileManager.Picture : "../../assets/images/fa/user-x64.png"; //  "../../assets/images/fa/user-x64.png";
                     color: "transparent";
-                    overlayColor: "white";
+                    overlayColor: ProfileManager.Picture.length > 5 ? "transparent" : "white";
 
                     MouseArea
                     {
                         anchors.fill: parent;
                         onClicked:
                         {
-                            nativeUtils.displayCameraPicker("Profile Image");
+                            if (appWindow.isUserLogged)
+                                nativeUtils.displayImagePicker("Profile Image");
+                            else
+                                nativeUtils.displayAlertDialog("Authantication Error", "You need to login before setting up profile image", "", "");
 
                         }
                     }
 
                     Connections {
                         target: nativeUtils
-                        onCameraPickerFinished: {
-                            if(accepted) userPhotoDrawer.iconPath = path
+                        onImagePickerFinished: {
+                            if(accepted)
+                            {
+                                userPhotoDrawer.iconPath = path
+
+                                if (appWindow.isUserLogged)
+                                    ProfileManager.Picture = path;
+                            }
                         }
                     }
                 }

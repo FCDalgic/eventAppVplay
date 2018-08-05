@@ -10,6 +10,8 @@
 #include <source/modelcontrollers/completeplacescontroller.h>
 #include <source/modelcontrollers/toprecenteventscontroller.h>
 
+#include <source/auth/profilemanager.h>
+
 class MainController : public QObject
 {
     Q_OBJECT
@@ -28,6 +30,7 @@ private:
     CategoryEventController *mCategoryEvents; // Which contains, education, entertainment, outdoor, others, popular, recent.
     CompletePlacesController *mPlacesController;
     TopRecentEventsController *mHomepageRecents;
+    ProfileManager *mProfileManager;
 
     void initialize();
     void initObject();
